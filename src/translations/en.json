@@ -1,0 +1,43 @@
+{
+  "welcome": "Welcome to the App!",
+  "greeting": "Hello, world!",
+  "changeLanguage": "Change Language",
+  "routes": {
+    "public": {
+      "home": "Home",
+      "profile": "Profile",
+      "details": "Details"
+    },
+    "private": {
+    }
+  },
+  "pages": {
+    "packageDescription": {
+      "availability": "Availability",
+      "duration": "Duration",
+      "tourism_type": "Tourism type",
+      "age": "Age",
+      "hotel": "Hotel"
+    }
+  },
+  "components": {
+    "badge": {
+      "buyNowGetSale": "Buy now, get a sale",
+      "bigSale": "Big sale",
+      "seasonDeal": "Season deal",
+      "newYearDeal": "New year deal",
+      "forNewlyweds": "For newlyweds",
+      "unforgettableMoments": "Unforgettable moments",
+      "summerSale": "Summer sale",
+      "autumnSale": "Autumn sale",
+      "winterSale": "Winter sale",
+      "springSale": "Spring sale",
+      "blackFriday": "Black Friday",
+      "hotSale": "Hot sale",
+      "finalSale": "Final sale",
+      "hitOfSales": "Hit of sales",
+      "uniqueOffer": "Unique offer",
+      "specialOffer": "Special offer"
+    }
+  }
+}
