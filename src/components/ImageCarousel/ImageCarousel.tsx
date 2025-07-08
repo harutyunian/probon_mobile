@@ -1,26 +1,29 @@
-import { View, StyleSheet, Dimensions } from "react-native";
+import {View, StyleSheet, Dimensions, StyleProp, ViewStyle} from "react-native";
 // Note: We no longer need Animated, useAnimatedStyle, etc. for the pagination
-import type { ICarouselInstance } from "react-native-reanimated-carousel";
-import Carousel, { Pagination } from "react-native-reanimated-carousel";
-import { Image } from 'expo-image';
-import { useRef } from "react";
-import { useSharedValue } from "react-native-reanimated";
+import type {ICarouselInstance} from "react-native-reanimated-carousel";
+import Carousel, {Pagination} from "react-native-reanimated-carousel";
+import {Image} from 'expo-image';
+import {useRef} from "react";
+import {useSharedValue} from "react-native-reanimated";
 
-// Get the full width of the device's screen
-const { width: screenWidth } = Dimensions.get('window');
+const {width: screenWidth} = Dimensions.get('window');
 
 interface ImageCarouselProps {
     images: Array<{ url: string, id: string }>;
+    containerStyle?: StyleProp<ViewStyle>;
+    imageContainerStyle?: StyleProp<ViewStyle>;
+    imageWidth?: number;
+    height?: number;
 }
 
-const renderCarouselItem = ({ item }: { item: { url: string, id: string } }) => (
+const renderCarouselItem = ({item}: { item: { url: string, id: string } }) => (
     <View style={styles.imageContainer}>
-        <Image source={{ uri: item.url }} style={styles.image} contentFit="cover" />
+        <Image source={{uri: item.url}} style={styles.image} contentFit="cover"/>
     </View>
 );
 
 export function ImageCarousel(props: ImageCarouselProps) {
-    const { images } = props;
+    const {images, containerStyle, imageWidth = screenWidth, imageContainerStyle, height = 240} = props;
     const ref = useRef<ICarouselInstance>(null);
     const progress = useSharedValue<number>(0);
 
@@ -29,13 +32,14 @@ export function ImageCarousel(props: ImageCarouselProps) {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, containerStyle]}>
             <Carousel
+                style={imageContainerStyle}
                 ref={ref}
                 data={images}
                 renderItem={renderCarouselItem}
-                width={screenWidth}
-                height={240}
+                width={imageWidth}
+                height={height}
                 loop={true}
                 autoPlay={true}
                 autoPlayInterval={3000}

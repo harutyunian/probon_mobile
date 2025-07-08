@@ -5,7 +5,8 @@ import Icon from "../../../components/Icon/Icon";
 export function ContactInfo() {
     const {colors} = useTheme();
 
-    return <View style={{marginTop: 36}}>
+    return <View style={{marginTop: 36
+    }}>
         <View style={styles.info}>
             <View style={styles.iconContainer}>
                 <Icon name='locationIcon' size={15} color={colors.primary}/>
