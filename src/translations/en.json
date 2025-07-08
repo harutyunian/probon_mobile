@@ -6,10 +6,11 @@
     "public": {
       "home": "Home",
       "profile": "Profile",
-      "details": "Details"
+      "details": "Details",
+      "wishlist": "Wishlist",
+      "requests": "Requests"
     },
-    "private": {
-    }
+    "private": {}
   },
   "pages": {
     "packageDescription": {

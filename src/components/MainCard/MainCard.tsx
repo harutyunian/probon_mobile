@@ -1,83 +1,114 @@
-import {Image, View} from "react-native";
-import {Surface, Button, Card, Text} from 'react-native-paper';
-import {StyleSheet, useWindowDimensions} from "react-native";
-import {useMemo} from "react";
+import { Image, View, StyleSheet, useWindowDimensions } from "react-native";
+import {Button, Text, useTheme} from 'react-native-paper';
+import { useMemo } from "react";
 import Icon from "../Icon/Icon";
-import {Sticker} from "../Sticker/Sticker";
-
+import { Sticker } from "../Sticker/Sticker";
+import { ImageCarousel } from "../ImageCarousel/ImageCarousel";
+import { mockPackageDetailsPackP } from "../../pages/PackageDetails/mock";
 
 export function MainCard() {
-    const {width} = useWindowDimensions();
+    const { width } = useWindowDimensions();
+    const theme = useTheme();
+    const { images } = mockPackageDetailsPackP;
 
-    const cardWidth = useMemo(() => {
-        return {width: width * 0.44};
-    }, [])
+    const cardWidth = useMemo(() => width * 0.44, [width]);
 
-
-    return <View style={[styles.container, {width: cardWidth.width}]}>
-        <Image
-            style={[styles.cover, {height: cardWidth.width * 1.01}]}
-            source={{uri: 'https://picsum.photos/700'}}
-        />
-        <Sticker  type='springSale' containerStyle={[{top: -30, left: 7}]}/>
-        <View>
-            <Text style={[styles.title]}>Sri Lanka Shangri-la</Text>
-            <Text variant="bodyMedium">12-24 Dec</Text>
-            <View style={[styles.reviewContainer]}>
-                <Text>4.6 </Text><Icon name={'starFilled'} size={15} color="#FFCC00"/><Text> 9 review</Text>
+    return (
+        <View style={[styles.container, { width: cardWidth }]}>
+            <View>
+                <ImageCarousel
+                    images={images}
+                    imageWidth={cardWidth}
+                    height={180}
+                    imageContainerStyle={styles.carouselContainer}
+                />
+                <Sticker type='springSale' containerStyle={styles.sticker} />
+                <View style={styles.wishContainer} >
+                    <Icon name={"heart"} size={20} color={theme.colors.primary}/>
+                </View>
             </View>
-            <Text style={[styles.price]}>$245</Text>
+            <View style={styles.contentContainer}>
+                <Text style={styles.title} numberOfLines={1}>Sri Lanka Shangri-la</Text>
+                <Text variant="bodyMedium">12-24 Dec</Text>
+                <View style={styles.reviewContainer}>
+                    <Text>4.6 </Text>
+                    <Icon name={'starFilled'} size={15} color="#FFCC00" />
+                    <Text> 9 review</Text>
+                </View>
+                <View style={styles.priceContainer}>
+                    <Text style={styles.price}>$245</Text>
+                    <Button
+                        mode="contained"
+                        style={styles.button}
+                        contentStyle={styles.buttonContent}
+                        labelStyle={styles.buttonLabel}
+                    >
+                        Buy
+                    </Button>
+                </View>
+            </View>
         </View>
-        <View >
-            <Button
-                mode="contained"
-                style={styles.button}
-                contentStyle={styles.buttonContent}
-                labelStyle={styles.buttonLabel}
-            >Buy</Button>
-        </View>
-    </View>
+    );
 }
 
 const styles = StyleSheet.create({
-
     container: {
-        marginTop: 15,
-        marginBottom: 30,
-        height: 300,
+        flexBasis: '48%',
+        marginVertical: 15,
     },
-
+    carouselContainer: {
+        borderRadius: 10,
+        overflow: 'hidden',
+    },
+    sticker: {
+        position: 'absolute',
+        bottom: 40,
+        left: 8,
+    },
+    wishContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        width: 32,
+        height: 32,
+        backgroundColor: '#EFEDFD',
+        top: 8,
+        right: 8,
+        borderRadius: 16,
+    },
+    contentContainer: {
+        paddingHorizontal: 4,
+    },
     title: {
         fontSize: 16,
         fontWeight: '500',
+        marginBottom: 4,
+    },
+    reviewContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 6,
+    },
+    priceContainer: {
+        rowGap: 8,
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        marginTop: 8,
     },
     price: {
         fontSize: 16,
         fontWeight: '500',
     },
-    reviewContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    bodyTitle: {
-        fontSize: 16,
-        fontWeight: '400',
-        color: "#74717A"
-    },
-    cover: {
-        marginTop: 10,
-        borderRadius: 8,
-    },
     button: {
-        marginTop: 12,
         width: '100%',
     },
     buttonContent: {
         height: 32,
+        paddingHorizontal: 8,
     },
     buttonLabel: {
         fontSize: 12,
         marginVertical: 0,
     },
-})
+});

@@ -22,6 +22,7 @@ import locationIcon from '../../../assets/icons/locationIcon.svg';
 import infinityIcon from '../../../assets/icons/infinityIcon.svg';
 import closedUmbrella from '../../../assets/icons/closedUmbrella.svg';
 import profileApproved from '../../../assets/icons/profileApproved.svg';
+import request from '../../../assets/icons/request.svg';
 
 
 const iconMap = {
@@ -38,6 +39,7 @@ const iconMap = {
     sprout,
     profile,
     percent,
+    request,
     umbrella,
     priceTag,
     snowflake,
