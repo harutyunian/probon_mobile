@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from "react-native";
+import {StyleSheet, useWindowDimensions, View} from "react-native";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {Home} from "../pages/Home/Home";
@@ -9,11 +9,14 @@ import Icon from "../components/Icon/Icon";
 import {PackageDetails} from "../pages/PackageDetails/PackageDetails";
 import SplashScreen from "../components/SplashScreen/SplashScreen";
 import {AddButton} from "./AddButton/AddButton";
+import {Searchbar, useTheme} from "react-native-paper";
 
 const Tab = createBottomTabNavigator();
 
 export default function MainNavigator() {
+    const {width} = useWindowDimensions();
     const [showApp, setShowApp] = useState(false);
+    const theme = useTheme();
 
     const handleClose = () => setShowApp(true)
 
@@ -25,8 +28,10 @@ export default function MainNavigator() {
         <NavigationContainer>
             <Tab.Navigator
                 screenOptions={({route}) => ({
-                    // header: (navigation) => <CustomHeader {...navigation} />,
-                    headerBackButtonDisplayMode: 'minimal',
+                    headerStyle: {
+                        backgroundColor: theme.colors.primary,
+                    },
+                    headerTitleStyle: styles.headerTitleStyle,
                     tabBarIcon: ({focused, color, size}) => {
                         let iconName;
                         if (route.name === MAIN_ROUTES.PUBLIC.HOME.NAME) iconName = 'home';
@@ -49,7 +54,26 @@ export default function MainNavigator() {
                     tabBarInactiveTintColor: 'gray',
                 })}
             >
-                <Tab.Screen key={MAIN_ROUTES.PUBLIC.HOME.KEY} name={MAIN_ROUTES.PUBLIC.HOME.NAME} component={Home}/>
+                <Tab.Screen
+                    options={{
+                        headerStyle: [styles.homePageHeaderStyle, {backgroundColor: theme.colors.primary}],
+                        headerTitle: () => {
+                            // in figma design input height is 92% on full width , so
+                            // I think it's will be a good to do by % bcs will look good on other devices
+                            // Also need to make another components for his to easy handle bottom shit
+                            return <Searchbar
+                                style={[styles.searchBarStyle, {width: width * 0.92}]}
+                                placeholder="Search for a event, package..."
+                                onChangeText={() => {
+                                }}
+                                value={""}
+                            />
+                        }
+                    }}
+                    key={MAIN_ROUTES.PUBLIC.HOME.KEY}
+                    name={MAIN_ROUTES.PUBLIC.HOME.NAME}
+                    component={Home}
+                />
                 <Tab.Screen key={MAIN_ROUTES.PUBLIC.WISHLIST.KEY} name={MAIN_ROUTES.PUBLIC.WISHLIST.NAME}
                             component={PackageDetails}/>
                 <Tab.Screen
@@ -79,5 +103,24 @@ const styles = StyleSheet.create({
         backgroundColor: '#5E4DED',
         borderBottomEndRadius: 24,
         borderBottomStartRadius: 24,
+    },
+    homePageHeaderStyle: {
+        height: 164,
+        borderBottomRightRadius: 16,
+        borderBottomLeftRadius: 16,
+    },
+    searchBarStyle: {
+        backgroundColor: '#FFFFFF',
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: 56,
+        borderRadius: 16,
+        width: '100%',
+    },
+    headerTitleStyle: {
+        fontSize: 22,
+        color: '#FFFFFF',
+        fontWeight: '400',
     }
 })
