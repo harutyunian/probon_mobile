@@ -1,5 +1,6 @@
-import {View, Text, StyleSheet} from "react-native";
+import {View, Text, StyleSheet, Dimensions} from "react-native";
 import {ImageBackground} from "expo-image";
+import {useMemo} from "react";
 
 
 const backgroundImage = "https://www.citalia.com/-/media/Bynder/Citalia-destinations/Italy/Cities/Venice/Venice-2024-Gondola-Rialto-Bridge-Shutterstock-2162340095-Hybris.jpg?rev=72d18c18d0844dada8e26f7ac3e01be7&hash=4AE7EF8622D664527B600BE3B4270A2D&h=480.375&w=1081.5";
@@ -22,7 +23,7 @@ function getRandomItem(arr: any = arrImg) {
 export default function Event() {
     return <ImageBackground
         source={{uri: getRandomItem()}}
-        style={styles.container}
+        style={[styles.container]}
         imageStyle={styles.image}
     >
         <Text style={styles.text}>Evento</Text>
