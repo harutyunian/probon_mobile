@@ -4,9 +4,11 @@ import buildProvidersTree from "./src/utils/buildProvidersTree";
 import MainNavigator from "./src/navigation/MainNavigator";
 import {paperTheme} from "./src/contants/theme";
 import {SafeAreaProvider} from "react-native-safe-area-context";
+import {GestureHandlerRootView} from "react-native-gesture-handler";
 
 const ProvidersTree = buildProvidersTree([
     [SafeAreaProvider],
+    [GestureHandlerRootView, {flex: 1}],
     [PaperProvider, {theme: paperTheme}],
 ]);
 

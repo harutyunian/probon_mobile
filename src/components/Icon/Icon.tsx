@@ -23,7 +23,8 @@ import infinityIcon from '../../../assets/icons/infinityIcon.svg';
 import closedUmbrella from '../../../assets/icons/closedUmbrella.svg';
 import profileApproved from '../../../assets/icons/profileApproved.svg';
 import request from '../../../assets/icons/request.svg';
-
+import search from '../../../assets/icons/search.svg';
+import leftArrow from '../../../assets/icons/leftArrow.svg';
 
 const iconMap = {
     tag,
@@ -37,12 +38,14 @@ const iconMap = {
     heart,
     phone,
     sprout,
+    search,
     profile,
     percent,
     request,
     umbrella,
     priceTag,
     snowflake,
+    leftArrow,
     starFilled,
     locationIcon,
     closedUmbrella,

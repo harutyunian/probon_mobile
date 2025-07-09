@@ -1,29 +1,26 @@
-import { Image, View, StyleSheet, useWindowDimensions } from "react-native";
+import {Image, View, StyleSheet, useWindowDimensions} from "react-native";
 import {Button, Text, useTheme} from 'react-native-paper';
-import { useMemo } from "react";
 import Icon from "../Icon/Icon";
-import { Sticker } from "../Sticker/Sticker";
-import { ImageCarousel } from "../ImageCarousel/ImageCarousel";
-import { mockPackageDetailsPackP } from "../../pages/PackageDetails/mock";
+import {Sticker} from "../Sticker/Sticker";
+import {ImageCarousel} from "../ImageCarousel/ImageCarousel";
+import {mockPackageDetailsPackP} from "../../pages/PackageDetails/mock";
 
 export function MainCard() {
-    const { width } = useWindowDimensions();
     const theme = useTheme();
-    const { images } = mockPackageDetailsPackP;
+    const {images} = mockPackageDetailsPackP;
 
-    const cardWidth = useMemo(() => width * 0.44, [width]);
 
     return (
-        <View style={[styles.container, { width: cardWidth }]}>
+        <View style={[{width: 182, marginBottom: 20}]}>
             <View>
                 <ImageCarousel
                     images={images}
-                    imageWidth={cardWidth}
+                    imageWidth={182}
                     height={180}
                     imageContainerStyle={styles.carouselContainer}
                 />
-                <Sticker type='springSale' containerStyle={styles.sticker} />
-                <View style={styles.wishContainer} >
+                <Sticker type='springSale' containerStyle={styles.sticker}/>
+                <View style={styles.wishContainer}>
                     <Icon name={"heart"} size={20} color={theme.colors.primary}/>
                 </View>
             </View>
@@ -32,7 +29,7 @@ export function MainCard() {
                 <Text variant="bodyMedium">12-24 Dec</Text>
                 <View style={styles.reviewContainer}>
                     <Text>4.6 </Text>
-                    <Icon name={'starFilled'} size={15} color="#FFCC00" />
+                    <Icon name={'starFilled'} size={15} color="#FFCC00"/>
                     <Text> 9 review</Text>
                 </View>
                 <View style={styles.priceContainer}>
@@ -101,7 +98,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     button: {
-        width: '100%',
+        width: '100%', // here is button style
     },
     buttonContent: {
         height: 32,
