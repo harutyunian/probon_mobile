@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     button: {
-        width: '100%',
+        width: '100%', // here is button style
     },
     buttonContent: {
         height: 32,

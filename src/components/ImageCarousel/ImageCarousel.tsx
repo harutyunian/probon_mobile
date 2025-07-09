@@ -12,7 +12,7 @@ interface ImageCarouselProps {
     images: Array<{ url: string, id: string }>;
     containerStyle?: StyleProp<ViewStyle>;
     imageContainerStyle?: StyleProp<ViewStyle>;
-    imageWidth?: number;
+    imageWidth?: number ;
     height?: number;
 }
 
