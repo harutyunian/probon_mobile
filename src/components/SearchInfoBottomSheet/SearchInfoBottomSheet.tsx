@@ -1,63 +1,96 @@
-import {Dimensions, StyleSheet, Text} from "react-native";
-import {useCallback, useEffect, useRef, useState} from "react";
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+    Dimensions,
+    StyleSheet,
+    View,
+    Text
+} from 'react-native';
 import BottomSheet, {
     BottomSheetBackdrop,
     BottomSheetView,
-} from "@gorhom/bottom-sheet";
-import {Searchbar, TextInput} from "react-native-paper";
-import {NativeSyntheticEvent} from "react-native/Libraries/Types/CoreEventTypes";
-import {TextInputChangeEventData} from "react-native/Libraries/Components/TextInput/TextInput";
-import Icon from "../Icon/Icon";
-import SearchResult from "./SearchResult/SearchResult";
+} from '@gorhom/bottom-sheet';
+import { TextInput, Button } from 'react-native-paper';
 
-const {height, width} = Dimensions.get("window");
+import SearchResult from './SearchResult/SearchResult';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { close } from '../../store/searchSlice/searchSlice';
+
+const { height, width } = Dimensions.get('window');
 const bottomSheetHeight = height * 0.65;
 
 export default function SearchInfoBottomSheet() {
     const bottomSheetRef = useRef<BottomSheet>(null);
-    const [searchQuery, setSearchQuery] = useState<string>("");
+    const dispatch = useAppDispatch();
+    const open = useAppSelector((state) => state.search.open);
+    const [searchQuery, setSearchQuery] = useState<string>('');
 
-    const renderBackdrop = useCallback((props: any) => (
-        <BottomSheetBackdrop
-            {...props}
-            disappearsOnIndex={-1}
-            appearsOnIndex={0}
-            opacity={0.5}
-            pressBehavior="close"
-        />
-    ), []);
-
+    // Control Bottom Sheet open/close based on Redux state
     useEffect(() => {
-        bottomSheetRef?.current?.expand();
-    }, []);
+        if (open) {
+            bottomSheetRef.current?.expand();
+        } else {
+            bottomSheetRef.current?.close();
+        }
+    }, [open]);
 
-    // todo partadir poxelu es type
-    const handleSearchQuery = (e:any) => {
-        e.target.value && setSearchQuery(e.target.value);
-    }
+    // Render custom backdrop
+    const renderBackdrop = useCallback(
+        (props: any) => (
+            <BottomSheetBackdrop
+                {...props}
+                disappearsOnIndex={-1}
+                appearsOnIndex={0}
+                opacity={0.5}
+                pressBehavior="close"
+            />
+        ),
+        []
+    );
+
+    // Handle closing the sheet (manually)
+    const handleClose = () => {
+        bottomSheetRef.current?.close(); // Only close, dispatch handled below
+    };
+
+    // Handle sheet animation complete
+    const handleSheetClosed = () => {
+        dispatch(close()); // Update Redux after sheet is fully closed
+    };
+
+    // Input change
+    const handleSearchQueryChange = (text: string) => {
+        setSearchQuery(text);
+    };
+
     return (
         <BottomSheet
+            enablePanDownToClose={true}
             ref={bottomSheetRef}
-            index={0}
-            snapPoints={[bottomSheetHeight]}
+            index={-1} // Initially closed
+            snapPoints={[bottomSheetHeight, '90%']}
             backdropComponent={renderBackdrop}
+            onClose={handleSheetClosed} // Called after close animation
         >
-            <BottomSheetView
-                style={[styles.bottomSheetContainer, {height: bottomSheetHeight}]}>
+            <BottomSheetView style={[styles.bottomSheetContainer, { height: bottomSheetHeight }]}>
                 <TextInput
                     outlineStyle={{ borderRadius: 16 }}
-                    style={[styles.search, {width: width * 0.92}]}
+                    style={[styles.search, { width: width * 0.92 }]}
                     mode="outlined"
                     label="Search"
-                    left={<TextInput.Icon icon={'magnify'}/>}
+                    value={searchQuery}
+                    onChangeText={handleSearchQueryChange}
+                    left={<TextInput.Icon icon="magnify" />}
                 />
-                <SearchResult/>
-                <SearchResult/>
-                <SearchResult/>
-                <SearchResult/>
-                <SearchResult/>
-                <SearchResult/>
 
+                {/* Example search results */}
+                <SearchResult />
+                <SearchResult />
+                <SearchResult />
+                <SearchResult />
+
+                <Button mode="contained" style={{ marginTop: 20 }} onPress={handleClose}>
+                    Close
+                </Button>
             </BottomSheetView>
         </BottomSheet>
     );
@@ -65,13 +98,13 @@ export default function SearchInfoBottomSheet() {
 
 const styles = StyleSheet.create({
     bottomSheetContainer: {
-        display: "flex",
-        alignItems: "center",
+        flex: 1,
+        alignItems: 'center',
         paddingVertical: 16,
     },
     search: {
-        backgroundColor: "#FFFFFF",
+        backgroundColor: '#FFFFFF',
         height: 56,
         borderRadius: 160,
-    }
+    },
 });

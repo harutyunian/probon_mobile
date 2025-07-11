@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, useWindowDimensions, View} from "react-native";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
@@ -7,94 +7,86 @@ import Profile from "../pages/Profile/Profile";
 import {MAIN_ROUTES} from "../contants/routes";
 import Icon from "../components/Icon/Icon";
 import {PackageDetails} from "../pages/PackageDetails/PackageDetails";
-import SplashScreen from "../components/SplashScreen/SplashScreen";
 import {AddButton} from "./AddButton/AddButton";
-import {Searchbar, useTheme} from "react-native-paper";
+import {useTheme} from "react-native-paper";
+import {useDispatch} from "react-redux";
+import SearchInput from "./SearchInput/SearchInput";
 
 const Tab = createBottomTabNavigator();
 
 export default function MainNavigator() {
     const {width} = useWindowDimensions();
-    const [showApp, setShowApp] = useState(false);
     const theme = useTheme();
+    const dispatch = useDispatch();
 
-    const handleClose = () => setShowApp(true)
-
-    if (!showApp) {
-        return <SplashScreen onFinish={handleClose}/>;
-    }
 
     return (
-        <NavigationContainer>
-            <Tab.Navigator
-                screenOptions={({route}) => ({
-                    headerStyle: {
-                        backgroundColor: theme.colors.primary,
-                    },
-                    headerTitleStyle: styles.headerTitleStyle,
-                    tabBarIcon: ({focused, color, size}) => {
-                        let iconName;
-                        if (route.name === MAIN_ROUTES.PUBLIC.HOME.NAME) iconName = 'home';
-                        if (route.name === MAIN_ROUTES.PUBLIC.PROFILE.NAME) iconName = 'profile';
-                        if (route.name === MAIN_ROUTES.PUBLIC.REQUESTS.NAME) iconName = 'request';
-                        if (route.name === MAIN_ROUTES.PUBLIC.WISHLIST.NAME) iconName = 'heart';
-                        else if (route.name === 'Profile') iconName = 'profile';
-                        return (
-                            <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                                <Icon
-                                    //@ts-ignore
-                                    name={iconName}
-                                    size={size}
-                                    color={focused ? '#5E4DED' : 'gray'}
-                                />
-                            </View>
-                        );
-                    },
-                    tabBarActiveTintColor: '#5E4DED',
-                    tabBarInactiveTintColor: 'gray',
-                })}
-            >
-                <Tab.Screen
-                    options={{
-                        headerStyle: [styles.homePageHeaderStyle, {backgroundColor: theme.colors.primary}],
-                        headerTitle: () => {
-                            // in figma design input height is 92% on full width , so
-                            // I think it's will be a good to do by % bcs will look good on other devices
-                            // Also need to make another components for his to easy handle bottom shit
-                            return <Searchbar
-                                style={[styles.searchBarStyle, {width: width * 0.92}]}
-                                placeholder="Search for a event, package..."
-                                onChangeText={() => {
-                                }}
-                                value={""}
-                            />
+        <>
+            <NavigationContainer>
+                <Tab.Navigator
+                    screenOptions={({route}) => ({
+                        headerStyle: {
+                            backgroundColor: theme.colors.primary,
+                        },
+                        headerTitleStyle: styles.headerTitleStyle,
+                        tabBarIcon: ({focused, color, size}) => {
+                            let iconName;
+                            if (route.name === MAIN_ROUTES.PUBLIC.HOME.NAME) iconName = 'home';
+                            if (route.name === MAIN_ROUTES.PUBLIC.PROFILE.NAME) iconName = 'profile';
+                            if (route.name === MAIN_ROUTES.PUBLIC.REQUESTS.NAME) iconName = 'request';
+                            if (route.name === MAIN_ROUTES.PUBLIC.WISHLIST.NAME) iconName = 'heart';
+                            else if (route.name === 'Profile') iconName = 'profile';
+                            return (
+                                <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                                    <Icon
+                                        //@ts-ignore
+                                        name={iconName}
+                                        size={size}
+                                        color={focused ? '#5E4DED' : 'gray'}
+                                    />
+                                </View>
+                            );
+                        },
+                        tabBarActiveTintColor: '#5E4DED',
+                        tabBarInactiveTintColor: 'gray',
+                    })}
+                >
+                    <Tab.Screen
+                        options={{
+                            headerStyle: [styles.homePageHeaderStyle, {backgroundColor: theme.colors.primary}],
+                            headerTitle: () => {
+                                // in figma design input height is 92% on full width , so
+                                // I think it's will be a good to do by % bcs will look good on other devices
+                                // Also need to make another components for his to easy handle bottom shit
+                                return <SearchInput/>
+                            }
+                        }}
+                        key={MAIN_ROUTES.PUBLIC.HOME.KEY}
+                        name={MAIN_ROUTES.PUBLIC.HOME.NAME}
+                        component={Home}
+                    />
+                    <Tab.Screen key={MAIN_ROUTES.PUBLIC.WISHLIST.KEY} name={MAIN_ROUTES.PUBLIC.WISHLIST.NAME}
+                                component={PackageDetails}/>
+                    <Tab.Screen
+                        key={"Add"}
+                        name={" "}
+                        component={PackageDetails}
+                        options={{
+                            tabBarShowLabel: false,
+                            tabBarIcon: () => {
+                                return <AddButton/>
+                            }
                         }
-                    }}
-                    key={MAIN_ROUTES.PUBLIC.HOME.KEY}
-                    name={MAIN_ROUTES.PUBLIC.HOME.NAME}
-                    component={Home}
-                />
-                <Tab.Screen key={MAIN_ROUTES.PUBLIC.WISHLIST.KEY} name={MAIN_ROUTES.PUBLIC.WISHLIST.NAME}
-                            component={PackageDetails}/>
-                <Tab.Screen
-                    key={"Add"}
-                    name={" "}
-                    component={PackageDetails}
-                    options={{
-                        tabBarShowLabel: false,
-                        tabBarIcon: () => {
-                            return <AddButton/>
                         }
-                    }
-                    }
-                />
+                    />
 
-                <Tab.Screen key={MAIN_ROUTES.PUBLIC.REQUESTS.KEY} name={MAIN_ROUTES.PUBLIC.REQUESTS.NAME}
-                            component={Profile}/>
-                <Tab.Screen key={MAIN_ROUTES.PUBLIC.PROFILE.KEY} name={MAIN_ROUTES.PUBLIC.PROFILE.NAME}
-                            component={Profile}/>
-            </Tab.Navigator>
-        </NavigationContainer>
+                    <Tab.Screen key={MAIN_ROUTES.PUBLIC.REQUESTS.KEY} name={MAIN_ROUTES.PUBLIC.REQUESTS.NAME}
+                                component={Profile}/>
+                    <Tab.Screen key={MAIN_ROUTES.PUBLIC.PROFILE.KEY} name={MAIN_ROUTES.PUBLIC.PROFILE.NAME}
+                                component={Profile}/>
+                </Tab.Navigator>
+            </NavigationContainer>
+        </>
     );
 }
 
