@@ -27,7 +27,6 @@ export function Home() {
                     estimatedItemSize={250}
                     renderItem={({item}) => <MainCard/>}
                 />
-            <SearchInfoBottomSheet/>
         </View>
     );
 }
