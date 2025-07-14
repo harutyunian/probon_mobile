@@ -2,7 +2,6 @@ import React from 'react';
 import {StyleSheet, useWindowDimensions, View} from "react-native";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import {Home} from "../pages/Home/Home";
 import Profile from "../pages/Profile/Profile";
 import {MAIN_ROUTES} from "../contants/routes";
 import Icon from "../components/Icon/Icon";
@@ -10,14 +9,12 @@ import {PackageDetails} from "../pages/PackageDetails/PackageDetails";
 import {AddButton} from "./AddButton/AddButton";
 import {useTheme} from "react-native-paper";
 import {useDispatch} from "react-redux";
-import SearchInput from "./SearchInput/SearchInput";
+import {HomeScreen} from "./Screens/HomeScreen/HomeScreen";
 
 const Tab = createBottomTabNavigator();
 
 export default function MainNavigator() {
-    const {width} = useWindowDimensions();
     const theme = useTheme();
-    const dispatch = useDispatch();
 
 
     return (
@@ -28,6 +25,7 @@ export default function MainNavigator() {
                         headerStyle: {
                             backgroundColor: theme.colors.primary,
                         },
+                        headerShown: false,
                         headerTitleStyle: styles.headerTitleStyle,
                         tabBarIcon: ({focused, color, size}) => {
                             let iconName;
@@ -52,18 +50,9 @@ export default function MainNavigator() {
                     })}
                 >
                     <Tab.Screen
-                        options={{
-                            headerStyle: [styles.homePageHeaderStyle, {backgroundColor: theme.colors.primary}],
-                            headerTitle: () => {
-                                // in figma design input height is 92% on full width , so
-                                // I think it's will be a good to do by % bcs will look good on other devices
-                                // Also need to make another components for his to easy handle bottom shit
-                                return <SearchInput/>
-                            }
-                        }}
                         key={MAIN_ROUTES.PUBLIC.HOME.KEY}
                         name={MAIN_ROUTES.PUBLIC.HOME.NAME}
-                        component={Home}
+                        component={HomeScreen}
                     />
                     <Tab.Screen key={MAIN_ROUTES.PUBLIC.WISHLIST.KEY} name={MAIN_ROUTES.PUBLIC.WISHLIST.NAME}
                                 component={PackageDetails}/>
@@ -95,11 +84,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#5E4DED',
         borderBottomEndRadius: 24,
         borderBottomStartRadius: 24,
-    },
-    homePageHeaderStyle: {
-        height: 164,
-        borderBottomRightRadius: 16,
-        borderBottomLeftRadius: 16,
     },
     searchBarStyle: {
         backgroundColor: '#FFFFFF',
