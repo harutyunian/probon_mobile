@@ -1,17 +1,26 @@
-import {Image, View, StyleSheet, useWindowDimensions} from "react-native";
+import {Image, View, StyleSheet, useWindowDimensions, Pressable} from "react-native";
 import {Button, Text, useTheme} from 'react-native-paper';
 import Icon from "../Icon/Icon";
 import {Sticker} from "../Sticker/Sticker";
 import {ImageCarousel} from "../ImageCarousel/ImageCarousel";
 import {mockPackageDetailsPackP} from "../../pages/PackageDetails/mock";
+import {MAIN_ROUTES} from "../../contants/routes";
+import {useNavigation} from "@react-navigation/native";
 
 export function MainCard() {
     const theme = useTheme();
     const {images} = mockPackageDetailsPackP;
+    const navigation = useNavigation();
 
-
+    const handlePress = () => {
+        //@ts-ignore
+        navigation.navigate(MAIN_ROUTES.PUBLIC.DETAILS.NAME);
+    }
     return (
-        <View style={[{width: 182, marginBottom: 20}]}>
+        <Pressable
+            style={[{width: 182, marginBottom: 20}]}
+            onPress={handlePress}
+        >
             <View>
                 <ImageCarousel
                     images={images}
@@ -44,7 +53,7 @@ export function MainCard() {
                     </Button>
                 </View>
             </View>
-        </View>
+        </Pressable>
     );
 }
 

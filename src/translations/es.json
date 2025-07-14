@@ -1,5 +1,14 @@
 {
   "welcome": "¡Bienvenido a la App!",
   "greeting": "¡Hola, Mundo!",
-  "changeLanguage": "Cambiar Idioma"
+  "changeLanguage": "Cambiar Idioma",
+  "routes": {
+    "public": {
+      "home": "Home",
+      "profile": "Profile",
+      "details": "Details",
+      "wishlist": "Wishlist",
+      "requests": "Requests"
+    }
+  }
 }
