@@ -25,29 +25,48 @@ import profileApproved from '../../../assets/icons/profileApproved.svg';
 import request from '../../../assets/icons/request.svg';
 import search from '../../../assets/icons/search.svg';
 import leftArrow from '../../../assets/icons/leftArrow.svg';
+import credit_card from '../../../assets/icons/credit_card.svg';
+import key from '../../../assets/icons/key.svg';
+import language from '../../../assets/icons/language.svg';
+import logout from '../../../assets/icons/logout.svg';
+import manage_search from '../../../assets/icons/manage_search.svg';
+import post_add from '../../../assets/icons/post_add.svg';
+import quiz from '../../../assets/icons/quiz.svg';
+import support_agent from '../../../assets/icons/support_agent.svg';
+
+
+
 
 const iconMap = {
+    key,
     tag,
     coin,
     sun,
     star,
     fire,
+    quiz,
     home,
     tree,
     clock,
     heart,
     phone,
     sprout,
+    logout,
     search,
     profile,
     percent,
     request,
     umbrella,
     priceTag,
+    post_add,
+    language,
     snowflake,
     leftArrow,
     starFilled,
+    credit_card,
     locationIcon,
+    manage_search,
+    support_agent,
     closedUmbrella,
     profileApproved,
     infinity: infinityIcon

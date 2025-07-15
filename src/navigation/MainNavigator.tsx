@@ -11,6 +11,7 @@ import {AddButton} from "./AddButton/AddButton";
 import {useTheme} from "react-native-paper";
 import {useDispatch} from "react-redux";
 import SearchInput from "./SearchInput/SearchInput";
+import UserAccountPage from "../pages/UserAccountPage/UserAccountPage";
 
 const Tab = createBottomTabNavigator();
 
@@ -83,7 +84,7 @@ export default function MainNavigator() {
                     <Tab.Screen key={MAIN_ROUTES.PUBLIC.REQUESTS.KEY} name={MAIN_ROUTES.PUBLIC.REQUESTS.NAME}
                                 component={Profile}/>
                     <Tab.Screen key={MAIN_ROUTES.PUBLIC.PROFILE.KEY} name={MAIN_ROUTES.PUBLIC.PROFILE.NAME}
-                                component={Profile}/>
+                                component={UserAccountPage}/>
                 </Tab.Navigator>
             </NavigationContainer>
         </>
