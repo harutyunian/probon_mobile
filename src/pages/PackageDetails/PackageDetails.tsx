@@ -1,4 +1,4 @@
-import {View, StyleSheet, Animated} from "react-native";
+import {View, StyleSheet, Animated, Pressable} from "react-native";
 import {Text, useTheme} from 'react-native-paper';
 
 import {ImageCarousel} from "../../components/ImageCarousel/ImageCarousel";
@@ -6,14 +6,11 @@ import {mockPackageDetailsPackP} from "./mock";
 import Icon from "../../components/Icon/Icon";
 import {useNavigation} from "@react-navigation/native";
 import ScrollView = Animated.ScrollView;
-
-interface IPackageDetails {
-    images?: string[];
-}
+import {MAIN_ROUTES} from "../../contants/routes";
 
 export function PackageDetails() {
     const {images, title, locationName, rating, description} = mockPackageDetailsPackP
-    const navigation = useNavigation<any>();
+    const navigation = useNavigation();
     const theme = useTheme();
 
     const Rating = () => {
@@ -40,10 +37,17 @@ export function PackageDetails() {
         </View>
     }
 
+    const handlePressAgeName = () =>{
+        //@ts-ignore
+        navigation.navigate(MAIN_ROUTES.PUBLIC.PROFILE.NAME);
+        console.log('asdasd')
+    }
+
     return <ScrollView>
         <ImageCarousel images={images}/>
         <View style={[style.partnerInfoContainer, style.container, style.hr]}>
-            <Text style={style.textSmallL}>OceanAir Travel</Text>
+            {/*todo esi petqa poxenq heto button*/}
+            <Pressable onPress={handlePressAgeName}><Text style={style.textSmallL}>OceanAir Travel</Text></Pressable>
             <Text style={style.title}>{title}</Text>
             <View style={style.location}>
                 <Icon name="locationIcon" width={"10"} color={'grey'}/>

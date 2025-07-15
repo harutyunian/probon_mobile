@@ -88,9 +88,6 @@ export default function SearchInfoBottomSheet() {
                 <SearchResult />
                 <SearchResult />
 
-                <Button mode="contained" style={{ marginTop: 20 }} onPress={handleClose}>
-                    Close
-                </Button>
             </BottomSheetView>
         </BottomSheet>
     );

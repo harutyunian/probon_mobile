@@ -12,13 +12,12 @@ import {useTheme} from "react-native-paper";
 import {useDispatch} from "react-redux";
 import SearchInput from "./SearchInput/SearchInput";
 import UserAccountPage from "../pages/UserAccountPage/UserAccountPage";
+import {HomeScreen} from "./Screens/HomeScreen/HomeScreen";
 
 const Tab = createBottomTabNavigator();
 
 export default function MainNavigator() {
-    const {width} = useWindowDimensions();
     const theme = useTheme();
-    const dispatch = useDispatch();
 
 
     return (
@@ -29,6 +28,7 @@ export default function MainNavigator() {
                         headerStyle: {
                             backgroundColor: theme.colors.primary,
                         },
+                        headerShown: false,
                         headerTitleStyle: styles.headerTitleStyle,
                         tabBarIcon: ({focused, color, size}) => {
                             let iconName;
@@ -64,7 +64,7 @@ export default function MainNavigator() {
                         }}
                         key={MAIN_ROUTES.PUBLIC.HOME.KEY}
                         name={MAIN_ROUTES.PUBLIC.HOME.NAME}
-                        component={Home}
+                        component={HomeScreen}
                     />
                     <Tab.Screen key={MAIN_ROUTES.PUBLIC.WISHLIST.KEY} name={MAIN_ROUTES.PUBLIC.WISHLIST.NAME}
                                 component={PackageDetails}/>
@@ -96,11 +96,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#5E4DED',
         borderBottomEndRadius: 24,
         borderBottomStartRadius: 24,
-    },
-    homePageHeaderStyle: {
-        height: 164,
-        borderBottomRightRadius: 16,
-        borderBottomLeftRadius: 16,
     },
     searchBarStyle: {
         backgroundColor: '#FFFFFF',
