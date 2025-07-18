@@ -41,7 +41,7 @@ export function ImageCarousel(props: ImageCarouselProps) {
                 width={imageWidth}
                 height={height}
                 loop={true}
-                autoPlay={true}
+                autoPlay={false}
                 autoPlayInterval={3000}
                 snapEnabled={true}
                 pagingEnabled={true}

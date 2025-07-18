@@ -35,13 +35,15 @@ const styles = StyleSheet.create({
         height: 56,
         borderRadius: 16,
         width: '100%',
+        top: 25
     },
     headerContainer: {
-        height: 150,
+        height: 140,
         borderBottomRightRadius: 16,
         borderBottomLeftRadius: 16,
         paddingBottom: 12,
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'center',
+
     },
 });

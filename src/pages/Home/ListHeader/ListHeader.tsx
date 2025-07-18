@@ -21,6 +21,10 @@ export default function ListHeader() {
             <Event/>
             <Event/>
             <Event/>
+            <Event/>
+            <Event/>
+            <Event/>
+            <Event/>
         </ScrollView>
         <Text variant="titleLarge" style={styles.header}>Top Offers</Text>
     </>

@@ -53,15 +53,15 @@ export default function MainNavigator() {
                     })}
                 >
                     <Tab.Screen
-                        options={{
-                            headerStyle: [styles.homePageHeaderStyle, {backgroundColor: theme.colors.primary}],
-                            headerTitle: () => {
-                                // in figma design input height is 92% on full width , so
-                                // I think it's will be a good to do by % bcs will look good on other devices
-                                // Also need to make another components for his to easy handle bottom shit
-                                return <SearchInput/>
-                            }
-                        }}
+                        // options={{
+                        //     headerStyle: [styles.homePageHeaderStyle, {backgroundColor: theme.colors.primary}],
+                        //     headerTitle: () => {
+                        //         // in figma design input height is 92% on full width , so
+                        //         // I think it's will be a good to do by % bcs will look good on other devices
+                        //         // Also need to make another components for his to easy handle bottom shit
+                        //         return <SearchInput/>
+                        //     }
+                        // }}
                         key={MAIN_ROUTES.PUBLIC.HOME.KEY}
                         name={MAIN_ROUTES.PUBLIC.HOME.NAME}
                         component={HomeScreen}

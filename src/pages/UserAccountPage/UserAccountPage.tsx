@@ -22,27 +22,37 @@ export default function UserAccountPage() {
                     {
                         iconName: "credit_card",
                         name: "Payment",
-                        onPress: () => {}
+                        onPress: function () {
+
+                        }
                     },
                     {
                         iconName: "post_add",
                         name: "Passport Details",
-                        onPress: () => {}
+                        onPress: function () {
+
+                        }
                     },
                     {
                         iconName: "manage_search",
                         name: "Order History",
-                        onPress: () => {}
+                        onPress: function () {
+
+                        }
                     },
                     {
                         iconName: "key",
                         name: "Change password",
-                        onPress: () => {}
+                        onPress: function () {
+
+                        }
                     },
                     {
                         iconName: "language",
                         name: "Language & currency",
-                        onPress: () => {}
+                        onPress: function () {
+                        }
+
                     }
                 ]
             },
@@ -52,12 +62,14 @@ export default function UserAccountPage() {
                     {
                         iconName: "quiz",
                         name: "faq",
-                        onPress: () => {}
+                        onPress: () => {
+                        }
                     },
                     {
                         iconName: "support_agent",
                         name: "Live chat",
-                        onPress: () => {}
+                        onPress: () => {
+                        }
                     }
                 ]
             }
@@ -85,7 +97,7 @@ export default function UserAccountPage() {
                         <View>
                             {
                                 action.map((item) => {
-                                    return <UserAction {...item}/>
+                                    return <UserAction key={item.name} {...item}/>
                                 })
                             }
                         </View>
