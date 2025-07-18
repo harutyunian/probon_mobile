@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, useWindowDimensions, View} from "react-native";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
+import {Home} from "../pages/Home/Home";
 import Profile from "../pages/Profile/Profile";
 import {MAIN_ROUTES} from "../contants/routes";
 import Icon from "../components/Icon/Icon";
@@ -9,6 +10,8 @@ import {PackageDetails} from "../pages/PackageDetails/PackageDetails";
 import {AddButton} from "./AddButton/AddButton";
 import {useTheme} from "react-native-paper";
 import {useDispatch} from "react-redux";
+import SearchInput from "./SearchInput/SearchInput";
+import UserAccountPage from "../pages/UserAccountPage/UserAccountPage";
 import {HomeScreen} from "./Screens/HomeScreen/HomeScreen";
 
 const Tab = createBottomTabNavigator();
@@ -50,6 +53,15 @@ export default function MainNavigator() {
                     })}
                 >
                     <Tab.Screen
+                        options={{
+                            headerStyle: [styles.homePageHeaderStyle, {backgroundColor: theme.colors.primary}],
+                            headerTitle: () => {
+                                // in figma design input height is 92% on full width , so
+                                // I think it's will be a good to do by % bcs will look good on other devices
+                                // Also need to make another components for his to easy handle bottom shit
+                                return <SearchInput/>
+                            }
+                        }}
                         key={MAIN_ROUTES.PUBLIC.HOME.KEY}
                         name={MAIN_ROUTES.PUBLIC.HOME.NAME}
                         component={HomeScreen}
@@ -72,7 +84,7 @@ export default function MainNavigator() {
                     <Tab.Screen key={MAIN_ROUTES.PUBLIC.REQUESTS.KEY} name={MAIN_ROUTES.PUBLIC.REQUESTS.NAME}
                                 component={Profile}/>
                     <Tab.Screen key={MAIN_ROUTES.PUBLIC.PROFILE.KEY} name={MAIN_ROUTES.PUBLIC.PROFILE.NAME}
-                                component={Profile}/>
+                                component={UserAccountPage}/>
                 </Tab.Navigator>
             </NavigationContainer>
         </>
