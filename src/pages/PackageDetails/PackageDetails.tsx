@@ -119,7 +119,8 @@ const style = StyleSheet.create({
         rowGap: 10,
     },
     textSmallL: {
-        color: "#74717A",
+        textDecorationLine: "underline" ,
+        color: "blue",
         fontSize: 12,
         fontWeight: "500"
     }

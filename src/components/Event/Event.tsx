@@ -21,6 +21,7 @@ function getRandomItem(arr: any = arrImg) {
 }
 
 export default function Event() {
+
     return <ImageBackground
         source={{uri: getRandomItem()}}
         style={[styles.container]}
@@ -37,7 +38,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         width: 112,
         height: 140,
-
         display: 'flex',
         justifyContent: 'flex-end',
         alignItems: 'flex-start',
