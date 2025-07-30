@@ -16,11 +16,6 @@
     "ios": {
       "supportsTablet": true
     },
-    "production": {
-      "android": {
-        "buildType": "apk"
-      }
-    },
     "android": {
       "package": "com.probon.store",
       "versionCode": 1,
