@@ -27,6 +27,7 @@ export function ImageCarousel(props: ImageCarouselProps) {
     const ref = useRef<ICarouselInstance>(null);
     const progress = useSharedValue<number>(0);
 
+    console.log({images})
     if (!images || images.length === 0) {
         return null;
     }

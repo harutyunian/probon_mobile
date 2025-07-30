@@ -1,23 +1,41 @@
 
 
-const imagesData: any = [
-    {
-        id: "1",
-        url: "https://i0.wp.com/everyday.codes/wp-content/uploads/2019/06/react-native-1024x631.png"
-    },
-    {
-        id: "2",
-        url: "https://i0.wp.com/everyday.codes/wp-content/uploads/2019/06/react-native-1024x631.png"
-    },
-    {
-        id: "3",
-        url: "https://i0.wp.com/everyday.codes/wp-content/uploads/2019/06/react-native-1024x631.png"
-    },
-];
 
+const url = 'https://picsum.photos/800/600';
+function ImageDataFetch() {
+    return () => {
+        const data = [];
+        for (let i = 0; i < 6; i++) {
+            const url = `https://picsum.photos/seed/${Math.random()}/800/600`;
+            data.push({ url, id: i });
+        }
+        return data;
+    };
+}
+
+
+const imagesData: any =  [
+    {
+        url,
+        id: "1"
+    },
+    {
+        url,
+        id: "2"
+    },
+    {
+        url,
+        id: "3"
+    },
+    {
+        url,
+        id: "4"
+    }
+]
+const imagesData2: any =  ImageDataFetch()()
 
 export const mockPackageDetailsPackP = {
-    images: imagesData,
+    images: imagesData2,
     title: "Dubai Abu Dhabi Grand Mosque  & Qasr Watan Palace",
     locationName: "Dubai , United Arab Emirates",
     rating: 3,
