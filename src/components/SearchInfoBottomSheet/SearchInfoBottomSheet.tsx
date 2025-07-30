@@ -2,8 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
     Dimensions,
     StyleSheet,
-    View,
-    Text
+    Keyboard
 } from 'react-native';
 import BottomSheet, {
     BottomSheetBackdrop,
@@ -14,6 +13,7 @@ import { TextInput, Button } from 'react-native-paper';
 import SearchResult from './SearchResult/SearchResult';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { close } from '../../store/searchSlice/searchSlice';
+import {MainCard} from "../MainCard/MainCard";
 
 const { height, width } = Dimensions.get('window');
 const bottomSheetHeight = height * 0.65;
@@ -26,6 +26,7 @@ export default function SearchInfoBottomSheet() {
 
     // Control Bottom Sheet open/close based on Redux state
     useEffect(() => {
+        Keyboard.dismiss();
         if (open) {
             bottomSheetRef.current?.expand();
         } else {
@@ -55,11 +56,13 @@ export default function SearchInfoBottomSheet() {
     // Handle sheet animation complete
     const handleSheetClosed = () => {
         dispatch(close()); // Update Redux after sheet is fully closed
+        Keyboard.dismiss();
     };
 
     // Input change
     const handleSearchQueryChange = (text: string) => {
         setSearchQuery(text);
+        console.log(text);
     };
 
     return (
@@ -87,7 +90,6 @@ export default function SearchInfoBottomSheet() {
                 <SearchResult />
                 <SearchResult />
                 <SearchResult />
-
             </BottomSheetView>
         </BottomSheet>
     );
