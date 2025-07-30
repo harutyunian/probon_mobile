@@ -13,7 +13,7 @@ export default function Profile() {
     const theme = useTheme();
 
 
-    return <ScrollView>
+    return <ScrollView contentContainerStyle={{paddingBottom: 50}}>
         <Image source={coverPhoto} style={styles.coverPhoto}/>
         <View style={styles.avatarWrapper}>
             <Avatar.Image

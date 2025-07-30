@@ -1,4 +1,3 @@
-import {StyleSheet, useWindowDimensions} from 'react-native';
 import {PaperProvider, useTheme} from 'react-native-paper';
 import buildProvidersTree from "./src/utils/buildProvidersTree";
 import MainNavigator from "./src/navigation/MainNavigator";

@@ -19,7 +19,7 @@ export function MainCard() {
     return (
         <Pressable
             // todo margin lefte poxel a petq
-            style={[{width: 182, marginBottom: 20, marginLeft: 5}]}
+            style={[{width: 182, marginBottom: 20, margin: 10}]}
             onPress={handlePress}
         >
             <View>

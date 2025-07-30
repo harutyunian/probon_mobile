@@ -7,6 +7,7 @@ import Icon from "../../components/Icon/Icon";
 import {useNavigation} from "@react-navigation/native";
 import ScrollView = Animated.ScrollView;
 import {MAIN_ROUTES} from "../../contants/routes";
+import {Reviews} from "../../components/Reviews/Reviews";
 
 export function PackageDetails() {
     const {images, title, locationName, rating, description} = mockPackageDetailsPackP
@@ -37,13 +38,13 @@ export function PackageDetails() {
         </View>
     }
 
-    const handlePressAgeName = () =>{
+    const handlePressAgeName = () => {
         //@ts-ignore
         navigation.navigate(MAIN_ROUTES.PUBLIC.PROFILE.NAME);
         console.log('asdasd')
     }
 
-    return <ScrollView>
+    return <ScrollView contentContainerStyle={{paddingBottom: 50}}>
         <ImageCarousel images={images}/>
         <View style={[style.partnerInfoContainer, style.container, style.hr]}>
             {/*todo esi petqa poxenq heto button*/}
@@ -63,6 +64,9 @@ export function PackageDetails() {
             {renderDetailsRow("Ages", "3-80 , max of 15 per group")}
             {renderDetailsRow("Hotel", "Marriot 5")}
         </View>
+        <View style={style.reviewContainer}>
+            <Reviews rating={4} reviewsCount={3455}/>
+        </View>
         <View/>
     </ScrollView>
 }
@@ -72,8 +76,14 @@ const style = StyleSheet.create({
         padding: 16,
         width: "100%"
     },
-    detailsContainer:{
-      rowGap: 16,
+    reviewContainer: {
+        paddingHorizontal: 16,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    detailsContainer: {
+        rowGap: 16,
     },
     detailsRowLabel: {
         fontSize: 16,
@@ -119,7 +129,7 @@ const style = StyleSheet.create({
         rowGap: 10,
     },
     textSmallL: {
-        textDecorationLine: "underline" ,
+        textDecorationLine: "underline",
         color: "blue",
         fontSize: 12,
         fontWeight: "500"
