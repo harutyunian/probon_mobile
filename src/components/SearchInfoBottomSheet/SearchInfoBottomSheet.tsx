@@ -90,6 +90,7 @@ export default function SearchInfoBottomSheet() {
                 <SearchResult />
                 <SearchResult />
                 <SearchResult />
+                <MainCard/>
             </BottomSheetView>
         </BottomSheet>
     );

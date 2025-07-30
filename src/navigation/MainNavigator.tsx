@@ -11,6 +11,7 @@ import {useTheme} from "react-native-paper";
 import {HomeScreen} from "./Screens/HomeScreen/HomeScreen";
 import {UserAccountPageScreen} from "./Screens/UserAccount/UserAccountScreen";
 import {WishlistStackScreen} from "./Screens/Wishlist/WishlistScree";
+import {navigationRef} from "./RootNavigation";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +20,7 @@ export default function MainNavigator() {
 
     return (
         <>
-            <NavigationContainer>
+            <NavigationContainer ref={navigationRef}>
                 <Tab.Navigator
                     screenOptions={({route}) => ({
                         headerStyle: {

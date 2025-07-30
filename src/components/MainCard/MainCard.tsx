@@ -1,20 +1,23 @@
-import {Image, View, StyleSheet, useWindowDimensions, Pressable} from "react-native";
+import {View, StyleSheet, Pressable} from "react-native";
 import {Button, Text, useTheme} from 'react-native-paper';
 import Icon from "../Icon/Icon";
 import {Sticker} from "../Sticker/Sticker";
 import {ImageCarousel} from "../ImageCarousel/ImageCarousel";
 import {mockPackageDetailsPackP} from "../../pages/PackageDetails/mock";
 import {MAIN_ROUTES} from "../../contants/routes";
-import {useNavigation} from "@react-navigation/native";
+import {navigate} from '../../navigation/RootNavigation'
+import {useAppDispatch} from "../../hooks/redux";
+import {close} from '../../store/searchSlice/searchSlice'
 
 export function MainCard() {
     const theme = useTheme();
     const {images} = mockPackageDetailsPackP;
-    const navigation = useNavigation();
+    const dispatch = useAppDispatch();
 
     const handlePress = () => {
         //@ts-ignore
-        navigation.navigate(MAIN_ROUTES.PUBLIC.DETAILS.NAME);
+        navigate(MAIN_ROUTES.PUBLIC.DETAILS.NAME);
+        dispatch(close())
     }
     return (
         <Pressable
