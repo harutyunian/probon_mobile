@@ -2,7 +2,6 @@ import React from 'react';
 import {StyleSheet, View} from "react-native";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import Profile from "../pages/Profile/Profile";
 import {MAIN_ROUTES} from "../contants/routes";
 import Icon from "../components/Icon/Icon";
 import {PackageDetails} from "../pages/PackageDetails/PackageDetails";
@@ -11,6 +10,9 @@ import {useTheme} from "react-native-paper";
 import {HomeScreen} from "./Screens/HomeScreen/HomeScreen";
 import {UserAccountPageScreen} from "./Screens/UserAccount/UserAccountScreen";
 import {WishlistStackScreen} from "./Screens/Wishlist/WishlistScree";
+import UserRequestsPage from "../pages/UserRequest/UserRequest";
+
+
 
 const Tab = createBottomTabNavigator();
 
@@ -75,7 +77,7 @@ export default function MainNavigator() {
                     <Tab.Screen
                         key={MAIN_ROUTES.PUBLIC.REQUESTS.KEY}
                         name={MAIN_ROUTES.PUBLIC.REQUESTS.NAME}
-                        component={Profile}
+                        component={UserRequestsPage}
                     />
                     <Tab.Screen
                         key={MAIN_ROUTES.PUBLIC.PROFILE.KEY}
