@@ -8,9 +8,11 @@ import {useNavigation} from "@react-navigation/native";
 import ScrollView = Animated.ScrollView;
 import {MAIN_ROUTES} from "../../contants/routes";
 import {Reviews} from "../../components/Reviews/Reviews";
+import {getUniqueRandomThreeImages, IMAGES_LIST} from "../../mock/mock";
 
 export function PackageDetails() {
-    const {images, title, locationName, rating, description} = mockPackageDetailsPackP
+    const {title, locationName, rating, description} = mockPackageDetailsPackP;
+    const images = getUniqueRandomThreeImages(IMAGES_LIST);
     const navigation = useNavigation();
     const theme = useTheme();
 
@@ -41,7 +43,6 @@ export function PackageDetails() {
     const handlePressAgeName = () => {
         //@ts-ignore
         navigation.navigate(MAIN_ROUTES.PUBLIC.PROFILE.NAME);
-        console.log('asdasd')
     }
 
     return <ScrollView contentContainerStyle={{paddingBottom: 50}}>

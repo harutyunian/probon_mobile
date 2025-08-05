@@ -6,10 +6,17 @@ import {ImageCarousel} from "../ImageCarousel/ImageCarousel";
 import {mockPackageDetailsPackP} from "../../pages/PackageDetails/mock";
 import {MAIN_ROUTES} from "../../contants/routes";
 import {useNavigation} from "@react-navigation/native";
+import {getUniqueRandomThreeImages, IMAGES_LIST} from "../../mock/mock";
+
+
+
+
+
 
 export function MainCard() {
     const theme = useTheme();
-    const {images} = mockPackageDetailsPackP;
+     // const {images} = mockPackageDetailsPackP;
+    const images = getUniqueRandomThreeImages(IMAGES_LIST)
     const navigation = useNavigation();
 
     const handlePress = () => {
