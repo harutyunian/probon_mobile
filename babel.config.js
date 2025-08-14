@@ -6,6 +6,7 @@ module.exports = function (api) {
             '@babel/preset-typescript',
         ],
         plugins: [
+            'transform-remove-console',
             'react-native-reanimated/plugin',
         ],
     };

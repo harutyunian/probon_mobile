@@ -10,21 +10,21 @@ import {
     NativeSyntheticEvent,
     NativeScrollEvent,
 } from 'react-native';
-import { MainCard } from '../../components/MainCard/MainCard';
-import { FlashList, ListRenderItemInfo } from '@shopify/flash-list';
+import MainCard from '../../components/MainCard/MainCard';
+import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 import ListHeader from './ListHeader/ListHeader';
-import React, { useMemo, useRef, useContext } from 'react';
-import { useScrollToTop } from '@react-navigation/native';
+import React, {useMemo, useRef, useContext} from 'react';
+import {useScrollToTop} from '@react-navigation/native';
 import {ScrollContext} from "../../navigation/Screens/HomeScreen/ScrollContext";
 
-const fillPkg = Array.from({ length: 1000 }, (_, index) => index);
+const fillPkg = Array.from({length: 1000}, (_, index) => index);
 const HEADER_HEIGHT = 60;
 
 export function Home(): React.JSX.Element {
     const ref = useRef<FlashList<number>>(null);
     useScrollToTop(ref);
 
-    const { scrollY } = useContext(ScrollContext);
+    const {scrollY} = useContext(ScrollContext);
 
     if (!scrollY) {
         throw new Error('Home component must be rendered within a ScrollContext.Provider');
@@ -43,13 +43,13 @@ export function Home(): React.JSX.Element {
         return Math.floor(width / 180);
     }, []);
 
-    const renderItem = ({ item }: ListRenderItemInfo<number>): React.JSX.Element => (
-        <MainCard />
+    const renderItem = ({item}: ListRenderItemInfo<number>): React.JSX.Element => (
+        <MainCard/>
     );
 
     return (
         <View style={styles.container}>
-            <View style={{ height: HEADER_HEIGHT }} />
+            <View style={{height: HEADER_HEIGHT}}/>
             <FlashList
                 ref={ref}
                 numColumns={numOfPkgColumns}
@@ -62,7 +62,7 @@ export function Home(): React.JSX.Element {
                 onScroll={handleScroll}
                 // This is still important to control the event frequency
                 scrollEventThrottle={16}
-                contentContainerStyle={{ paddingHorizontal: 10, paddingVertical: 65 }}
+                contentContainerStyle={{paddingHorizontal: 10, paddingVertical: 65}}
             />
         </View>
     );

@@ -9,25 +9,33 @@
     "newArchEnabled": true,
     "splash": {
       "hidden": true,
-      "image": "./assets/icon.png",
+      "image": "./assets/splash_icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#5E4DED"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.probon.store"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
+        "foregroundImage": "./assets/adaptive_logo.png",
         "backgroundColor": "#5E4DED"
       },
-      "edgeToEdgeEnabled": true
+      "jsEngine": "hermes",
+      "edgeToEdgeEnabled": true,
+      "package": "com.probon.store"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-localization"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "26c46c51-156f-4175-8d2b-a2ae460af711"
+      }
+    }
   }
 }

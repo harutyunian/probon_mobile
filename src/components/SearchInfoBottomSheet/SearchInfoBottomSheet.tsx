@@ -76,6 +76,8 @@ export default function SearchInfoBottomSheet() {
         >
             <BottomSheetView style={[styles.bottomSheetContainer, { height: bottomSheetHeight }]}>
                 <TextInput
+                    autoFocus={true}
+
                     outlineStyle={{ borderRadius: 16 }}
                     style={[styles.search, { width: width * 0.92 }]}
                     mode="outlined"

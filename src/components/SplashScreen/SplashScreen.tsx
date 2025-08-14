@@ -114,7 +114,7 @@ const SplashScreen: React.FC<{ onFinish: () => void }> = ({ onFinish }) => {
                 {/* This view is a container for the logo and the shine effect */}
                 <View style={styles.logoContainer}>
                     <Animated.Image
-                        source={require('../../../assets/icon.png')}
+                        source={require('../../../assets/splash_icon.png')}
                         style={[
                             styles.logo,
                             {
@@ -167,8 +167,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     logoContainer: {
-        width: 120,
-        height: 120,
+        width: 150,
+        height: 150,
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden', // This is crucial to clip the shine effect

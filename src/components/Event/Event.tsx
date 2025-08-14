@@ -1,6 +1,5 @@
 import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
 import {ImageBackground} from "expo-image";
-import {useMemo} from "react";
 
 const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1520975922215-230f5a5d0f54?q=80&w=1964&auto=format&fit=crop";
 

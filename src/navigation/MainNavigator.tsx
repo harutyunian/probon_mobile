@@ -75,6 +75,9 @@ export default function MainNavigator() {
                     />
 
                     <Tab.Screen
+                        options={{
+                            headerShown: true
+                        }}
                         key={MAIN_ROUTES.PUBLIC.REQUESTS.KEY}
                         name={MAIN_ROUTES.PUBLIC.REQUESTS.NAME}
                         component={UserRequestsPage}
