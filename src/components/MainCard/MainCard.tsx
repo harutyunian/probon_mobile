@@ -1,15 +1,18 @@
-import {Image, View, StyleSheet, useWindowDimensions, Pressable} from "react-native";
+import {View, StyleSheet, Pressable} from "react-native";
 import {Button, Text, useTheme} from 'react-native-paper';
 import Icon from "../Icon/Icon";
 import {Sticker} from "../Sticker/Sticker";
 import {ImageCarousel} from "../ImageCarousel/ImageCarousel";
-import {mockPackageDetailsPackP} from "../../pages/PackageDetails/mock";
 import {MAIN_ROUTES} from "../../contants/routes";
 import {useNavigation} from "@react-navigation/native";
+import {getUniqueRandomThreeImages, IMAGES_LIST} from "../../mock/mock";
+import {memo} from "react";
 
-export function MainCard() {
+
+function Card() {
     const theme = useTheme();
-    const {images} = mockPackageDetailsPackP;
+    // const {images} = mockPackageDetailsPackP;
+    const images = getUniqueRandomThreeImages(IMAGES_LIST)
     const navigation = useNavigation();
 
     const handlePress = () => {
@@ -119,3 +122,6 @@ const styles = StyleSheet.create({
         marginVertical: 0,
     },
 });
+
+const MainCard = memo(Card);
+export default MainCard;
