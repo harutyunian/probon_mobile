@@ -1,28 +1,25 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
     Dimensions,
     StyleSheet,
-    Keyboard
+    Keyboard, View
 } from 'react-native';
 import BottomSheet, {
     BottomSheetBackdrop,
     BottomSheetView,
 } from '@gorhom/bottom-sheet';
-import { TextInput, Button } from 'react-native-paper';
 
-import SearchResult from './SearchResult/SearchResult';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { close } from '../../store/searchSlice/searchSlice';
-import {MainCard} from "../MainCard/MainCard";
+import {useAppDispatch, useAppSelector} from '../../hooks/redux';
+import {close} from '../../store/searchSlice/searchSlice';
+import Search from "./Search/Search";
 
-const { height, width } = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 const bottomSheetHeight = height * 0.65;
 
 export default function SearchInfoBottomSheet() {
     const bottomSheetRef = useRef<BottomSheet>(null);
     const dispatch = useAppDispatch();
     const open = useAppSelector((state) => state.search.open);
-    const [searchQuery, setSearchQuery] = useState<string>('');
 
     // Control Bottom Sheet open/close based on Redux state
     useEffect(() => {
@@ -59,11 +56,6 @@ export default function SearchInfoBottomSheet() {
         Keyboard.dismiss();
     };
 
-    // Input change
-    const handleSearchQueryChange = (text: string) => {
-        setSearchQuery(text);
-        console.log(text);
-    };
 
     return (
         <BottomSheet
@@ -74,24 +66,8 @@ export default function SearchInfoBottomSheet() {
             backdropComponent={renderBackdrop}
             onClose={handleSheetClosed} // Called after close animation
         >
-            <BottomSheetView style={[styles.bottomSheetContainer, { height: bottomSheetHeight }]}>
-                <TextInput
-                    autoFocus={true}
-
-                    outlineStyle={{ borderRadius: 16 }}
-                    style={[styles.search, { width: width * 0.92 }]}
-                    mode="outlined"
-                    label="Search"
-                    value={searchQuery}
-                    onChangeText={handleSearchQueryChange}
-                    left={<TextInput.Icon icon="magnify" />}
-                />
-
-                {/* Example search results */}
-                <SearchResult />
-                <SearchResult />
-                <SearchResult />
-                <SearchResult />
+            <BottomSheetView style={[styles.bottomSheetContainer, {height: bottomSheetHeight}]}>
+                <Search/>
             </BottomSheetView>
         </BottomSheet>
     );
@@ -102,10 +78,5 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         paddingVertical: 16,
-    },
-    search: {
-        backgroundColor: '#FFFFFF',
-        height: 56,
-        borderRadius: 160,
-    },
+    }
 });

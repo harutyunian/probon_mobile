@@ -42,12 +42,12 @@ export default function MainNavigator() {
                                         //@ts-ignore
                                         name={iconName}
                                         size={size}
-                                        color={focused ? '#5E4DED' : 'gray'}
+                                        color={focused ? theme.colors.primary : 'gray'}
                                     />
                                 </View>
                             );
                         },
-                        tabBarActiveTintColor: '#5E4DED',
+                        tabBarActiveTintColor: theme.colors.primary,
                         tabBarInactiveTintColor: 'gray',
                     })}
                 >

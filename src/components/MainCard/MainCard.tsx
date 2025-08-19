@@ -1,13 +1,12 @@
+import {memo} from "react";
 import {View, StyleSheet, Pressable} from "react-native";
 import {Button, Text, useTheme} from 'react-native-paper';
+import {useNavigation} from "@react-navigation/native";
 import Icon from "../Icon/Icon";
 import {Sticker} from "../Sticker/Sticker";
 import {ImageCarousel} from "../ImageCarousel/ImageCarousel";
 import {MAIN_ROUTES} from "../../contants/routes";
-import {useNavigation} from "@react-navigation/native";
 import {getUniqueRandomThreeImages, IMAGES_LIST} from "../../mock/mock";
-import {memo} from "react";
-
 
 function Card() {
     const theme = useTheme();
