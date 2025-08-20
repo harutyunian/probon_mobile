@@ -1,9 +1,20 @@
-import {StyleSheet, Text, View} from "react-native";
+import {Pressable, StyleSheet, Text, Touchable, TouchableOpacity, View} from "react-native";
 import {ImageBackground} from "expo-image";
 import {IMAGES_LIST} from "../../mock/mock";
+import {useAppDispatch} from "../../hooks/redux";
+import {openBottomSheet} from "../../store/bottomSheetSlice/bottomSheetSlice";
+import {BOTTOM_SHEET} from "../../store/bottomSheetSlice/types";
 
 export default function Event2() {
-    return <View>
+    const dispatch = useAppDispatch();
+
+
+    const handlePress = () => {
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.STORY_VIEW}));
+        console.log("aper")
+    }
+
+    return <Pressable onPress={handlePress}>
         <ImageBackground
             style={style.container}
             imageStyle={{borderRadius: 8}}
@@ -12,7 +23,7 @@ export default function Event2() {
         >
             <Text style={style.text}>Event2</Text>
         </ImageBackground>
-    </View>
+    </Pressable>
 }
 
 const style = StyleSheet.create({

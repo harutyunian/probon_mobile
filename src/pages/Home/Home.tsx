@@ -1,66 +1,66 @@
 // src/pages/Home/Home.tsx
-
 import {
-    Dimensions,
     StyleSheet,
     View,
-    Animated,
     Platform,
-    // --- TYPE ADDED ---
-    NativeSyntheticEvent,
+    useWindowDimensions,
     NativeScrollEvent,
+    NativeSyntheticEvent,
 } from 'react-native';
-import MainCard from '../../components/MainCard/MainCard';
+import React, {useRef, useContext, useMemo, useCallback} from 'react';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
+import MainCard from '../../components/MainCard/MainCard';
 import ListHeader from './ListHeader/ListHeader';
-import React, {useMemo, useRef, useContext} from 'react';
 import {useScrollToTop} from '@react-navigation/native';
 import {ScrollContext} from "../../navigation/Screens/HomeScreen/ScrollContext";
+import {useAppSelector} from "../../hooks/redux";
 
+// --- MOCK DATA --- replace with paginated data in production
 const fillPkg = Array.from({length: 20}, (_, index) => index);
 const HEADER_HEIGHT = 60;
 
+// --- MEMOIZED COMPONENTS ---
+const MemoizedMainCard = React.memo(MainCard);
+const MemoizedListHeader = React.memo(ListHeader);
+
 export function Home(): React.JSX.Element {
+    const {width} = useWindowDimensions(); // ✅ dynamic columns on rotation
     const ref = useRef<FlashList<number>>(null);
     useScrollToTop(ref);
 
     const {scrollY} = useContext(ScrollContext);
+    if (!scrollY) throw new Error('Home component must be inside ScrollContext.Provider');
 
-    if (!scrollY) {
-        throw new Error('Home component must be rendered within a ScrollContext.Provider');
-    }
-
-    // --- MODIFIED: Switched from Animated.event to a manual handler ---
-    // This function will be called on every scroll event.
-    const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-        // We manually set the value of our Animated.Value.
-        // This runs on the JS thread.
+    // --- SCROLL HANDLER ---
+    // Use plain function to avoid any Animated.event interop quirks within FlashList
+    const handleOnScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
         scrollY.setValue(event.nativeEvent.contentOffset.y);
-    };
+    }, [scrollY]);
 
-    const numOfPkgColumns = useMemo(() => {
-        const width = Dimensions.get('window').width;
-        return Math.floor(width / 180);
-    }, []);
+    // --- NUMBER OF COLUMNS ---
+    const numOfPkgColumns = useMemo(() => Math.floor(width / 180), [width]);
 
-    const renderItem = ({item}: ListRenderItemInfo<number>): React.JSX.Element => (
-        <MainCard/>
-    );
+    // --- RENDER ITEM ---
+    const renderItem = ({item}: ListRenderItemInfo<number>) => <MemoizedMainCard/>;
+
+    const aper = useAppSelector((state) => state.bottomSheet);
 
     return (
         <View style={styles.container}>
+            {/* HEADER PLACEHOLDER */}
             <View style={{height: HEADER_HEIGHT}}/>
+
             <FlashList
                 ref={ref}
-                numColumns={numOfPkgColumns}
-                ListHeaderComponent={ListHeader}
                 data={fillPkg}
-                estimatedItemSize={250}
+                drawDistance={50}
                 renderItem={renderItem}
-
-                // Use the new manual handler function
-                onScroll={handleScroll}
-                // This is still important to control the event frequency
+                keyExtractor={(item, index) => index.toString()}
+                numColumns={numOfPkgColumns}
+                ListHeaderComponent={MemoizedListHeader}
+                estimatedItemSize={260}
+                removeClippedSubviews={true}
+                onScroll={handleOnScroll}
                 scrollEventThrottle={16}
                 contentContainerStyle={{paddingHorizontal: 10, paddingVertical: 65}}
             />

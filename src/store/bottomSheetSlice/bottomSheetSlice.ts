@@ -1,11 +1,11 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {BOTTOM_SHEET} from "../../contants/bottomSheet";
+import {BOTTOM_SHEET} from "./types";
 
 
 export interface OpenBottomSheetPayload {
     type: BOTTOM_SHEET;
-    isOpen: boolean;
-    width: number;
+    isOpen?: boolean;
+    width?: number;
 }
 
 const initialState: OpenBottomSheetPayload = {
@@ -20,9 +20,12 @@ const bottomSheetSlice = createSlice({
     reducers: {
         openBottomSheet: (state, action: PayloadAction<OpenBottomSheetPayload>) => {
             const {width, type} = action.payload;
-            state.width = width;
-            state.isOpen = true;
             state.type = type;
+            state.isOpen = true;
+            if (width) {
+                state.width = width;
+            }
+
         },
         closeBottomSheet: (state) => {
             state.isOpen = false;

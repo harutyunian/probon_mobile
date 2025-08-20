@@ -6,11 +6,9 @@ import {SafeAreaProvider} from "react-native-safe-area-context";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
 import {Provider} from "react-redux";
 import {store} from "./src/store";
-import SearchInfoBottomSheet from "./src/components/SearchInfoBottomSheet/SearchInfoBottomSheet";
+import CustomBottomSheet from "./src/components/CustomBottomSheet/CustomBottomSheet";
 import React, {useEffect, useState} from "react";
 import SplashScreen from "./src/components/SplashScreen/SplashScreen";
-import * as Device from 'expo-device';
-import * as Localization from 'expo-localization';
 
 
 const ProvidersTree = buildProvidersTree([
@@ -33,7 +31,7 @@ export default function App() {
     return (
         <ProvidersTree>
             <MainNavigator/>
-            <SearchInfoBottomSheet/>
+            <CustomBottomSheet/>
         </ProvidersTree>
     );
 }

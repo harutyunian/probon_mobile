@@ -1,8 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
-    Dimensions,
     StyleSheet,
-    Keyboard, View
+    Keyboard, useWindowDimensions
 } from 'react-native';
 import BottomSheet, {
     BottomSheetBackdrop,
@@ -10,26 +9,25 @@ import BottomSheet, {
 } from '@gorhom/bottom-sheet';
 
 import {useAppDispatch, useAppSelector} from '../../hooks/redux';
-import {close} from '../../store/searchSlice/searchSlice';
-import Search from "./Search/Search";
+import BottomSheetContent from "./BottomSheetContent";
+import {closeBottomSheet} from "../../store/bottomSheetSlice/bottomSheetSlice";
 
-const {height, width} = Dimensions.get('window');
-const bottomSheetHeight = height * 0.65;
-
-export default function SearchInfoBottomSheet() {
+export default function CustomBottomSheet() {
     const bottomSheetRef = useRef<BottomSheet>(null);
+    const {type, isOpen} = useAppSelector((state) => state.bottomSheet);
     const dispatch = useAppDispatch();
-    const open = useAppSelector((state) => state.search.open);
+    const {height} = useWindowDimensions()
+    const bottomSheetHeight = height * 0.65;
 
     // Control Bottom Sheet open/close based on Redux state
     useEffect(() => {
         Keyboard.dismiss();
-        if (open) {
+        if (isOpen) {
             bottomSheetRef.current?.expand();
         } else {
             bottomSheetRef.current?.close();
         }
-    }, [open]);
+    }, [isOpen]);
 
     // Render custom backdrop
     const renderBackdrop = useCallback(
@@ -52,7 +50,8 @@ export default function SearchInfoBottomSheet() {
 
     // Handle sheet animation complete
     const handleSheetClosed = () => {
-        dispatch(close()); // Update Redux after sheet is fully closed
+        dispatch(closeBottomSheet()); // Update Redux after sheet is fully closed
+        bottomSheetRef.current?.close();
         Keyboard.dismiss();
     };
 
@@ -67,7 +66,7 @@ export default function SearchInfoBottomSheet() {
             onClose={handleSheetClosed} // Called after close animation
         >
             <BottomSheetView style={[styles.bottomSheetContainer, {height: bottomSheetHeight}]}>
-                <Search/>
+                <BottomSheetContent type={type}/>
             </BottomSheetView>
         </BottomSheet>
     );
