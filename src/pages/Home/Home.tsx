@@ -17,7 +17,7 @@ import React, {useMemo, useRef, useContext} from 'react';
 import {useScrollToTop} from '@react-navigation/native';
 import {ScrollContext} from "../../navigation/Screens/HomeScreen/ScrollContext";
 
-const fillPkg = Array.from({length: 1000}, (_, index) => index);
+const fillPkg = Array.from({length: 20}, (_, index) => index);
 const HEADER_HEIGHT = 60;
 
 export function Home(): React.JSX.Element {
