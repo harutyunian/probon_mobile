@@ -7,7 +7,7 @@ import {GestureHandlerRootView} from "react-native-gesture-handler";
 import {Provider} from "react-redux";
 import {store} from "./src/store";
 import CustomBottomSheet from "./src/components/CustomBottomSheet/CustomBottomSheet";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import SplashScreen from "./src/components/SplashScreen/SplashScreen";
 
 

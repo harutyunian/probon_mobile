@@ -10,8 +10,7 @@ export default function Event2() {
 
 
     const handlePress = () => {
-        dispatch(openBottomSheet({type: BOTTOM_SHEET.STORY_VIEW}));
-        console.log("aper")
+        //daszasd
     }
 
     return <Pressable onPress={handlePress}>
