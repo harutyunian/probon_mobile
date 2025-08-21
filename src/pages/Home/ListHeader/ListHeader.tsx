@@ -135,8 +135,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 12,
         right: 12,
-        bottom: 18,
+        bottom: 100,
         alignItems: 'center',
+
     },
     overlayCard: {
         backgroundColor: 'rgba(0,0,0,0.55)',
@@ -172,11 +173,9 @@ const styles = StyleSheet.create({
         borderRadius: 28,
     },
     storyContainer: {
+        // height: '40%',
+        justifyContent: 'flex-end',
         position: 'absolute',
-        top: '10%',
-        bottom: '10%',
-        left: '4%',
-        right: '4%',
         borderRadius: 24,
         overflow: 'hidden',
         backgroundColor: 'transparent',
