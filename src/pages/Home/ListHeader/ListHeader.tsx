@@ -1,10 +1,11 @@
-import {ScrollView, StyleSheet, View, ViewStyle} from "react-native";
+import {Platform, ScrollView, StatusBar, StyleSheet, View, ViewStyle} from "react-native";
 import {Text, useTheme, Button} from "react-native-paper";
 import {useRef, useMemo} from "react";
 import {IMAGES_LIST} from "../../../mock/mock";
 import InstagramStories from '@birdwingo/react-native-instagram-stories';
 import type {InstagramStoriesProps, InstagramStoriesPublicMethods} from '@birdwingo/react-native-instagram-stories';
 import Event from "../../../components/Event/Event";
+import { getStatusBarHeight } from "react-native-status-bar-height"; // install if not yet
 
 // another props and main list with another props, I find only this solution
 export default function ListHeader() {
@@ -101,20 +102,18 @@ export default function ListHeader() {
             <InstagramStories
                 ref={ref}
                 stories={stories}
-                hideAvatarList={false}
-                containerStyle={styles.storyContainer}
-                avatarListContainerStyle={styles.avatarListContainerStyle}
-                avatarBorderColors={[theme.colors.primary]}
                 avatarBorderRadius={8}
-                mediaContainerStyle={styles.storyMediaContainer}
+                hideAvatarList={false}
+                backgroundColor={'rgba(0,0,0,0.5)'}
                 imageStyles={styles.storyImage}
                 imageProps={{ resizeMode: 'cover' }}
-                headerContainerStyle={styles.storyHeaderContainer}
+                containerStyle={styles.storyContainer}
+                avatarBorderColors={[theme.colors.primary]}
+                mediaContainerStyle={styles.storyMediaContainer}
                 progressContainerStyle={styles.storyProgressContainer}
-                backgroundColor={'rgba(0,0,0,0.8)'}
+                avatarListContainerStyle={styles.avatarListContainerStyle}
             />
         </ScrollView>
-
         <Text variant="titleLarge" style={styles.header}>Top Offers</Text>
     </>
 }
@@ -172,30 +171,31 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         borderRadius: 28,
     },
-    storyContainer: {
-        // height: '40%',
-        justifyContent: 'flex-end',
-        position: 'absolute',
-        borderRadius: 24,
-        overflow: 'hidden',
-        backgroundColor: 'transparent',
-    },
+    // storyContainer: {
+    //     height: '90%',
+    //     marginBottom: 200,
+    //     position: 'absolute',
+    //     borderRadius: 24,
+    //     overflow: 'hidden',
+    //     backgroundColor: 'tomato',
+    // },
     storyMediaContainer: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        display: 'flex',
+        backgroundColor: 'white',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
     },
     storyImage: {
         width: '100%',
         height: '100%',
     },
-    storyHeaderContainer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        paddingHorizontal: 8,
-        paddingTop: 8,
+    storyContainer: {
+        flex: 1,
+        borderRadius: 24,
+        overflow: "hidden",
+        // backgroundColor: "transparent",
+        marginTop: getStatusBarHeight(true) +50
     },
     storyProgressContainer: {
         paddingHorizontal: 8,
