@@ -1,9 +1,7 @@
-import {Pressable, StyleSheet, Text, Touchable, TouchableOpacity, View} from "react-native";
+import {Pressable, StyleSheet, Text} from "react-native";
 import {ImageBackground} from "expo-image";
 import {IMAGES_LIST} from "../../mock/mock";
 import {useAppDispatch} from "../../hooks/redux";
-import {openBottomSheet} from "../../store/bottomSheetSlice/bottomSheetSlice";
-import {BOTTOM_SHEET} from "../../store/bottomSheetSlice/types";
 
 export default function Event2() {
     const dispatch = useAppDispatch();
