@@ -1,16 +1,17 @@
 import React from "react";
-import {View, StyleSheet, useWindowDimensions} from "react-native";
+import {StyleSheet, useWindowDimensions, View} from "react-native";
 import {Searchbar, useTheme} from "react-native-paper";
-import {useDispatch} from "react-redux";
-import {open} from "../../store/searchSlice/searchSlice";
+import {openBottomSheet} from "../../store/bottomSheetSlice/bottomSheetSlice";
+import {BOTTOM_SHEET} from "../../store/bottomSheetSlice/types";
+import {useAppDispatch} from "../../hooks/redux";
 
 export default function SearchInput() {
     const {width} = useWindowDimensions();
     const theme = useTheme();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch()
 
     const handlePress = () => {
-        dispatch(open())
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.SEARCH}))
     }
 
 

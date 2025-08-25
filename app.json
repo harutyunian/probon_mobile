@@ -7,6 +7,9 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "experiments": {
+      "reactNativeNewArchitecture": true
+    },
     "splash": {
       "hidden": true,
       "image": "./assets/splash_icon.png",
@@ -15,16 +18,20 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.probon.store"
+      "bundleIdentifier": "com.probon.store",
+      "jsEngine": "hermes"
     },
     "android": {
+      "package": "com.probon.store",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive_logo.png",
         "backgroundColor": "#5E4DED"
       },
       "jsEngine": "hermes",
       "edgeToEdgeEnabled": true,
-      "package": "com.probon.store"
+      "enableProguardInReleaseBuilds": true,
+      "enableR8": true,
+      "allowBackup": false
     },
     "web": {
       "favicon": "./assets/favicon.png"
