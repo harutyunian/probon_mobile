@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {SvgProps, SvgXml} from 'react-native-svg';
 
+// ✅ OPTIMIZED: Import all SVG icons directly
 import clock from '../../../assets/icons/clock.svg';
 import phone from '../../../assets/icons/phone.svg';
 import tag from '../../../assets/icons/tag.svg';
@@ -34,9 +35,7 @@ import post_add from '../../../assets/icons/post_add.svg';
 import quiz from '../../../assets/icons/quiz.svg';
 import support_agent from '../../../assets/icons/support_agent.svg';
 
-
-
-
+// ✅ OPTIMIZED: Icon map with direct imports
 const iconMap = {
     key,
     tag,
@@ -125,6 +124,7 @@ const Icon = ({svgXmlString, name, src, size = 24, ...props}: IconProps) => {
             />
         );
     }
+    
     if (svgXmlString) {
         return <SvgXml xml={svgXmlString} width={size} height={size} {...props} />;
     }

@@ -19,8 +19,6 @@ export default function Search() {
 
 
     return <> <TextInput
-        autoFocus={true}
-
         outlineStyle={{borderRadius: 16}}
         style={[styles.search, {width: width * 0.92}]}
         mode="outlined"
@@ -28,9 +26,7 @@ export default function Search() {
         value={searchQuery}
         onChangeText={handleSearchQueryChange}
         left={<TextInput.Icon icon="magnify"/>}
-    />
-
-        <SearchResult/>
+    /><SearchResult/>
         <SearchResult/>
         <SearchResult/>
         <SearchResult/>

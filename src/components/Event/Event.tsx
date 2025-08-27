@@ -25,6 +25,7 @@ export default function Event({ title, imageUrl, hasUnviewedStories = false, onP
 
 const styles = StyleSheet.create({
   container: {
+    marginRight: 16,
     borderStyle: 'solid',
     borderColor: 'transparent',
     borderWidth: 1,
