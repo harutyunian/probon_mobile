@@ -1,22 +1,20 @@
-import {Platform, ScrollView, StatusBar, StyleSheet, View, ViewStyle} from "react-native";
-import {Text, useTheme, Button} from "react-native-paper";
+import {ScrollView, StyleSheet,} from "react-native";
+import {Text, useTheme} from "react-native-paper";
 import {useRef, useMemo} from "react";
-import {IMAGES_LIST} from "../../../mock/mock";
 import InstagramStories from '@birdwingo/react-native-instagram-stories';
-import type {InstagramStoriesProps, InstagramStoriesPublicMethods} from '@birdwingo/react-native-instagram-stories';
+import type {InstagramStoriesPublicMethods} from '@birdwingo/react-native-instagram-stories';
 import Event from "../../../components/Event/Event";
 import {getStatusBarHeight} from "react-native-status-bar-height";
 import EventCardInfo from "./EventCardInfo/EventCardInfo";
-import {mockEvent} from "../../../mock/event"; // install if not yet
+import {mockEvent} from "../../../mock/event";
 
-// another props and main list with another props, I find only this solution
+
 export default function ListHeader() {
     const theme = useTheme();
+    const {primary} = theme.colors
 
     const ref = useRef<InstagramStoriesPublicMethods>(null)
 
-
-    const aper: InstagramStoriesProps["stories"] = mockEvent;
     // Use Event component as custom avatar renderer and open story on press
     const stories = useMemo(() => mockEvent.map(user => ({
         ...user,
@@ -53,7 +51,8 @@ export default function ListHeader() {
                 imageStyles={styles.storyImage}
                 imageProps={{resizeMode: 'cover'}}
                 containerStyle={styles.storyContainer}
-                avatarBorderColors={[theme.colors.primary]}
+                progressActiveColor={primary}
+                loaderColor={primary}
                 mediaContainerStyle={styles.storyMediaContainer}
                 progressContainerStyle={styles.storyProgressContainer}
                 avatarListContainerStyle={styles.avatarListContainerStyle}
@@ -75,14 +74,6 @@ const styles = StyleSheet.create({
     avatarListContainerStyle: {
         columnGap: 16,
     },
-    // storyContainer: {
-    //     height: '90%',
-    //     marginBottom: 200,
-    //     position: 'absolute',
-    //     borderRadius: 24,
-    //     overflow: 'hidden',
-    //     backgroundColor: 'tomato',
-    // },
     storyMediaContainer: {
         flex: 1,
         display: 'flex',
@@ -98,7 +89,6 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: 24,
         overflow: "hidden",
-        // backgroundColor: "transparent",
         marginTop: getStatusBarHeight(true) + 50
     },
     storyProgressContainer: {
