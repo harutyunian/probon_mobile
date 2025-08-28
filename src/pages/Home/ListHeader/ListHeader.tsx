@@ -1,6 +1,6 @@
-import {ScrollView, StyleSheet,} from "react-native";
+import {ScrollView, StyleSheet, Image as RNImage,} from "react-native";
 import {Text, useTheme} from "react-native-paper";
-import {useRef, useMemo} from "react";
+import {useRef, useMemo, useEffect} from "react";
 import InstagramStories from '@birdwingo/react-native-instagram-stories';
 import type {InstagramStoriesPublicMethods} from '@birdwingo/react-native-instagram-stories';
 import Event from "../../../components/Event/Event";
@@ -33,6 +33,16 @@ export default function ListHeader() {
         ),
     })), [mockEvent]);
 
+    // Prefetch story images to reduce jank when opening modal
+    useEffect(() => {
+        mockEvent.forEach(user => {
+            user.stories.forEach(story => {
+                const uri = (story.source as any)?.uri;
+                if (uri) RNImage.prefetch(uri).catch(() => undefined);
+            })
+        })
+    }, [])
+
     return <>
         <Text variant="titleLarge" style={styles.header}>Events</Text>
         <ScrollView
@@ -51,6 +61,7 @@ export default function ListHeader() {
                 imageStyles={styles.storyImage}
                 imageProps={{resizeMode: 'cover'}}
                 containerStyle={styles.storyContainer}
+                statusBarTranslucent
                 progressActiveColor={primary}
                 loaderColor={primary}
                 mediaContainerStyle={styles.storyMediaContainer}
