@@ -1,9 +1,14 @@
 import {View, StyleSheet} from "react-native";
 import {Button, Text} from "react-native-paper";
 import {memo} from "react";
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 function EventCardInfo() {
-    return <View style={styles.overlayWrap}>
+    const insets = useSafeAreaInsets();
+    const navigationBarHeight = insets.bottom;
+
+
+    return <View style={[styles.overlayWrap, {bottom: navigationBarHeight+60}]}>
         <View style={styles.overlayCard}>
             <Text style={styles.overlayBy}>By One Way Tour</Text>
             <Text style={styles.overlayTitle}>Wine days in Dilijan</Text>
@@ -29,7 +34,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 12,
         right: 12,
-        bottom: 140,
         alignItems: 'center',
 
     },
