@@ -47,6 +47,8 @@ export default function ListHeader() {
                 stories={stories}
                 avatarBorderRadius={8}
                 hideAvatarList={false}
+                storyAnimationDuration={300}
+                modalAnimationDuration={300}
                 backgroundColor={'rgba(0,0,0,0.5)'}
                 imageStyles={styles.storyImage}
                 imageProps={{resizeMode: 'cover'}}
