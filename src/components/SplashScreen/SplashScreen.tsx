@@ -124,7 +124,6 @@ const SplashScreen: React.FC<{ onFinish: () => void }> = ({ onFinish }) => {
                         ]}
                         resizeMode="contain"
                     />
-                    {/* The Shine Element */}
                     <Animated.View
                         style={[
                             styles.shine,

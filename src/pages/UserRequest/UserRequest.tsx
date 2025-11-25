@@ -1,22 +1,9 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Button, Text, useTheme, DefaultTheme} from 'react-native-paper';
+import {Button, Text, useTheme} from 'react-native-paper';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 
-// --- THEME CONFIGURATION (for a complete example) ---
-// This ensures the component has the correct theme from React Native Paper.
-// You would typically configure this at the root of your app.
-const theme = {
-    ...DefaultTheme,
-    colors: {
-        ...DefaultTheme.colors,
-        primary: '#6A5AE0', // A purple color to match your app's theme
-        secondary: '#1c1c1e',
-    },
-};
-
-
-export default function UserRequestsPage() {
+function UserRequestsPage() {
     const {colors} = useTheme();
 
     return (
@@ -78,3 +65,5 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     }
 });
+
+export default memo(UserRequestsPage);

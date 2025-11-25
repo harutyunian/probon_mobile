@@ -1,4 +1,5 @@
 // src/pages/Home/Home.tsx
+import {memo} from "react";
 import {
     StyleSheet,
     View,
@@ -20,8 +21,8 @@ const fillPkg = Array.from({length: 20}, (_, index) => index);
 const HEADER_HEIGHT = 60;
 
 // --- MEMOIZED COMPONENTS ---
-const MemoizedMainCard = React.memo(MainCard);
-const MemoizedListHeader = React.memo(ListHeader);
+const MemoizedMainCard = memo(MainCard);
+const MemoizedListHeader = memo(ListHeader);
 
 export function Home(): React.JSX.Element {
     const {width} = useWindowDimensions(); // ✅ dynamic columns on rotation
@@ -43,13 +44,9 @@ export function Home(): React.JSX.Element {
     // --- RENDER ITEM ---
     const renderItem = ({item}: ListRenderItemInfo<number>) => <MemoizedMainCard/>;
 
-    const aper = useAppSelector((state) => state.bottomSheet);
-
     return (
         <View style={styles.container}>
-            {/* HEADER PLACEHOLDER */}
             <View style={{height: HEADER_HEIGHT}}/>
-
             <FlashList
                 ref={ref}
                 data={fillPkg}
@@ -63,6 +60,10 @@ export function Home(): React.JSX.Element {
                 onScroll={handleOnScroll}
                 scrollEventThrottle={16}
                 contentContainerStyle={{paddingHorizontal: 10, paddingVertical: 65}}
+                scrollIndicatorInsets={{right: 1}}
+                showsVerticalScrollIndicator={false}
+                bounces={false}
+                decelerationRate="fast"
             />
         </View>
     );

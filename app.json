@@ -4,7 +4,7 @@
     "slug": "probon_mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "experiments": {
@@ -16,6 +16,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#5E4DED"
     },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.probon.store",
