@@ -7,9 +7,6 @@
     "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
-    "experiments": {
-      "reactNativeNewArchitecture": true
-    },
     "splash": {
       "hidden": true,
       "image": "./assets/splash_icon.png",
@@ -32,8 +29,6 @@
       },
       "jsEngine": "hermes",
       "edgeToEdgeEnabled": true,
-      "enableProguardInReleaseBuilds": true,
-      "enableR8": true,
       "allowBackup": false
     },
     "web": {
