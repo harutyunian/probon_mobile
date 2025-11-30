@@ -15,8 +15,9 @@ export function CreateRequestPage() {
     }
 
     return <View style={styles.container}>
-        {page === 0 && <SelectCategory/>}
-        {page === 1 && <RequestDetailsForm/>}
+        {/*{page === 0 && <SelectCategory/>}*/}
+        {/*{page === 1 && <RequestDetailsForm/>}*/}
+        <RequestDetailsForm/>
         <Button
             onPress={handlePressNext}
             disabled={nextButtonDisabled}

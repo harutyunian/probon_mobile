@@ -1,18 +1,27 @@
 import {View, Text, StyleSheet} from "react-native";
 import {TextInput, useTheme, Checkbox} from 'react-native-paper';
+import {useAppDispatch} from "../../../../hooks/redux";
+import {openBottomSheet} from "../../../../store/bottomSheetSlice/bottomSheetSlice";
+import {BOTTOM_SHEET} from "../../../../store/bottomSheetSlice/types";
 
 export default function RequestDetailsForm() {
    const theme = useTheme();
+    const dispatch = useAppDispatch();
+
+   const handlePressPeople = () =>{
+       dispatch(openBottomSheet({type:BOTTOM_SHEET.SELECT_PASSENGER, width: "38%"}))
+   }
 
     return <View style={styles.container}>
-            <TextInput
-                style={styles.textInput}
+         <TextInput
+            style={styles.textInput}
                 mode="outlined"
                 placeholder="Request title"
                 label="Request title"
                 left={<TextInput.Icon icon="format-title"/>}
-            />
+        />
         <TextInput
+            onPress={handlePressPeople}
             style={styles.textInput}
             mode="outlined"
             placeholder="People"

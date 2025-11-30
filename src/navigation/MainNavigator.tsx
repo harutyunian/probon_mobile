@@ -70,12 +70,13 @@ export default function MainNavigator() {
                 />
                 <Tab.Screen
                     key={"Add"}
-                    name={"----"}
+                    name={" "}
                     component={CreateRequestPage}
                     options={{
                         title:"Create request",
                         headerShown: true,
                         tabBarShowLabel: true,
+                        tabBarLabel: () => null,
                         tabBarIcon: () => {
                             return <AddButton/>
                         }

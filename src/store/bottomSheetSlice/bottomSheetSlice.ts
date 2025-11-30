@@ -5,13 +5,13 @@ import {BOTTOM_SHEET} from "./types";
 export interface OpenBottomSheetPayload {
     type: BOTTOM_SHEET;
     isOpen?: boolean;
-    width?: number;
+    width: string;
 }
 
 const initialState: OpenBottomSheetPayload = {
     type: BOTTOM_SHEET.SEARCH,
     isOpen: false,
-    width: 100,
+    width: '90%',
 }
 
 const bottomSheetSlice = createSlice({

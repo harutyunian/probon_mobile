@@ -14,15 +14,15 @@ import {closeBottomSheet} from "../../store/bottomSheetSlice/bottomSheetSlice";
 
 function CustomBottomSheet() {
     const bottomSheetRef = useRef<BottomSheet>(null);
-    const {type, isOpen} = useAppSelector((state) => state.bottomSheet);
+    const {type, isOpen, width} = useAppSelector((state) => state.bottomSheet);
     const dispatch = useAppDispatch();
     const {height} = useWindowDimensions()
-    
+
     // ✅ OPTIMIZATION #6: Memoize bottom sheet height calculation
-    const bottomSheetHeight = useMemo(() => height * 0.65, [height]);
+    const bottomSheetHeight = useMemo(() => height * 0.30, [height]);
 
     // ✅ OPTIMIZATION #6: Memoize snap points to prevent recalculation
-    const snapPoints = useMemo(() => [bottomSheetHeight, '90%'], [bottomSheetHeight]);
+    const snapPoints = useMemo(() => [bottomSheetHeight, width], [bottomSheetHeight, width]);
 
     // Control Bottom Sheet open/close based on Redux state
     useEffect(() => {

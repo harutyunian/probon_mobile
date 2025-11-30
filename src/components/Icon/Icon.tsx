@@ -35,6 +35,8 @@ import post_add from '../../../assets/icons/post_add.svg';
 import quiz from '../../../assets/icons/quiz.svg';
 import support_agent from '../../../assets/icons/support_agent.svg';
 import landScape from '../../../assets/icons/landscape.svg';
+import close from '../../../assets/icons/close.svg';
+
 
 // ✅ OPTIMIZED: Icon map with direct imports
 const iconMap = {
@@ -47,6 +49,7 @@ const iconMap = {
     quiz,
     home,
     tree,
+    close,
     clock,
     heart,
     phone,

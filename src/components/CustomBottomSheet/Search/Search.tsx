@@ -14,7 +14,6 @@ export default function Search() {
     // Input change
     const handleSearchQueryChange = (text: string) => {
         setSearchQuery(text);
-        console.log(text);
     };
 
 

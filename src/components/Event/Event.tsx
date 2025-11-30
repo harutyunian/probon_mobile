@@ -12,7 +12,6 @@ interface EventProps {
 
 export default function Event({ title, imageUrl, hasUnviewedStories = false, onPress }: EventProps) {
   const src = imageUrl || DEFAULT_IMAGE;
-
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <ImageBackground source={{uri: src}} style={[styles.container]} imageStyle={styles.image}>

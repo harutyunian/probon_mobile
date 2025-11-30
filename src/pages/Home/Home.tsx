@@ -14,11 +14,10 @@ import MainCard from '../../components/MainCard/MainCard';
 import ListHeader from './ListHeader/ListHeader';
 import {useScrollToTop} from '@react-navigation/native';
 import {ScrollContext} from "../../navigation/Screens/HomeScreen/ScrollContext";
-import {useAppSelector} from "../../hooks/redux";
 
 // --- MOCK DATA --- replace with paginated data in production
 const fillPkg = Array.from({length: 20}, (_, index) => index);
-const HEADER_HEIGHT = 60;
+const HEADER_HEIGHT = 200;
 
 // --- MEMOIZED COMPONENTS ---
 const MemoizedMainCard = memo(MainCard);
@@ -26,7 +25,7 @@ const MemoizedListHeader = memo(ListHeader);
 
 export function Home(): React.JSX.Element {
     const {width} = useWindowDimensions(); // ✅ dynamic columns on rotation
-    const ref = useRef<FlashList<number>>(null);
+    const ref = useRef<React.ElementRef<typeof FlashList>>(null);
     useScrollToTop(ref);
 
     const {scrollY} = useContext(ScrollContext);

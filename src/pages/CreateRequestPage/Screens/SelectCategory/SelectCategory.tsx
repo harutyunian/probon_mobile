@@ -88,6 +88,7 @@ export default function SelectCategory() {
                             items={CATEGORIES}
                             setOpen={(open) => {
                                 setCategoryOpen(open);
+                                // todo: partadir fixel
                                 if (open) {
                                     setSubCategoryOpen(false);
                                 }
@@ -126,6 +127,7 @@ export default function SelectCategory() {
                                 items={subCategoryItems}
                                 setOpen={(open) => {
                                     setSubCategoryOpen(open);
+                                    // todo: partadir fixel
                                     if (open) {
                                         setCategoryOpen(false);
                                     }
