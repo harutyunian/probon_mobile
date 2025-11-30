@@ -1,7 +1,7 @@
 import {StyleSheet, View} from "react-native";
 import {Text} from "react-native-paper";
 import Icon from "../../../../components/Icon/Icon";
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import DropDownPicker, {ItemType} from "react-native-dropdown-picker";
 import {IRequestFormCategory} from "../../../../types/requestFormSlice";
 import {useAppDispatch, useAppSelector} from "../../../../hooks/redux";
@@ -35,51 +35,39 @@ export default function SelectCategory() {
     const dispatch = useAppDispatch();
     const {category, subCategory} = useAppSelector(state => state.createRequestForm.form);
 
+    // Only manage open/close state locally
     const [categoryOpen, setCategoryOpen] = useState(false);
-    const [categoryValue, setCategoryValue] = useState<string | null>(
-        category?.value || null
-    );
-    const [categoryItems, setCategoryItems] = useState(CATEGORIES);
-
     const [subCategoryOpen, setSubCategoryOpen] = useState(false);
-    const [subCategoryValue, setSubCategoryValue] = useState<string | null>(
-        subCategory?.value || null
-    );
-    const [subCategoryItems, setSubCategoryItems] = useState<Array<IRequestFormCategory>>(
-        categoryValue && SUBCATEGORIES[categoryValue] ? SUBCATEGORIES[categoryValue] : []
-    );
 
-    const showSubCategory = categoryValue !== null && categoryValue !== "";
-
-    // Sync button state when subcategory is selected/deselected
-    useEffect(() => {
-        if (subCategory?.value && subCategory.value !== "") {
-            dispatch(setCreateRequestForm({nextButtonDisabled: false}));
-        } else {
-            dispatch(setCreateRequestForm({nextButtonDisabled: true}));
-        }
-    }, [subCategory?.value, dispatch]);
+    const showSubCategory = category?.value !== null && category?.value !== "";
+    const subCategoryItems = category?.value && SUBCATEGORIES[category.value]
+        ? SUBCATEGORIES[category.value]
+        : [];
 
     const handleChangeCategory = (item: ItemType<string>) => {
-        if (item?.label && item?.value) {
-            dispatch(setCreateRequestFormField({category: {label: item.label, value: item.value}}));
+        batch(() => {
+            dispatch(setCreateRequestFormField({
+                category: {label: item.label, value: item.value}
+            }));
             // Reset subcategory when category changes
-            setSubCategoryValue(null);
-            setSubCategoryItems(item.value && SUBCATEGORIES[item.value] ? SUBCATEGORIES[item.value] : []);
-
-            dispatch(setCreateRequestFormField({subCategory: {label: "", value: ""}}));
-            dispatch(setCreateRequestForm({nextButtonDisabled: true}))
-        }
-
+            dispatch(setCreateRequestFormField({
+                subCategory: {label: "", value: ""}
+            }));
+            dispatch(setCreateRequestForm({nextButtonDisabled: true}));
+        });
     };
 
     const handleChangeSubCategory = (item: ItemType<string>) => {
-        if (item?.label && item?.value) {
-            dispatch(setCreateRequestFormField({subCategory: {label: item.label, value: item.value}}));
+        if(item?.label && item?.value){
+            batch(() => {
+                dispatch(setCreateRequestFormField({
+                    subCategory: {label: item.label, value: item.value}
+                }));
+                dispatch(setCreateRequestForm({nextButtonDisabled: false}));
+            });
         }
-        dispatch(setCreateRequestForm({nextButtonDisabled: false}))
-    };
 
+    };
 
     return (
         <View style={styles.container}>
@@ -96,8 +84,8 @@ export default function SelectCategory() {
                         style={[styles.dropdownContainer, {zIndex: categoryOpen ? 3000 : (showSubCategory ? 2000 : 3000)}]}>
                         <DropDownPicker
                             open={categoryOpen}
-                            value={categoryValue}
-                            items={categoryItems}
+                            value={category?.value || null}
+                            items={CATEGORIES}
                             setOpen={(open) => {
                                 setCategoryOpen(open);
                                 if (open) {
@@ -105,8 +93,8 @@ export default function SelectCategory() {
                                 }
                             }}
                             onSelectItem={handleChangeCategory}
-                            setValue={setCategoryValue}
-                            setItems={setCategoryItems}
+                            setValue={() => {}} // No-op since we handle in onSelectItem
+                            setItems={() => {}} // No-op since CATEGORIES is constant
                             placeholder="Select category"
                             searchable={true}
                             searchPlaceholder="Search categories..."
@@ -134,7 +122,7 @@ export default function SelectCategory() {
                         <View style={[styles.dropdownContainer, {zIndex: subCategoryOpen ? 3000 : 1000}]}>
                             <DropDownPicker
                                 open={subCategoryOpen}
-                                value={subCategoryValue}
+                                value={subCategory?.value || null}
                                 items={subCategoryItems}
                                 setOpen={(open) => {
                                     setSubCategoryOpen(open);
@@ -143,8 +131,8 @@ export default function SelectCategory() {
                                     }
                                 }}
                                 onSelectItem={handleChangeSubCategory}
-                                setValue={setSubCategoryValue}
-                                setItems={setSubCategoryItems}
+                                setValue={() => {}} // No-op since we handle in onSelectItem
+                                setItems={() => {}} // No-op since items are derived
                                 placeholder="Select subcategory"
                                 searchable={true}
                                 searchPlaceholder="Search subcategories..."
@@ -257,4 +245,4 @@ const styles = StyleSheet.create({
         width: 18,
         height: 18,
     },
-})
+});

@@ -1,16 +1,29 @@
 import {StyleSheet,View} from 'react-native';
 import {Button} from 'react-native-paper';
 import SelectCategory from "./Screens/SelectCategory/SelectCategory";
-import {useAppSelector} from "../../hooks/redux";
+import {useAppDispatch, useAppSelector} from "../../hooks/redux";
+import RequestDetailsForm from "./Screens/RequestDetailsForm/RequestDetailsForm";
+import {nextPage} from "../../store/createRequestFormSlice/createRequestFormSlice";
 
 
 export function CreateRequestPage() {
-    const {nextButtonDisabled} = useAppSelector(state => state.createRequestForm);
+    const {nextButtonDisabled, page} = useAppSelector(state => state.createRequestForm);
+    const dispatch = useAppDispatch();
 
+    const handlePressNext = () =>{
+        dispatch(nextPage());
+    }
 
     return <View style={styles.container}>
-        <SelectCategory/>
-        <Button disabled={nextButtonDisabled} style={styles.nextButton} mode="contained">Next</Button>
+        {page === 0 && <SelectCategory/>}
+        {page === 1 && <RequestDetailsForm/>}
+        <Button
+            onPress={handlePressNext}
+            disabled={nextButtonDisabled}
+            style={styles.nextButton}
+            mode="contained"
+           >Next
+        </Button>
     </View>
 }
 
