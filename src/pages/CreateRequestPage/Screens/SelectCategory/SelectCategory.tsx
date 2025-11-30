@@ -1,11 +1,15 @@
 import {StyleSheet, View} from "react-native";
 import {Text} from "react-native-paper";
 import Icon from "../../../../components/Icon/Icon";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import DropDownPicker, {ItemType} from "react-native-dropdown-picker";
 import {IRequestFormCategory} from "../../../../types/requestFormSlice";
 import {useAppDispatch, useAppSelector} from "../../../../hooks/redux";
-import {setCreateRequestFormField} from "../../../../store/createRequestFormSlice/createRequestFormSlice";
+import {
+    setCreateRequestForm,
+    setCreateRequestFormField
+} from "../../../../store/createRequestFormSlice/createRequestFormSlice";
+import {batch} from "react-redux";
 
 const CATEGORIES: Array<IRequestFormCategory> = [
     {label: "Entertainment", value: "entertainment"},
@@ -47,20 +51,33 @@ export default function SelectCategory() {
 
     const showSubCategory = categoryValue !== null && categoryValue !== "";
 
+    // Sync button state when subcategory is selected/deselected
+    useEffect(() => {
+        if (subCategory?.value && subCategory.value !== "") {
+            dispatch(setCreateRequestForm({nextButtonDisabled: false}));
+        } else {
+            dispatch(setCreateRequestForm({nextButtonDisabled: true}));
+        }
+    }, [subCategory?.value, dispatch]);
+
     const handleChangeCategory = (item: ItemType<string>) => {
         if (item?.label && item?.value) {
             dispatch(setCreateRequestFormField({category: {label: item.label, value: item.value}}));
             // Reset subcategory when category changes
             setSubCategoryValue(null);
             setSubCategoryItems(item.value && SUBCATEGORIES[item.value] ? SUBCATEGORIES[item.value] : []);
+
             dispatch(setCreateRequestFormField({subCategory: {label: "", value: ""}}));
+            dispatch(setCreateRequestForm({nextButtonDisabled: true}))
         }
+
     };
 
     const handleChangeSubCategory = (item: ItemType<string>) => {
         if (item?.label && item?.value) {
             dispatch(setCreateRequestFormField({subCategory: {label: item.label, value: item.value}}));
         }
+        dispatch(setCreateRequestForm({nextButtonDisabled: false}))
     };
 
 

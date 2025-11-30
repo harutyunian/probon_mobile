@@ -22,6 +22,8 @@ const createRequestFormSlice = createSlice({
             return {
                 ...state,
                 ...(action.payload.page !== undefined && { page: action.payload.page }),
+                ...(action.payload.nextButtonDisabled !== undefined && { nextButtonDisabled: action.payload.nextButtonDisabled }),
+                ...(action.payload.showPrevButton !== undefined && { showPrevButton: action.payload.showPrevButton }),
                 ...(action.payload.form && { form: { ...state.form, ...action.payload.form } })
             }
         },
