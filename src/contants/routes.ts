@@ -25,5 +25,7 @@ export const MAIN_ROUTES = {
             KEY: 'details',
         }
     },
-    PRIVATE: {}
+    PRIVATE: {
+
+    }
 }

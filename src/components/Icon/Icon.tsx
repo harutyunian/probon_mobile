@@ -34,6 +34,7 @@ import manage_search from '../../../assets/icons/manage_search.svg';
 import post_add from '../../../assets/icons/post_add.svg';
 import quiz from '../../../assets/icons/quiz.svg';
 import support_agent from '../../../assets/icons/support_agent.svg';
+import landScape from '../../../assets/icons/landscape.svg';
 
 // ✅ OPTIMIZED: Icon map with direct imports
 const iconMap = {
@@ -60,6 +61,7 @@ const iconMap = {
     post_add,
     language,
     snowflake,
+    landScape,
     leftArrow,
     starFilled,
     credit_card,
