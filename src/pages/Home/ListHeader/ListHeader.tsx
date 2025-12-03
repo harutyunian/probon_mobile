@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, Image as RNImage,} from "react-native";
+import {ScrollView, StyleSheet, Image as RNImage,View} from "react-native";
 import {Text, useTheme} from "react-native-paper";
 import {useRef, useMemo, useEffect} from "react";
 import InstagramStories from '@birdwingo/react-native-instagram-stories';

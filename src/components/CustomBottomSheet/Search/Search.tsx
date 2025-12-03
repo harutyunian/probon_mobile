@@ -17,7 +17,7 @@ export default function Search() {
     };
 
 
-    return <> <TextInput
+    return <><TextInput
         outlineStyle={{borderRadius: 16}}
         style={[styles.search, {width: width * 0.92}]}
         mode="outlined"

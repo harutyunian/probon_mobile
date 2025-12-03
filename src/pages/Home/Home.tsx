@@ -9,7 +9,7 @@ import {
     NativeSyntheticEvent,
 } from 'react-native';
 import React, {useRef, useContext, useMemo, useCallback} from 'react';
-import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
+import {FlashList, ListRenderItemInfo, FlashListRef} from '@shopify/flash-list';
 import MainCard from '../../components/MainCard/MainCard';
 import ListHeader from './ListHeader/ListHeader';
 import {useScrollToTop} from '@react-navigation/native';
@@ -17,15 +17,15 @@ import {ScrollContext} from "../../navigation/Screens/HomeScreen/ScrollContext";
 
 // --- MOCK DATA --- replace with paginated data in production
 const fillPkg = Array.from({length: 20}, (_, index) => index);
-const HEADER_HEIGHT = 200;
+const HEADER_HEIGHT = 60;
 
 // --- MEMOIZED COMPONENTS ---
 const MemoizedMainCard = memo(MainCard);
-const MemoizedListHeader = memo(ListHeader);
+const MemoizedListHeader = ListHeader
 
 export function Home(): React.JSX.Element {
     const {width} = useWindowDimensions(); // ✅ dynamic columns on rotation
-    const ref = useRef<React.ElementRef<typeof FlashList>>(null);
+    const ref = useRef<FlashListRef<number>>(null);
     useScrollToTop(ref);
 
     const {scrollY} = useContext(ScrollContext);
@@ -54,7 +54,6 @@ export function Home(): React.JSX.Element {
                 keyExtractor={(item, index) => index.toString()}
                 numColumns={numOfPkgColumns}
                 ListHeaderComponent={MemoizedListHeader}
-                estimatedItemSize={260}
                 removeClippedSubviews={true}
                 onScroll={handleOnScroll}
                 scrollEventThrottle={16}
