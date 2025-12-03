@@ -1,28 +1,30 @@
 import {View, Text, StyleSheet} from "react-native";
-import {TextInput, useTheme, Checkbox} from 'react-native-paper';
+import {useTheme, Checkbox, TextInput} from 'react-native-paper';
 import {useAppDispatch} from "../../../../hooks/redux";
 import {openBottomSheet} from "../../../../store/bottomSheetSlice/bottomSheetSlice";
 import {BOTTOM_SHEET} from "../../../../store/bottomSheetSlice/types";
 
 export default function RequestDetailsForm() {
-   const theme = useTheme();
+    const theme = useTheme();
     const dispatch = useAppDispatch();
 
-   const handlePressPeople = () =>{
-       dispatch(openBottomSheet({type:BOTTOM_SHEET.SELECT_PASSENGER, width: "38%"}))
-   }
+    const handlePressPeople = () => {
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.SELECT_PASSENGER, width: "38%"}))
+    }
 
     return <View style={styles.container}>
-         <TextInput
+        <TextInput
             style={styles.textInput}
-                mode="outlined"
-                placeholder="Request title"
-                label="Request title"
-                left={<TextInput.Icon icon="format-title"/>}
+            outlineStyle={styles.inputRadius}
+            mode="outlined"
+            placeholder="Request title"
+            label="Request title"
+            left={<TextInput.Icon icon="format-title"/>}
         />
         <TextInput
             onPress={handlePressPeople}
             style={styles.textInput}
+            outlineStyle={styles.inputRadius}
             mode="outlined"
             placeholder="People"
             label="People"
@@ -30,6 +32,7 @@ export default function RequestDetailsForm() {
         />
         <TextInput
             style={styles.textInput}
+            outlineStyle={styles.inputRadius}
             mode="outlined"
             placeholder="Dates"
             label="Dates"
@@ -37,6 +40,7 @@ export default function RequestDetailsForm() {
         />
         <TextInput
             style={styles.textInput}
+            outlineStyle={styles.inputRadius}
             mode="outlined"
             placeholder="Tourism"
             label="Types"
@@ -44,6 +48,7 @@ export default function RequestDetailsForm() {
         />
         <TextInput
             style={styles.textInput}
+            outlineStyle={styles.inputRadius}
             mode="outlined"
             placeholder="Tour & event"
             label="Tour & event"
@@ -51,6 +56,7 @@ export default function RequestDetailsForm() {
         />
         <TextInput
             style={styles.textInput}
+            outlineStyle={styles.inputRadius}
             mode="outlined"
             placeholder="Price range"
             label="Price range"
@@ -58,16 +64,16 @@ export default function RequestDetailsForm() {
         />
         <Text>Please write price range in a currency you selected from
             <Text style={{
-            color: theme.colors.primary,
+                color: theme.colors.primary,
                 textDecorationLine: 'underline',
                 fontWeight: '700'
-        }}> Currency</Text>
+            }}> Currency</Text>
         </Text>
         <View style={styles.visaWrapper}>
-          <Checkbox.Android
-                status={ "checked"}
+            <Checkbox.Android
+                status={"checked"}
             />
-            <Text style={{ marginLeft: 8 }}>Visa Included</Text>
+            <Text style={{marginLeft: 8}}>Visa Included</Text>
         </View>
     </View>
 }
@@ -81,11 +87,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
     },
-    textInput:{
-        width: '100%',
-        borderRadius: 16
+    inputRadius: {
+        borderRadius: 16,
     },
-    visaWrapper:{
+    textInput: {
+        width: '100%',
+        height: 56
+    },
+    visaWrapper: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',

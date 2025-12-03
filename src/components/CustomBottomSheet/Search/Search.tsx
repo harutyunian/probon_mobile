@@ -1,5 +1,5 @@
-import {TextInput} from "react-native-paper";
 import SearchResult from "../SearchResult/SearchResult";
+import {TextInput} from 'react-native-paper'
 import React, {useState} from "react";
 import {Dimensions, StyleSheet} from "react-native";
 
