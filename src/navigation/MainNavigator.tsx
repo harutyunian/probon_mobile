@@ -13,7 +13,7 @@ import UserRequestsPage from "../pages/UserRequest/UserRequest";
 import {useCallback} from "react";
 import type {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
 import type {RouteProp} from '@react-navigation/native';
-import {CreateRequestPage} from "../pages/CreateRequestPage/CreateRequestPage";
+import {CreateRequestPage} from "./CreateRequestPage/CreateRequestPage";
 
 const Tab = createBottomTabNavigator();
 

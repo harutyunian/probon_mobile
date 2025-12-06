@@ -5,6 +5,11 @@ export interface IRequestFormCategory {
     value: string;
 }
 
+export interface IDateRange {
+    startDate: string | null; // ISO date string for Redux serialization
+    endDate: string | null; // ISO date string for Redux serialization
+}
+
 export  interface IRequestState {
     page: number;
     nextButtonDisabled: boolean;
@@ -12,5 +17,6 @@ export  interface IRequestState {
     form:{
         category: IRequestFormCategory;
         subCategory: IRequestFormCategory;
+        dateRange?: IDateRange;
     }
 }

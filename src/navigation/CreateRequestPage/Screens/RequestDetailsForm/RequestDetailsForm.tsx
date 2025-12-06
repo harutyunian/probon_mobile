@@ -1,16 +1,46 @@
 import {View, Text, StyleSheet} from "react-native";
+import {useMemo} from "react";
 import {useTheme, Checkbox, TextInput} from 'react-native-paper';
-import {useAppDispatch} from "../../../../hooks/redux";
+import {useAppDispatch, useAppSelector} from "../../../../hooks/redux";
 import {openBottomSheet} from "../../../../store/bottomSheetSlice/bottomSheetSlice";
 import {BOTTOM_SHEET} from "../../../../store/bottomSheetSlice/types";
 
 export default function RequestDetailsForm() {
     const theme = useTheme();
     const dispatch = useAppDispatch();
+    const {dateRange} = useAppSelector(state => state.createRequestForm.form);
 
     const handlePressPeople = () => {
         dispatch(openBottomSheet({type: BOTTOM_SHEET.SELECT_PASSENGER, width: "38%"}))
     }
+    const handlePressCalendar = () => {
+         dispatch(openBottomSheet({type: BOTTOM_SHEET.DATE_PICKER, width: "50%"}))
+    }
+
+    const formattedDateRange = useMemo(() => {
+        if (!dateRange?.startDate && !dateRange?.endDate) {
+            return "Dates";
+        }
+        
+        const formatDate = (dateString: string) => {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric',
+                year: 'numeric' 
+            });
+        };
+        
+        if (dateRange.startDate && dateRange.endDate) {
+            return `${formatDate(dateRange.startDate)} - ${formatDate(dateRange.endDate)}`;
+        } else if (dateRange.startDate) {
+            return `From ${formatDate(dateRange.startDate)}`;
+        } else if (dateRange.endDate) {
+            return `Until ${formatDate(dateRange.endDate)}`;
+        }
+        
+        return "Dates";
+    }, [dateRange]);
 
     return <View style={styles.container}>
         <TextInput
@@ -33,9 +63,12 @@ export default function RequestDetailsForm() {
         <TextInput
             style={styles.textInput}
             outlineStyle={styles.inputRadius}
+            onPress={handlePressCalendar}
             mode="outlined"
             placeholder="Dates"
             label="Dates"
+            value={formattedDateRange}
+            editable={false}
             left={<TextInput.Icon icon="calendar-range-outline"/>}
         />
         <TextInput

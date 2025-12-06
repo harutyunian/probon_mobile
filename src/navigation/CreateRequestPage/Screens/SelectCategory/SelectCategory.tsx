@@ -45,7 +45,7 @@ export default function SelectCategory() {
         : [];
 
     const handleChangeCategory = (item: ItemType<string>) => {
-        batch(() => {
+        if (item.label && item.value) {
             dispatch(setCreateRequestFormField({
                 category: {label: item.label, value: item.value}
             }));
@@ -54,17 +54,17 @@ export default function SelectCategory() {
                 subCategory: {label: "", value: ""}
             }));
             dispatch(setCreateRequestForm({nextButtonDisabled: true}));
-        });
+        }
     };
 
     const handleChangeSubCategory = (item: ItemType<string>) => {
-        if(item?.label && item?.value){
-            batch(() => {
-                dispatch(setCreateRequestFormField({
-                    subCategory: {label: item.label, value: item.value}
-                }));
-                dispatch(setCreateRequestForm({nextButtonDisabled: false}));
-            });
+        if (item?.label && item?.value) {
+
+            dispatch(setCreateRequestFormField({
+                subCategory: {label: item.label, value: item.value}
+            }));
+            dispatch(setCreateRequestForm({nextButtonDisabled: false}));
+
         }
 
     };
@@ -94,8 +94,10 @@ export default function SelectCategory() {
                                 }
                             }}
                             onSelectItem={handleChangeCategory}
-                            setValue={() => {}} // No-op since we handle in onSelectItem
-                            setItems={() => {}} // No-op since CATEGORIES is constant
+                            setValue={() => {
+                            }} // No-op since we handle in onSelectItem
+                            setItems={() => {
+                            }} // No-op since CATEGORIES is constant
                             placeholder="Select category"
                             searchable={true}
                             searchPlaceholder="Search categories..."
@@ -133,8 +135,10 @@ export default function SelectCategory() {
                                     }
                                 }}
                                 onSelectItem={handleChangeSubCategory}
-                                setValue={() => {}} // No-op since we handle in onSelectItem
-                                setItems={() => {}} // No-op since items are derived
+                                setValue={() => {
+                                }} // No-op since we handle in onSelectItem
+                                setItems={() => {
+                                }} // No-op since items are derived
                                 placeholder="Select subcategory"
                                 searchable={true}
                                 searchPlaceholder="Search subcategories..."
