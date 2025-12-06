@@ -10,6 +10,12 @@ export interface IDateRange {
     endDate: string | null; // ISO date string for Redux serialization
 }
 
+export interface IPassengerCounts {
+    adults: number;
+    children: number;
+    infants: number;
+}
+
 export  interface IRequestState {
     page: number;
     nextButtonDisabled: boolean;
@@ -18,5 +24,6 @@ export  interface IRequestState {
         category: IRequestFormCategory;
         subCategory: IRequestFormCategory;
         dateRange?: IDateRange;
+        passengers?: IPassengerCounts;
     }
 }

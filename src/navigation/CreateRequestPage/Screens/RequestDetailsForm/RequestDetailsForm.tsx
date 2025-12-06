@@ -8,7 +8,7 @@ import {BOTTOM_SHEET} from "../../../../store/bottomSheetSlice/types";
 export default function RequestDetailsForm() {
     const theme = useTheme();
     const dispatch = useAppDispatch();
-    const {dateRange} = useAppSelector(state => state.createRequestForm.form);
+    const {dateRange, passengers} = useAppSelector(state => state.createRequestForm.form);
 
     const handlePressPeople = () => {
         dispatch(openBottomSheet({type: BOTTOM_SHEET.SELECT_PASSENGER, width: "38%"}))
@@ -42,6 +42,32 @@ export default function RequestDetailsForm() {
         return "Dates";
     }, [dateRange]);
 
+    const formattedPassengers = useMemo(() => {
+        if (!passengers) {
+            return "";
+        }
+
+        const parts: string[] = [];
+        
+        if (passengers.adults > 0) {
+            parts.push(`${passengers.adults} ${passengers.adults === 1 ? 'Adult' : 'Adults'}`);
+        }
+        if (passengers.children > 0) {
+            parts.push(`${passengers.children} ${passengers.children === 1 ? 'Child' : 'Children'}`);
+        }
+        if (passengers.infants > 0) {
+            parts.push(`${passengers.infants} ${passengers.infants === 1 ? 'Infant' : 'Infants'}`);
+        }
+
+        // If we have passengers object but all counts are 0, show default
+        if (parts.length === 0) {
+            return "";
+        }
+
+        const result = parts.join(', ');
+        return result;
+    }, [passengers]);
+
     return <View style={styles.container}>
         <TextInput
             style={styles.textInput}
@@ -52,12 +78,15 @@ export default function RequestDetailsForm() {
             left={<TextInput.Icon icon="format-title"/>}
         />
         <TextInput
+            key={`people-${formattedPassengers}`}
             onPress={handlePressPeople}
             style={styles.textInput}
             outlineStyle={styles.inputRadius}
             mode="outlined"
             placeholder="People"
             label="People"
+            value={formattedPassengers}
+            editable={false}
             left={<TextInput.Icon icon="account"/>}
         />
         <TextInput

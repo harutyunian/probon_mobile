@@ -1,26 +1,31 @@
 import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
 import {Button, useTheme} from "react-native-paper";
 import Icon from "../../../Icon/Icon";
-import {useState} from "react";
-import {useAppDispatch} from "../../../../hooks/redux";
+import {useState, useEffect} from "react";
+import {useAppDispatch, useAppSelector} from "../../../../hooks/redux";
 import {closeBottomSheet} from "../../../../store/bottomSheetSlice/bottomSheetSlice";
-
-interface PassengerCounts {
-    adults: number;
-    children: number;
-    infants: number;
-}
+import {setCreateRequestFormField} from "../../../../store/createRequestFormSlice/createRequestFormSlice";
+import {IPassengerCounts} from "../../../../types/requestFormSlice";
 
 export default function Passenger() {
     const theme = useTheme();
     const dispatch = useAppDispatch();
-    const [counts, setCounts] = useState<PassengerCounts>({
-        adults: 1,
-        children: 0,
-        infants: 0,
+    const savedPassengers = useAppSelector(state => state.createRequestForm.form.passengers);
+    
+    const [counts, setCounts] = useState<IPassengerCounts>({
+        adults: savedPassengers?.adults ?? 1,
+        children: savedPassengers?.children ?? 0,
+        infants: savedPassengers?.infants ?? 0,
     });
 
-    const handleDecrease = (type: keyof PassengerCounts) => {
+    // Update local state when saved passengers change (e.g., when reopening the sheet)
+    useEffect(() => {
+        if (savedPassengers) {
+            setCounts(savedPassengers);
+        }
+    }, [savedPassengers]);
+
+    const handleDecrease = (type: keyof IPassengerCounts) => {
         setCounts((prev) => {
             const newValue = Math.max(0, prev[type] - 1);
             // Ensure at least 1 adult if there are children or infants
@@ -31,7 +36,7 @@ export default function Passenger() {
         });
     };
 
-    const handleIncrease = (type: keyof PassengerCounts) => {
+    const handleIncrease = (type: keyof IPassengerCounts) => {
         setCounts((prev) => ({
             ...prev,
             [type]: prev[type] + 1,
@@ -39,7 +44,8 @@ export default function Passenger() {
     };
 
     const handleSave = () => {
-        // TODO: Save passenger counts to Redux store
+        // Save passenger counts to Redux store
+        dispatch(setCreateRequestFormField({passengers: counts}));
         dispatch(closeBottomSheet());
     };
 
@@ -50,7 +56,7 @@ export default function Passenger() {
     const renderPassengerRow = (
         label: string,
         ageRange: string,
-        type: keyof PassengerCounts
+        type: keyof IPassengerCounts
     ) => {
         const count = counts[type];
         const isDecreaseDisabled = count === 0 || (type === 'adults' && count === 1 && (counts.children > 0 || counts.infants > 0));
