@@ -3,6 +3,7 @@ import React from "react";
 import Search from "./Search/Search"
 import Passenger from "./RequestForm/Passenger/Passenger";
 import DatePicker from "./RequestForm/DatePicker/DatePicker";
+import TourismType from "./RequestForm/TourismType/TourismType";
 
 
 // rendering bottom sheet content deps on type
@@ -14,6 +15,8 @@ const BottomSheetContent = ({type, props}: any) => {
             return <Passenger/>
         case BOTTOM_SHEET.DATE_PICKER:
             return <DatePicker {...props} />;
+        case BOTTOM_SHEET.TOURISM_TYPE:
+            return <TourismType {...props}/>;
         default:
             return <Search {...props} />;
     }

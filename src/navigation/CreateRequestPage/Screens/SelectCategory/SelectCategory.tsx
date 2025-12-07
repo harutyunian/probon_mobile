@@ -9,7 +9,6 @@ import {
     setCreateRequestForm,
     setCreateRequestFormField
 } from "../../../../store/createRequestFormSlice/createRequestFormSlice";
-import {batch} from "react-redux";
 
 const CATEGORIES: Array<IRequestFormCategory> = [
     {label: "Entertainment", value: "entertainment"},
@@ -89,6 +88,7 @@ export default function SelectCategory() {
                             setOpen={(open) => {
                                 setCategoryOpen(open);
                                 // todo: partadir fixel
+                                //@ts-ignore
                                 if (open) {
                                     setSubCategoryOpen(false);
                                 }
@@ -130,6 +130,7 @@ export default function SelectCategory() {
                                 setOpen={(open) => {
                                     setSubCategoryOpen(open);
                                     // todo: partadir fixel
+                                    //@ts-ignore
                                     if (open) {
                                         setCategoryOpen(false);
                                     }

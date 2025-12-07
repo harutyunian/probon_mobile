@@ -1,6 +1,6 @@
-import {View, Text, StyleSheet} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import {useMemo} from "react";
-import {useTheme, Checkbox, TextInput} from 'react-native-paper';
+import {Checkbox, TextInput, useTheme} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from "../../../../hooks/redux";
 import {openBottomSheet} from "../../../../store/bottomSheetSlice/bottomSheetSlice";
 import {BOTTOM_SHEET} from "../../../../store/bottomSheetSlice/types";
@@ -14,23 +14,23 @@ export default function RequestDetailsForm() {
         dispatch(openBottomSheet({type: BOTTOM_SHEET.SELECT_PASSENGER, width: "38%"}))
     }
     const handlePressCalendar = () => {
-         dispatch(openBottomSheet({type: BOTTOM_SHEET.DATE_PICKER, width: "50%"}))
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.DATE_PICKER, width: "50%"}))
     }
 
     const formattedDateRange = useMemo(() => {
         if (!dateRange?.startDate && !dateRange?.endDate) {
             return "Dates";
         }
-        
+
         const formatDate = (dateString: string) => {
             const date = new Date(dateString);
-            return date.toLocaleDateString('en-US', { 
-                month: 'short', 
+            return date.toLocaleDateString('en-US', {
+                month: 'short',
                 day: 'numeric',
-                year: 'numeric' 
+                year: 'numeric'
             });
         };
-        
+
         if (dateRange.startDate && dateRange.endDate) {
             return `${formatDate(dateRange.startDate)} - ${formatDate(dateRange.endDate)}`;
         } else if (dateRange.startDate) {
@@ -38,7 +38,7 @@ export default function RequestDetailsForm() {
         } else if (dateRange.endDate) {
             return `Until ${formatDate(dateRange.endDate)}`;
         }
-        
+
         return "Dates";
     }, [dateRange]);
 
@@ -48,7 +48,7 @@ export default function RequestDetailsForm() {
         }
 
         const parts: string[] = [];
-        
+
         if (passengers.adults > 0) {
             parts.push(`${passengers.adults} ${passengers.adults === 1 ? 'Adult' : 'Adults'}`);
         }
@@ -64,9 +64,13 @@ export default function RequestDetailsForm() {
             return "";
         }
 
-        const result = parts.join(', ');
-        return result;
+        return parts.join(', ');
     }, [passengers]);
+
+
+    const handlePressTourismType = () => {
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.TOURISM_TYPE, width: "40%"}))
+    }
 
     return <View style={styles.container}>
         <TextInput
@@ -103,9 +107,10 @@ export default function RequestDetailsForm() {
         <TextInput
             style={styles.textInput}
             outlineStyle={styles.inputRadius}
+            onPress={handlePressTourismType}
             mode="outlined"
-            placeholder="Tourism"
-            label="Types"
+            placeholder="Tourism Type*"
+            label="Tourism Type*"
             left={<TextInput.Icon icon="flag-variant-outline"/>}
         />
         <TextInput

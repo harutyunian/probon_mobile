@@ -36,6 +36,8 @@ import quiz from '../../../assets/icons/quiz.svg';
 import support_agent from '../../../assets/icons/support_agent.svg';
 import landScape from '../../../assets/icons/landscape.svg';
 import close from '../../../assets/icons/close.svg';
+import alertCircleOutline from '../../../assets/icons/alert-circle-outline.svg';
+
 
 
 // ✅ OPTIMIZED: Icon map with direct imports
@@ -73,6 +75,7 @@ const iconMap = {
     support_agent,
     closedUmbrella,
     profileApproved,
+    alertCircleOutline,
     infinity: infinityIcon
 };
 

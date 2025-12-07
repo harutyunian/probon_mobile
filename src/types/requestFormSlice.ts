@@ -16,6 +16,11 @@ export interface IPassengerCounts {
     infants: number;
 }
 
+export interface ITourismType {
+    type: string;
+    value: string;
+}
+
 export  interface IRequestState {
     page: number;
     nextButtonDisabled: boolean;
@@ -25,5 +30,7 @@ export  interface IRequestState {
         subCategory: IRequestFormCategory;
         dateRange?: IDateRange;
         passengers?: IPassengerCounts;
+        tourismType?: ITourismType;
+        isGroupTour?: boolean;
     }
 }
