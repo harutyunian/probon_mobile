@@ -26,6 +26,10 @@ export interface IPriceRange {
     max: number;
 }
 
+export interface IRating {
+    ratings: number[]; // Array of selected star ratings (e.g., [5, 4, 3])
+}
+
 export  interface IRequestState {
     page: number;
     nextButtonDisabled: boolean;
@@ -38,5 +42,6 @@ export  interface IRequestState {
         tourismType?: ITourismType;
         isGroupTour?: boolean;
         priceRange?: IPriceRange;
+        rating?: IRating;
     }
 }
