@@ -9,6 +9,7 @@ import {
     TabScreen,
 } from 'react-native-paper-tabs';
 import SelectCategory from "./Screens/SelectCategory/SelectCategory";
+import PropertyForm from "./Screens/PropertyForm/PropertyForm";
 
 
 export function CreateRequestPage() {
@@ -24,14 +25,14 @@ export function CreateRequestPage() {
             defaultIndex={0}
         >
             <Tabs>
-                <TabScreen label="Request">
+                <TabScreen label="Category">
                     <SelectCategory/>
                 </TabScreen>
-                <TabScreen label="Ticket">
+                <TabScreen label="Request">
                     <RequestDetailsForm/>
                 </TabScreen>
                 <TabScreen label="Property">
-                    <RequestDetailsForm/>
+                    <PropertyForm/>
                 </TabScreen>
                 <TabScreen label="Review">
                     <RequestDetailsForm/>

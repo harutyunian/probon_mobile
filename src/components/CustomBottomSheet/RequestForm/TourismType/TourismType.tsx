@@ -14,6 +14,10 @@ const tourismTypes = [
     {type: "Business travel", value: "business", hasInfo: false},
     {type: "Adventure travel", value: "adventure", hasInfo: false},
     {type: "Ecotourism", value: "ecotourism", hasInfo: false},
+    {type: "Leisure travel2", value: "leisasdure", hasInfo: false},
+    {type: "Business trave3", value: "busasdsainess", hasInfo: false},
+    {type: "Adventure travel4", value: "advasdaenture", hasInfo: false},
+    {type: "Ecotou55rism", value: "ecotoasdasurism", hasInfo: false},
 ];
 
 export default function TourismType() {
@@ -106,7 +110,7 @@ export default function TourismType() {
                     <View style={style.listItemContent}>
                         <View style={style.listItemLeft}>
                             {isSelected && !showError && (
-                                <Icon source="check" size={20} color={theme.colors.primary} style={style.checkIcon} />
+                                <Icon source="check" size={20} color={theme.colors.primary} />
                             )}
                             <Text style={[
                                 style.listItemText,
@@ -168,7 +172,7 @@ export default function TourismType() {
                 keyExtractor={(item) => item.value}
                 renderItem={renderListItem}
                 contentContainerStyle={style.listContainer}
-                estimatedItemSize={56}
+                // estimatedItemSize={56}
             />
         </View>
     );
@@ -178,7 +182,9 @@ const style = StyleSheet.create({
     container: {
         paddingHorizontal: 16,
         width: '100%',
-        flex: 1,
+        // todo: poxel arxitekturan vor 100% lini 100%
+        height: '180%',
+        // flex: 1,
     },
     heading: {
         flexDirection: "row",
@@ -205,6 +211,7 @@ const style = StyleSheet.create({
     },
     listContainer: {
         paddingBottom: 40,
+        height: "150%"
     },
     listItem: {
         paddingVertical: 12,

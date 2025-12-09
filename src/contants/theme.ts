@@ -104,7 +104,7 @@ export const calendarTheme: CalendarTheme = {
                     borderStyle: "solid",
                 },
                 content: {
-                    color: "#FFFFFF",
+                    color: "#000000",
                     fontWeight: isMiddleDate ? "400" : "600",
                 },
             };

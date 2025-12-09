@@ -21,6 +21,11 @@ export interface ITourismType {
     value: string;
 }
 
+export interface IPriceRange {
+    min: number;
+    max: number;
+}
+
 export  interface IRequestState {
     page: number;
     nextButtonDisabled: boolean;
@@ -32,5 +37,6 @@ export  interface IRequestState {
         passengers?: IPassengerCounts;
         tourismType?: ITourismType;
         isGroupTour?: boolean;
+        priceRange?: IPriceRange;
     }
 }

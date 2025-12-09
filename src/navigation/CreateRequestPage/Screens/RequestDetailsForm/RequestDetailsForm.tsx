@@ -69,7 +69,10 @@ export default function RequestDetailsForm() {
 
 
     const handlePressTourismType = () => {
-        dispatch(openBottomSheet({type: BOTTOM_SHEET.TOURISM_TYPE, width: "40%"}))
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.TOURISM_TYPE, width: "60%"}))
+    }
+    const handlePressPriceRange = () => {
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.PRICE_RANGE, width: "40%"}))
     }
 
     return <View style={styles.container}>
@@ -124,6 +127,7 @@ export default function RequestDetailsForm() {
         <TextInput
             style={styles.textInput}
             outlineStyle={styles.inputRadius}
+            onPress={handlePressPriceRange}
             mode="outlined"
             placeholder="Price range"
             label="Price range"
