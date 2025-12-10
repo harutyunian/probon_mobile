@@ -6,6 +6,7 @@ import DatePicker from "./RequestForm/DatePicker/DatePicker";
 import TourismType from "./RequestForm/TourismType/TourismType";
 import {PricerRange} from "./RequestForm/PricerRange/PricerRange";
 import Rating from "./RequestForm/Rating/Rating";
+import PropertyType from "./RequestForm/PropertyType/PropertyType";
 
 
 // rendering bottom sheet content deps on type
@@ -23,6 +24,8 @@ const BottomSheetContent = ({type, props}: any) => {
             return <PricerRange {...props} />;
         case BOTTOM_SHEET.RATING:
             return <Rating {...props} />;
+        case BOTTOM_SHEET.PROPERTY_TYPE:
+            return <PropertyType {...props} />;
         default:
             return <Search {...props} />;
     }

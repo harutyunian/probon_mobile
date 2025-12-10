@@ -12,6 +12,9 @@ export default function PropertyForm() {
     const handlePressRating = () => {
         dispatch(openBottomSheet({type: BOTTOM_SHEET.RATING, width: "40%"}))
     }
+    const handlePressProperty = () => {
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.PROPERTY_TYPE, width: "40%"}))
+    }
 
     return <View style={styles.container}>
 
@@ -25,6 +28,7 @@ export default function PropertyForm() {
                 mode="outlined"
                 placeholder="Property Type"
                 label="Property Type"
+                onPress={handlePressProperty}
                 left={<TextInput.Icon icon="domain"/>}
             />
             <TextInput
@@ -96,7 +100,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 56
     },
-    heading:{
+    heading: {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",

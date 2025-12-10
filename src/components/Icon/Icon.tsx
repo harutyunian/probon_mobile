@@ -37,6 +37,7 @@ import support_agent from '../../../assets/icons/support_agent.svg';
 import landScape from '../../../assets/icons/landscape.svg';
 import close from '../../../assets/icons/close.svg';
 import alertCircleOutline from '../../../assets/icons/alert-circle-outline.svg';
+import checkmarkIcon from '../../../assets/icons/checkMark.svg';
 
 
 
@@ -73,6 +74,7 @@ const iconMap = {
     locationIcon,
     manage_search,
     support_agent,
+    checkmarkIcon,
     closedUmbrella,
     profileApproved,
     alertCircleOutline,
