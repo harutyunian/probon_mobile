@@ -2,7 +2,7 @@ import {StyleSheet, View} from 'react-native';
 import {Button} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import RequestDetailsForm from "./Screens/RequestDetailsForm/RequestDetailsForm";
-import {nextPage} from "../../store/createRequestFormSlice/createRequestFormSlice";
+import {nextPage, prevPage} from "../../store/createRequestFormSlice/createRequestFormSlice";
 import {
     Tabs,
     TabScreen,
@@ -11,6 +11,8 @@ import {
 } from 'react-native-paper-tabs';
 import SelectCategory from "./Screens/SelectCategory/SelectCategory";
 import PropertyForm from "./Screens/PropertyForm/PropertyForm";
+import {withDecay} from "react-native-reanimated";
+import {useMemo} from "react";
 
 
 export function CreateRequestContent() {
@@ -29,28 +31,43 @@ export function CreateRequestContent() {
         goToTab(page + 1);
     }
 
+    const handlePressBack = () => {
+        dispatch(prevPage());
+        goToTab(page - 1);
+    }
+
+    const showBackButton = useMemo(() => page >= 1, [page])
 
     return (<><Tabs>
         <TabScreen label="Category">
             <SelectCategory/>
         </TabScreen>
-        <TabScreen label="Request" disabled={disableRequest}>
+        <TabScreen label="Request">
             <RequestDetailsForm/>
         </TabScreen>
-        <TabScreen label="Property" disabled={disableProperty}>
+        <TabScreen label="Property">
             <PropertyForm/>
         </TabScreen>
-        <TabScreen label="Review" disabled={disableReview}>
+        <TabScreen label="Review">
             <RequestDetailsForm/>
         </TabScreen>
     </Tabs>
-        <Button
-            onPress={handlePressNext}
-            disabled={nextButtonDisabled}
-            style={styles.nextButton}
-            mode="contained"
-        >Next
-        </Button>
+        <View style={styles.container}>
+            {showBackButton && <Button
+                onPress={handlePressBack}
+                disabled={nextButtonDisabled}
+                style={[styles.nextButton, {width: "30%"}]}
+                mode="outlined"
+            >Back
+            </Button>}
+            <Button
+                onPress={handlePressNext}
+                disabled={nextButtonDisabled}
+                style={[styles.nextButton, {width: showBackButton ? "50%" : "90%"}]}
+                mode="contained"
+            >Next
+            </Button>
+        </View>
     </>)
 
 }
@@ -63,7 +80,11 @@ export function CreateRequestPage() {
 }
 
 const styles = StyleSheet.create({
-
+    container: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
     nextButton: {
         marginBottom: 20,
         marginHorizontal: 16
