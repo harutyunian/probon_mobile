@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from "react-native";
+import {Pressable, StyleSheet, Text, View} from "react-native";
 import {useMemo} from "react";
 import {Checkbox, TextInput, useTheme} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from "../../../../hooks/redux";
@@ -84,38 +84,45 @@ export default function RequestDetailsForm() {
             label="Request title"
             left={<TextInput.Icon icon="format-title"/>}
         />
-        <TextInput
-            key={`people-${formattedPassengers}`}
-            onPress={handlePressPeople}
-            style={styles.textInput}
-            outlineStyle={styles.inputRadius}
-            mode="outlined"
-            placeholder="People"
-            label="People"
-            value={formattedPassengers}
-            editable={false}
-            left={<TextInput.Icon icon="account"/>}
-        />
-        <TextInput
-            style={styles.textInput}
-            outlineStyle={styles.inputRadius}
-            onPress={handlePressCalendar}
-            mode="outlined"
-            placeholder="Dates"
-            label="Dates"
-            value={formattedDateRange}
-            editable={false}
-            left={<TextInput.Icon icon="calendar-range-outline"/>}
-        />
-        <TextInput
-            style={styles.textInput}
-            outlineStyle={styles.inputRadius}
-            onPress={handlePressTourismType}
-            mode="outlined"
-            placeholder="Tourism Type*"
-            label="Tourism Type*"
-            left={<TextInput.Icon icon="flag-variant-outline"/>}
-        />
+        <Pressable onPress={handlePressPeople} style={styles.textInput}>
+            <TextInput
+                key={`people-${formattedPassengers}`}
+                style={styles.textInput}
+                outlineStyle={styles.inputRadius}
+                mode="outlined"
+                placeholder="People"
+                label="People"
+                value={formattedPassengers}
+                editable={false}
+                pointerEvents="none"
+                left={<TextInput.Icon icon="account"/>}
+            />
+        </Pressable>
+        <Pressable onPress={handlePressCalendar} style={styles.textInput}>
+            <TextInput
+                style={styles.textInput}
+                outlineStyle={styles.inputRadius}
+                mode="outlined"
+                placeholder="Dates"
+                label="Dates"
+                value={formattedDateRange}
+                editable={false}
+                pointerEvents="none"
+                left={<TextInput.Icon icon="calendar-range-outline"/>}
+            />
+        </Pressable>
+        <Pressable onPress={handlePressTourismType} style={styles.textInput}>
+            <TextInput
+                style={styles.textInput}
+                outlineStyle={styles.inputRadius}
+                mode="outlined"
+                placeholder="Tourism Type*"
+                label="Tourism Type*"
+                editable={false}
+                pointerEvents="none"
+                left={<TextInput.Icon icon="flag-variant-outline"/>}
+            />
+        </Pressable>
         <TextInput
             style={styles.textInput}
             outlineStyle={styles.inputRadius}
@@ -124,15 +131,18 @@ export default function RequestDetailsForm() {
             label="Tour & event"
             left={<TextInput.Icon icon="search-web"/>}
         />
-        <TextInput
-            style={styles.textInput}
-            outlineStyle={styles.inputRadius}
-            onPress={handlePressPriceRange}
-            mode="outlined"
-            placeholder="Price range"
-            label="Price range"
-            left={<TextInput.Icon icon="currency-usd"/>}
-        />
+        <Pressable onPress={handlePressPriceRange} style={styles.textInput}>
+            <TextInput
+                style={styles.textInput}
+                outlineStyle={styles.inputRadius}
+                mode="outlined"
+                placeholder="Price range"
+                label="Price range"
+                editable={false}
+                pointerEvents="none"
+                left={<TextInput.Icon icon="currency-usd"/>}
+            />
+        </Pressable>
         <Text>Please write price range in a currency you selected from
             <Text style={{
                 color: theme.colors.primary,

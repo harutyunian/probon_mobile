@@ -22,7 +22,14 @@ function CustomBottomSheet() {
     const bottomSheetHeight = useMemo(() => height * 0.30, [height]);
 
     // ✅ OPTIMIZATION #6: Memoize snap points to prevent recalculation
-    const snapPoints = useMemo(() => [bottomSheetHeight, width], [bottomSheetHeight, width]);
+    // Convert percentage string to number for snapPoints (required by @gorhom/bottom-sheet)
+    const snapPoints = useMemo(() => {
+        const widthPercent = typeof width === 'string' 
+            ? parseFloat(width.replace('%', '')) 
+            : width;
+        const widthValue = (widthPercent / 100) * height;
+        return [bottomSheetHeight, widthValue];
+    }, [bottomSheetHeight, width, height]);
 
     // Control Bottom Sheet open/close based on Redux state
     useEffect(() => {

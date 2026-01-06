@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, View} from "react-native";
+import {Pressable, ScrollView, StyleSheet, View} from "react-native";
 import {TextInput} from "react-native-paper";
 import {useAppDispatch} from "../../../../hooks/redux";
 import {openBottomSheet} from "../../../../store/bottomSheetSlice/bottomSheetSlice";
@@ -22,24 +22,30 @@ export default function PropertyForm() {
             contentContainerStyle={styles.formContainer}
             showsVerticalScrollIndicator={false}
         >
-            <TextInput
-                style={styles.textInput}
-                outlineStyle={styles.inputRadius}
-                mode="outlined"
-                placeholder="Property Type"
-                label="Property Type"
-                onPress={handlePressProperty}
-                left={<TextInput.Icon icon="domain"/>}
-            />
-            <TextInput
-                style={styles.textInput}
-                outlineStyle={styles.inputRadius}
-                mode="outlined"
-                placeholder="Rating"
-                label="Rating"
-                onPress={handlePressRating}
-                left={<TextInput.Icon icon="star-outline"/>}
-            />
+            <Pressable onPress={handlePressProperty} style={styles.textInput}>
+                <TextInput
+                    style={styles.textInput}
+                    outlineStyle={styles.inputRadius}
+                    mode="outlined"
+                    placeholder="Property Type"
+                    label="Property Type"
+                    editable={false}
+                    pointerEvents="none"
+                    left={<TextInput.Icon icon="domain"/>}
+                />
+            </Pressable>
+            <Pressable onPress={handlePressRating} style={styles.textInput}>
+                <TextInput
+                    style={styles.textInput}
+                    outlineStyle={styles.inputRadius}
+                    mode="outlined"
+                    placeholder="Rating"
+                    label="Rating"
+                    editable={false}
+                    pointerEvents="none"
+                    left={<TextInput.Icon icon="star-outline"/>}
+                />
+            </Pressable>
             <TextInput
                 style={styles.textInput}
                 outlineStyle={styles.inputRadius}
