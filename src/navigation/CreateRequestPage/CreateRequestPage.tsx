@@ -11,7 +11,6 @@ import {
 } from 'react-native-paper-tabs';
 import SelectCategory from "./Screens/SelectCategory/SelectCategory";
 import PropertyForm from "./Screens/PropertyForm/PropertyForm";
-import {withDecay} from "react-native-reanimated";
 import {useMemo} from "react";
 
 
@@ -42,20 +41,19 @@ export function CreateRequestContent() {
         <TabScreen label="Category">
             <SelectCategory/>
         </TabScreen>
-        <TabScreen label="Request">
+        <TabScreen label="Request" disabled={disableRequest}>
             <RequestDetailsForm/>
         </TabScreen>
-        <TabScreen label="Property">
+        <TabScreen label="Property" disabled={disableProperty}>
             <PropertyForm/>
         </TabScreen>
-        <TabScreen label="Review">
+        <TabScreen label="Review" disabled={disableReview}>
             <RequestDetailsForm/>
         </TabScreen>
     </Tabs>
         <View style={styles.container}>
             {showBackButton && <Button
                 onPress={handlePressBack}
-                disabled={nextButtonDisabled}
                 style={[styles.nextButton, {width: "30%"}]}
                 mode="outlined"
             >Back
