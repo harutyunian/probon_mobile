@@ -11,10 +11,10 @@ export default function RequestDetailsForm() {
     const {dateRange, passengers} = useAppSelector(state => state.createRequestForm.form);
 
     const handlePressPeople = () => {
-        dispatch(openBottomSheet({type: BOTTOM_SHEET.SELECT_PASSENGER, width: "38%"}))
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.SELECT_PASSENGER}))
     }
     const handlePressCalendar = () => {
-        dispatch(openBottomSheet({type: BOTTOM_SHEET.DATE_PICKER, width: "50%"}))
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.DATE_PICKER, height: "50%"}))
     }
 
     const formattedDateRange = useMemo(() => {
@@ -69,10 +69,10 @@ export default function RequestDetailsForm() {
 
 
     const handlePressTourismType = () => {
-        dispatch(openBottomSheet({type: BOTTOM_SHEET.TOURISM_TYPE, width: "60%"}))
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.TOURISM_TYPE, height: "60%"}))
     }
     const handlePressPriceRange = () => {
-        dispatch(openBottomSheet({type: BOTTOM_SHEET.PRICE_RANGE, width: "40%"}))
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.PRICE_RANGE, height: "40%"}))
     }
 
     return <View style={styles.container}>

@@ -10,10 +10,10 @@ export default function PropertyForm() {
 
 
     const handlePressRating = () => {
-        dispatch(openBottomSheet({type: BOTTOM_SHEET.RATING, width: "40%"}))
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.RATING}))
     }
     const handlePressProperty = () => {
-        dispatch(openBottomSheet({type: BOTTOM_SHEET.PROPERTY_TYPE, width: "40%"}))
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.PROPERTY_TYPE}))
     }
 
     return <View style={styles.container}>
