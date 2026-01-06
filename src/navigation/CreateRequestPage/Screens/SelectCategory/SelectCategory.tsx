@@ -62,7 +62,7 @@ export default function SelectCategory() {
             dispatch(setCreateRequestFormField({
                 subCategory: {label: item.label, value: item.value}
             }));
-            dispatch(setCreateRequestForm({nextButtonDisabled: false}));
+            dispatch(setCreateRequestForm({nextButtonDisabled: false, disableRequest: false}));
 
         }
 

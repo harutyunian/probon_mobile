@@ -7,6 +7,9 @@ const initialState: IRequestState = {
     page: 0,
     showPrevButton: false,
     nextButtonDisabled: true,
+    disableRequest: true,
+    disableProperty: true,
+    disableReview: true,
     form:{
         category: {label:"", value:""},
         subCategory:{label:"", value:""}
@@ -23,6 +26,7 @@ const createRequestFormSlice = createSlice({
                 ...state,
                 ...(action.payload.page !== undefined && { page: action.payload.page }),
                 ...(action.payload.nextButtonDisabled !== undefined && { nextButtonDisabled: action.payload.nextButtonDisabled }),
+                ...(action.payload.disableRequest !== undefined && { disableRequest: action.payload.disableRequest }),
                 ...(action.payload.showPrevButton !== undefined && { showPrevButton: action.payload.showPrevButton }),
                 ...(action.payload.form && { form: { ...state.form, ...action.payload.form } })
             }

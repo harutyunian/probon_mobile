@@ -34,6 +34,9 @@ export  interface IRequestState {
     page: number;
     nextButtonDisabled: boolean;
     showPrevButton: boolean;
+    disableRequest: boolean,
+    disableProperty: boolean,
+    disableReview: boolean,
     form:{
         category: IRequestFormCategory;
         subCategory: IRequestFormCategory;

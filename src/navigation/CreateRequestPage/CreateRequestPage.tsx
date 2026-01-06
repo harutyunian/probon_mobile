@@ -4,41 +4,46 @@ import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import RequestDetailsForm from "./Screens/RequestDetailsForm/RequestDetailsForm";
 import {nextPage} from "../../store/createRequestFormSlice/createRequestFormSlice";
 import {
-    TabsProvider,
     Tabs,
     TabScreen,
+    TabsProvider,
+    useTabNavigation
 } from 'react-native-paper-tabs';
 import SelectCategory from "./Screens/SelectCategory/SelectCategory";
 import PropertyForm from "./Screens/PropertyForm/PropertyForm";
 
 
-export function CreateRequestPage() {
-    const {nextButtonDisabled, page} = useAppSelector(state => state.createRequestForm);
+export function CreateRequestContent() {
+    const {
+        nextButtonDisabled,
+        disableRequest,
+        disableProperty,
+        disableReview,
+        page
+    } = useAppSelector(state => state.createRequestForm);
     const dispatch = useAppDispatch();
+    const goToTab = useTabNavigation()
 
     const handlePressNext = () => {
         dispatch(nextPage());
+        goToTab(page + 1);
     }
 
-    return <View style={styles.container}>
-        <TabsProvider
-            defaultIndex={0}
-        >
-            <Tabs>
-                <TabScreen label="Category">
-                    <SelectCategory/>
-                </TabScreen>
-                <TabScreen label="Request">
-                    <RequestDetailsForm/>
-                </TabScreen>
-                <TabScreen label="Property">
-                    <PropertyForm/>
-                </TabScreen>
-                <TabScreen label="Review">
-                    <RequestDetailsForm/>
-                </TabScreen>
-            </Tabs>
-        </TabsProvider>
+
+    return (<><Tabs>
+        <TabScreen label="Category">
+            <SelectCategory/>
+        </TabScreen>
+        <TabScreen label="Request" disabled={disableRequest}>
+            <RequestDetailsForm/>
+        </TabScreen>
+        <TabScreen label="Property" disabled={disableProperty}>
+            <PropertyForm/>
+        </TabScreen>
+        <TabScreen label="Review" disabled={disableReview}>
+            <RequestDetailsForm/>
+        </TabScreen>
+    </Tabs>
         <Button
             onPress={handlePressNext}
             disabled={nextButtonDisabled}
@@ -46,13 +51,19 @@ export function CreateRequestPage() {
             mode="contained"
         >Next
         </Button>
-    </View>
+    </>)
+
+}
+
+export function CreateRequestPage() {
+    return <TabsProvider defaultIndex={0}>
+        <CreateRequestContent/>
+    </TabsProvider>
+
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
+
     nextButton: {
         marginBottom: 20,
         marginHorizontal: 16
