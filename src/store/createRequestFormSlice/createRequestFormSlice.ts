@@ -22,31 +22,34 @@ const createRequestFormSlice = createSlice({
     initialState,
     reducers: {
         setCreateRequestForm(state, action: PayloadAction<Partial<IRequestState>>) {
-            return {
-                ...state,
-                ...(action.payload.page !== undefined && {page: action.payload.page}),
-                ...(action.payload.nextButtonDisabled !== undefined && {nextButtonDisabled: action.payload.nextButtonDisabled}),
-                ...(action.payload.disableRequest !== undefined && {disableRequest: action.payload.disableRequest}),
-                ...(action.payload.showPrevButton !== undefined && {showPrevButton: action.payload.showPrevButton}),
-                ...(action.payload.form && {form: {...state.form, ...action.payload.form}})
+            if (action.payload.page !== undefined) {
+                state.page = action.payload.page;
+            }
+            if (action.payload.nextButtonDisabled !== undefined) {
+                state.nextButtonDisabled = action.payload.nextButtonDisabled;
+            }
+            if (action.payload.disableRequest !== undefined) {
+                state.disableRequest = action.payload.disableRequest;
+            }
+            if (action.payload.showPrevButton !== undefined) {
+                state.showPrevButton = action.payload.showPrevButton;
+            }
+            if (action.payload.form) {
+                Object.assign(state.form, action.payload.form);
             }
         },
         setCreateRequestFormField(state, action: PayloadAction<Partial<IRequestForm>>) {
-            return {
-                ...state,
-                form: {...state.form, ...action.payload}
-            }
+            Object.assign(state.form, action.payload);
         },
         nextPage(state) {
-            const page = state.page += 1;
-            if (page === 1){
-                state.nextButtonDisabled = true
+            state.page += 1;
+            if (state.page === 1) {
+                state.nextButtonDisabled = true;
             }
-             state.page = page
         },
         prevPage(state) {
             if (state.page > 0) {
-                state.nextButtonDisabled = false
+                state.nextButtonDisabled = false;
                 state.page -= 1;
             }
         }

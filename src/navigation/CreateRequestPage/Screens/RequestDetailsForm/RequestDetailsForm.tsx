@@ -8,7 +8,10 @@ import {BOTTOM_SHEET} from "../../../../store/bottomSheetSlice/types";
 export default function RequestDetailsForm() {
     const theme = useTheme();
     const dispatch = useAppDispatch();
-    const {dateRange, passengers} = useAppSelector(state => state.createRequestForm.form);
+    
+    // Separate selectors to prevent re-renders when category/subcategory changes
+    const dateRange = useAppSelector(state => state.createRequestForm.form.dateRange);
+    const passengers = useAppSelector(state => state.createRequestForm.form.passengers);
 
     const handlePressPeople = () => {
         dispatch(openBottomSheet({type: BOTTOM_SHEET.SELECT_PASSENGER}))

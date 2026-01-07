@@ -11,62 +11,74 @@ import {
 } from 'react-native-paper-tabs';
 import SelectCategory from "./Screens/SelectCategory/SelectCategory";
 import PropertyForm from "./Screens/PropertyForm/PropertyForm";
-import {useMemo} from "react";
+import {memo, useCallback, useMemo} from "react";
 
+const SelectCategoryMemo = memo(SelectCategory);
+const RequestDetailsFormMemo = memo(RequestDetailsForm);
+const PropertyFormMemo = memo(PropertyForm);
+
+const TabsContent = memo(() => {
+    const {disableProperty, disableRequest, disableReview} = useAppSelector(state=>state.createRequestForm)
+    return (
+        <Tabs>
+            <TabScreen label="Category">
+                <SelectCategoryMemo/>
+            </TabScreen>
+            <TabScreen label="Request" disabled={disableProperty}>
+                <RequestDetailsFormMemo/>
+            </TabScreen>
+            <TabScreen label="Property" disabled={disableRequest}>
+                <PropertyFormMemo/>
+            </TabScreen>
+            <TabScreen label="Review" disabled={disableReview}>
+                <RequestDetailsFormMemo />
+            </TabScreen>
+        </Tabs>
+    );
+});
+
+TabsContent.displayName = 'TabsContent';
 
 export function CreateRequestContent() {
-    const {
-        nextButtonDisabled,
-        disableRequest,
-        disableProperty,
-        disableReview,
-        page
-    } = useAppSelector(state => state.createRequestForm);
+    // Separate selectors to prevent re-renders when form fields change
+    const nextButtonDisabled = useAppSelector(state => state.createRequestForm.nextButtonDisabled);
+    const page = useAppSelector(state => state.createRequestForm.page);
+    
     const dispatch = useAppDispatch();
     const goToTab = useTabNavigation()
 
-    const handlePressNext = () => {
+    const handlePressNext = useCallback(() => {
         dispatch(nextPage());
         goToTab(page + 1);
-    }
+    }, [dispatch, goToTab, page]);
 
-    const handlePressBack = () => {
+    const handlePressBack = useCallback(() => {
         dispatch(prevPage());
         goToTab(page - 1);
-    }
+    }, [dispatch, goToTab, page]);
 
     const showBackButton = useMemo(() => page >= 1, [page])
 
-    return (<><Tabs>
-        <TabScreen label="Category">
-            <SelectCategory/>
-        </TabScreen>
-        <TabScreen label="Request" disabled={disableRequest}>
-            <RequestDetailsForm/>
-        </TabScreen>
-        <TabScreen label="Property" disabled={disableProperty}>
-            <PropertyForm/>
-        </TabScreen>
-        <TabScreen label="Review" disabled={disableReview}>
-            <RequestDetailsForm/>
-        </TabScreen>
-    </Tabs>
-        <View style={styles.container}>
-            {showBackButton && <Button
-                onPress={handlePressBack}
-                style={[styles.nextButton, {width: "30%"}]}
-                mode="outlined"
-            >Back
-            </Button>}
-            <Button
-                onPress={handlePressNext}
-                disabled={nextButtonDisabled}
-                style={[styles.nextButton, {width: showBackButton ? "50%" : "90%"}]}
-                mode="contained"
-            >Next
-            </Button>
-        </View>
-    </>)
+    return (
+        <>
+            <TabsContent />
+            <View style={styles.container}>
+                {showBackButton && <Button
+                    onPress={handlePressBack}
+                    style={[styles.nextButton, {width: "30%"}]}
+                    mode="outlined"
+                >Back
+                </Button>}
+                <Button
+                    onPress={handlePressNext}
+                    disabled={nextButtonDisabled}
+                    style={[styles.nextButton, {width: showBackButton ? "50%" : "90%"}]}
+                    mode="contained"
+                >Next
+                </Button>
+            </View>
+        </>
+    )
 
 }
 
