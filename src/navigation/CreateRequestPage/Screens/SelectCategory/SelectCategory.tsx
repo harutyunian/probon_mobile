@@ -1,86 +1,35 @@
-import {StyleSheet, View} from "react-native";
-import {Text} from "react-native-paper";
+import {StyleSheet, View, TouchableOpacity} from "react-native";
+import {Text, TextInput} from "react-native-paper";
 import Icon from "../../../../components/Icon/Icon";
-import {IRequestFormCategory} from "../../../../types/requestFormSlice";
 import {useAppDispatch, useAppSelector} from "../../../../hooks/redux";
-import {
-    setCreateRequestForm,
-    setCreateRequestFormField
-} from "../../../../store/createRequestFormSlice/createRequestFormSlice";
-import {SearchableDropdown} from "../../../../components/SearchableDropDown/SearchableDropDown";
-
-const CATEGORIES: Array<IRequestFormCategory> = [
-    {label: "Entertainment", value: "entertainment"},
-    {label: "Travel", value: "travel"}
-];
-
-const SUBCATEGORIES: Record<string, Array<IRequestFormCategory>> = {
-    entertainment: [
-        {label: "Movies", value: "movies"},
-        {label: "Music", value: "music"},
-        {label: "Sports", value: "sports"},
-        {label: "Events", value: "events"}
-    ],
-    travel: [
-        {label: "Hotels", value: "hotels"},
-        {label: "Flights", value: "flights"},
-        {label: "Tours", value: "tours"},
-        {label: "Activities", value: "activities"}
-    ]
-};
+import {useCallback, useMemo} from "react";
+import {openBottomSheet} from "../../../../store/bottomSheetSlice/bottomSheetSlice";
+import {BOTTOM_SHEET} from "../../../../store/bottomSheetSlice/types";
 
 export default function SelectCategory() {
     const dispatch = useAppDispatch();
     
-    // Optimize Redux selector to only extract what we need
     const category = useAppSelector(state => state.createRequestForm.form.category);
     const subCategory = useAppSelector(state => state.createRequestForm.form.subCategory);
 
-    // Memoize derived values
     const showSubCategory = useMemo(
         () => category?.value !== null && category?.value !== "",
         [category?.value]
     );
 
-    const subCategoryItems = useMemo(
-        () => category?.value && SUBCATEGORIES[category.value]
-            ? SUBCATEGORIES[category.value]
-            : [],
-        [category?.value]
-    );
+    const handleOpenCategorySheet = useCallback(() => {
+        dispatch(openBottomSheet({
+            type: BOTTOM_SHEET.CATEGORY_SELECT,
+            height: "75%"
+        }));
+    }, [dispatch]);
 
-    const handleChangeCategory = useCallback((value: string) => {
-        // Don't dispatch if same value is selected
-        if (category?.value === value) {
-            return;
-        }
-
-        const selectedItem = CATEGORIES.find(item => item.value === value);
-        if (selectedItem) {
-            dispatch(setCreateRequestFormField({
-                category: {label: selectedItem.label, value: selectedItem.value}
-            }));
-            dispatch(setCreateRequestFormField({
-                subCategory: {label: "", value: ""}
-            }));
-            dispatch(setCreateRequestForm({nextButtonDisabled: true}));
-        }
-    }, [dispatch, category?.value]);
-
-    const handleChangeSubCategory = useCallback((value: string) => {
-        // Don't dispatch if same value is selected
-        if (subCategory?.value === value) {
-            return;
-        }
-
-        const selectedItem = subCategoryItems.find(item => item.value === value);
-        if (selectedItem) {
-            dispatch(setCreateRequestFormField({
-                subCategory: {label: selectedItem.label, value: selectedItem.value}
-            }));
-            dispatch(setCreateRequestForm({nextButtonDisabled: false, disableRequest: false}));
-        }
-    }, [dispatch, subCategoryItems, subCategory?.value]);
+    const handleOpenSubcategorySheet = useCallback(() => {
+        dispatch(openBottomSheet({
+            type: BOTTOM_SHEET.SUBCATEGORY_SELECT,
+            height: "75%"
+        }));
+    }, [dispatch]);
 
     return (
         <View style={styles.container}>
@@ -93,25 +42,39 @@ export default function SelectCategory() {
             <View style={styles.dropdownsContainer}>
                 <View style={styles.fieldWrapper}>
                     {showSubCategory && <Text style={styles.fieldLabel}>Category</Text>}
-                    <SearchableDropdown
-                        options={CATEGORIES}
-                        value={category?.value || null}
-                        onSelect={handleChangeCategory}
-                        placeholder="Select category"
-                        searchPlaceholder="Search categories..."
-                    />
+                    <TouchableOpacity 
+                        onPress={handleOpenCategorySheet}
+                        activeOpacity={0.7}
+                    >
+                        <TextInput
+                            value={category?.label || ''}
+                            placeholder="Select category"
+                            editable={false}
+                            mode="outlined"
+                            style={styles.input}
+                            right={<TextInput.Icon icon="chevron-down" />}
+                            pointerEvents="none"
+                        />
+                    </TouchableOpacity>
                 </View>
 
                 {showSubCategory && (
                     <View style={styles.fieldWrapper}>
                         <Text style={styles.fieldLabel}>Subcategory</Text>
-                        <SearchableDropdown
-                            options={subCategoryItems}
-                            value={subCategory?.value || null}
-                            onSelect={handleChangeSubCategory}
-                            placeholder="Select subcategory"
-                            searchPlaceholder="Search subcategories..."
-                        />
+                        <TouchableOpacity 
+                            onPress={handleOpenSubcategorySheet}
+                            activeOpacity={0.7}
+                        >
+                            <TextInput
+                                value={subCategory?.label || ''}
+                                placeholder="Select subcategory"
+                                editable={false}
+                                mode="outlined"
+                                style={styles.input}
+                                right={<TextInput.Icon icon="chevron-down" />}
+                                pointerEvents="none"
+                            />
+                        </TouchableOpacity>
                     </View>
                 )}
             </View>
@@ -150,5 +113,8 @@ const styles = StyleSheet.create({
         color: '#000',
         marginBottom: 8,
         marginLeft: 4,
+    },
+    input: {
+        backgroundColor: '#fff',
     },
 });
