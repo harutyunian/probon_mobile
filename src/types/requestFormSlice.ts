@@ -36,6 +36,21 @@ export interface IFacilityOption {
     value: string;
 }
 
+export interface IMealOption {
+    label: string;
+    value: string;
+}
+
+export interface IRoomOption {
+    label: string;
+    value: string;
+}
+
+export interface IRoomSelection {
+    count: number;
+    types: IRoomOption[];
+}
+
 export interface IRating {
     ratings: number[]; // Array of selected star ratings (e.g., [5, 4, 3])
 }
@@ -58,5 +73,7 @@ export  interface IRequestState {
         rating?: IRating;
         propertyTypes?: IPropertyTypeOption[];
         facilities?: IFacilityOption[];
+        meals?: IMealOption[];
+        room?: IRoomSelection;
     }
 }

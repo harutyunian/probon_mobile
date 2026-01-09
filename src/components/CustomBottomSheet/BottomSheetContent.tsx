@@ -8,6 +8,8 @@ import {PricerRange} from "./RequestForm/PricerRange/PricerRange";
 import Rating from "./RequestForm/Rating/Rating";
 import PropertyType from "./RequestForm/PropertyType/PropertyType";
 import Facilities from "./RequestForm/Facilities/Facilities";
+import Room from "./RequestForm/Room/Room";
+import Meals from "./RequestForm/Meals/Meals";
 import CategorySelector from "./RequestForm/CategorySelector/CategorySelector";
 
 
@@ -30,6 +32,10 @@ const BottomSheetContent = ({type, props}: any) => {
             return <PropertyType {...props} />;
         case BOTTOM_SHEET.FACILITIES:
             return <Facilities {...props} />;
+        case BOTTOM_SHEET.ROOM:
+            return <Room {...props} />;
+        case BOTTOM_SHEET.MEALS:
+            return <Meals {...props} />;
         case BOTTOM_SHEET.CATEGORY_SELECT:
             return <CategorySelector {...props} isSubcategory={false} />;
         case BOTTOM_SHEET.SUBCATEGORY_SELECT:

@@ -16,6 +16,8 @@ const initialState: IRequestState = {
         rating: {ratings: []},
         propertyTypes: [],
         facilities: [],
+        meals: [],
+        room: {count: 1, types: []},
     }
 
 }

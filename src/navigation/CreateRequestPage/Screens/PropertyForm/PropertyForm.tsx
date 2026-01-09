@@ -11,6 +11,8 @@ export default function PropertyForm() {
     const propertyTypes = useAppSelector(state => state.createRequestForm.form.propertyTypes);
     const rating = useAppSelector(state => state.createRequestForm.form.rating);
     const facilities = useAppSelector(state => state.createRequestForm.form.facilities);
+    const meals = useAppSelector(state => state.createRequestForm.form.meals);
+    const room = useAppSelector(state => state.createRequestForm.form.room);
 
     const propertyTypesLabel = useMemo(() => {
         if (!propertyTypes || propertyTypes.length === 0) {
@@ -34,6 +36,21 @@ export default function PropertyForm() {
         return facilities.map(f => f.label).join(", ");
     }, [facilities]);
 
+    const mealsLabel = useMemo(() => {
+        if (!meals || meals.length === 0) {
+            return "";
+        }
+        return meals.map(m => m.label).join(", ");
+    }, [meals]);
+
+    const roomLabel = useMemo(() => {
+        if (!room || !room.types || room.types.length === 0) {
+            return "";
+        }
+        const types = room.types.map(t => t.label).join(", ");
+        return `${types} • ${room.count}`;
+    }, [room]);
+
 
     const handlePressRating = () => {
         dispatch(openBottomSheet({type: BOTTOM_SHEET.RATING}))
@@ -43,6 +60,12 @@ export default function PropertyForm() {
     }
     const handlePressProperty = () => {
         dispatch(openBottomSheet({type: BOTTOM_SHEET.PROPERTY_TYPE}))
+    }
+    const handlePressMeals = () => {
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.MEALS}))
+    }
+    const handlePressRoom = () => {
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.ROOM}))
     }
 
     return <View style={styles.container}>
@@ -90,29 +113,32 @@ export default function PropertyForm() {
                     left={<TextInput.Icon icon="checkbox-multiple-marked-outline"/>}
                 />
             </Pressable>
-            <TextInput
-                style={styles.textInput}
-                outlineStyle={styles.inputRadius}
-                mode="outlined"
-                placeholder="Room"
-                label="Room"
-                left={<TextInput.Icon icon="bed-outline"/>}
-            />
-            <TextInput
-                style={styles.textInput}
-                outlineStyle={styles.inputRadius}
-                mode="outlined"
-                placeholder="Room Facilities"
-                label="Room Facilities"
-            />
-            <TextInput
-                style={styles.textInput}
-                outlineStyle={styles.inputRadius}
-                mode="outlined"
-                placeholder="Meals"
-                label="Meals"
-                left={<TextInput.Icon icon="food-fork-drink"/>}
-            />
+            <Pressable onPress={handlePressRoom} style={styles.textInput}>
+                <TextInput
+                    style={styles.textInput}
+                    outlineStyle={styles.inputRadius}
+                    mode="outlined"
+                    placeholder="Room"
+                    label="Room"
+                    editable={false}
+                    pointerEvents="none"
+                    value={roomLabel}
+                    left={<TextInput.Icon icon="bed-outline"/>}
+                />
+            </Pressable>
+            <Pressable onPress={handlePressMeals} style={styles.textInput}>
+                <TextInput
+                    style={styles.textInput}
+                    outlineStyle={styles.inputRadius}
+                    mode="outlined"
+                    placeholder="Meals"
+                    label="Meals"
+                    editable={false}
+                    pointerEvents="none"
+                    value={mealsLabel}
+                    left={<TextInput.Icon icon="food-fork-drink"/>}
+                />
+            </Pressable>
             <TextInput
                 style={[styles.textInput, {height: 118}]}
                 outlineStyle={styles.inputRadius}
