@@ -4,6 +4,7 @@ import {useAppDispatch, useAppSelector} from "../../../../hooks/redux";
 import {openBottomSheet} from "../../../../store/bottomSheetSlice/bottomSheetSlice";
 import {BOTTOM_SHEET} from "../../../../store/bottomSheetSlice/types";
 import {useMemo} from "react";
+import {setCreateRequestFormField} from "../../../../store/createRequestFormSlice/createRequestFormSlice";
 
 
 export default function PropertyForm() {
@@ -13,6 +14,7 @@ export default function PropertyForm() {
     const facilities = useAppSelector(state => state.createRequestForm.form.facilities);
     const meals = useAppSelector(state => state.createRequestForm.form.meals);
     const room = useAppSelector(state => state.createRequestForm.form.room);
+    const notes = useAppSelector(state => state.createRequestForm.form.notes);
 
     const propertyTypesLabel = useMemo(() => {
         if (!propertyTypes || propertyTypes.length === 0) {
@@ -147,6 +149,8 @@ export default function PropertyForm() {
                 placeholder="Notes"
                 numberOfLines={2}
                 label="Notes"
+                value={notes}
+                onChangeText={(text) => dispatch(setCreateRequestFormField({notes: text}))}
                 left={<TextInput.Icon icon="note-edit-outline"/>}
             />
         </ScrollView>

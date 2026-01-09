@@ -12,13 +12,15 @@ import {
 import SelectCategory from "./Screens/SelectCategory/SelectCategory";
 import PropertyForm from "./Screens/PropertyForm/PropertyForm";
 import {memo, useCallback, useMemo} from "react";
+import Review from "./Screens/Review/Review";
 
 const SelectCategoryMemo = memo(SelectCategory);
 const RequestDetailsFormMemo = memo(RequestDetailsForm);
 const PropertyFormMemo = memo(PropertyForm);
+const ReviewMemo = memo(Review);
 
 const TabsContent = memo(() => {
-    const {disableProperty, disableRequest, disableReview} = useAppSelector(state=>state.createRequestForm)
+    const {disableProperty, disableRequest, disableReview} = useAppSelector(state => state.createRequestForm)
     return (
         <Tabs>
             <TabScreen label="Category">
@@ -31,7 +33,7 @@ const TabsContent = memo(() => {
                 <PropertyFormMemo/>
             </TabScreen>
             <TabScreen label="Review" disabled={disableReview}>
-                <RequestDetailsFormMemo />
+                <ReviewMemo/>
             </TabScreen>
         </Tabs>
     );
@@ -43,14 +45,19 @@ export function CreateRequestContent() {
     // Separate selectors to prevent re-renders when form fields change
     const nextButtonDisabled = useAppSelector(state => state.createRequestForm.nextButtonDisabled);
     const page = useAppSelector(state => state.createRequestForm.page);
-    
+    const isLastTab = page >= 3; // 4 tabs: 0-3
+
     const dispatch = useAppDispatch();
     const goToTab = useTabNavigation()
 
     const handlePressNext = useCallback(() => {
+        if (isLastTab) {
+            // TODO: trigger submit/create request flow here
+            return;
+        }
         dispatch(nextPage());
         goToTab(page + 1);
-    }, [dispatch, goToTab, page]);
+    }, [dispatch, goToTab, page, isLastTab]);
 
     const handlePressBack = useCallback(() => {
         dispatch(prevPage());
@@ -61,7 +68,7 @@ export function CreateRequestContent() {
 
     return (
         <>
-            <TabsContent />
+            <TabsContent/>
             <View style={styles.container}>
                 {showBackButton && <Button
                     onPress={handlePressBack}
@@ -74,7 +81,7 @@ export function CreateRequestContent() {
                     disabled={nextButtonDisabled}
                     style={[styles.nextButton, {width: showBackButton ? "50%" : "90%"}]}
                     mode="contained"
-                >Next
+                >{isLastTab ? "Create request" : "Next"}
                 </Button>
             </View>
         </>

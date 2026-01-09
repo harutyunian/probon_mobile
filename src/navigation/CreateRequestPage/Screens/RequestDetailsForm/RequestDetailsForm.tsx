@@ -4,7 +4,7 @@ import {Checkbox, TextInput, useTheme} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from "../../../../hooks/redux";
 import {openBottomSheet} from "../../../../store/bottomSheetSlice/bottomSheetSlice";
 import {BOTTOM_SHEET} from "../../../../store/bottomSheetSlice/types";
-import {setCreateRequestForm} from "../../../../store/createRequestFormSlice/createRequestFormSlice";
+import {setCreateRequestForm, setCreateRequestFormField} from "../../../../store/createRequestFormSlice/createRequestFormSlice";
 
 export default function RequestDetailsForm() {
     const theme = useTheme();
@@ -17,6 +17,9 @@ export default function RequestDetailsForm() {
     const tourismType = useAppSelector(state => state.createRequestForm.form.tourismType);
     const isGroupTour = useAppSelector(state => state.createRequestForm.form.isGroupTour);
     const page = useAppSelector(state => state.createRequestForm.page);
+    const requestTitle = useAppSelector(state => state.createRequestForm.form.requestTitle);
+    const toursEvent = useAppSelector(state => state.createRequestForm.form.toursEvent);
+    const visaIncluded = useAppSelector(state => state.createRequestForm.form.visaIncluded);
 
     const handlePressPeople = () => {
         dispatch(openBottomSheet({type: BOTTOM_SHEET.SELECT_PASSENGER}))
@@ -110,13 +113,6 @@ export default function RequestDetailsForm() {
         return `${tourismType.type}${suffix}`;
     }, [tourismType, isGroupTour]);
 
-    const tourAndEventValue = useMemo(() => {
-        if (isGroupTour === undefined) {
-            return "";
-        }
-        return isGroupTour ? "Group tour" : "Private tour";
-    }, [isGroupTour]);
-
     // Enable Next when all required Request fields are filled; disable otherwise.
     useEffect(() => {
         if (page !== 1) {
@@ -153,6 +149,8 @@ export default function RequestDetailsForm() {
             mode="outlined"
             placeholder="Request title"
             label="Request title"
+            value={requestTitle}
+            onChangeText={(text) => dispatch(setCreateRequestFormField({requestTitle: text}))}
             left={<TextInput.Icon icon="format-title"/>}
         />
         <Pressable onPress={handlePressPeople} style={styles.textInput}>
@@ -201,9 +199,8 @@ export default function RequestDetailsForm() {
             mode="outlined"
             placeholder="Tour & event"
             label="Tour & event"
-            editable={false}
-            pointerEvents="none"
-            value={tourAndEventValue}
+            value={toursEvent}
+            onChangeText={(text) => dispatch(setCreateRequestFormField({toursEvent: text}))}
             left={<TextInput.Icon icon="search-web"/>}
         />
         <Pressable onPress={handlePressPriceRange} style={styles.textInput}>
@@ -228,7 +225,8 @@ export default function RequestDetailsForm() {
         </Text>
         <View style={styles.visaWrapper}>
             <Checkbox.Android
-                status={"checked"}
+                status={visaIncluded ? "checked" : "unchecked"}
+                onPress={() => dispatch(setCreateRequestFormField({visaIncluded: !visaIncluded}))}
             />
             <Text style={{marginLeft: 8}}>Visa Included</Text>
         </View>

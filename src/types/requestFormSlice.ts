@@ -75,5 +75,10 @@ export  interface IRequestState {
         facilities?: IFacilityOption[];
         meals?: IMealOption[];
         room?: IRoomSelection;
+        requestTitle?: string;
+        toursEvent?: string;
+        visaIncluded?: boolean;
+        roomFacilitiesText?: string;
+        notes?: string;
     }
 }

@@ -18,6 +18,11 @@ const initialState: IRequestState = {
         facilities: [],
         meals: [],
         room: {count: 1, types: []},
+        requestTitle: "",
+        toursEvent: "",
+        visaIncluded: true,
+        roomFacilitiesText: "",
+        notes: "",
     }
 
 }
