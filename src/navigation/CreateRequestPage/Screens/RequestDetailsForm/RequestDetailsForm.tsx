@@ -17,7 +17,7 @@ export default function RequestDetailsForm() {
         dispatch(openBottomSheet({type: BOTTOM_SHEET.SELECT_PASSENGER}))
     }
     const handlePressCalendar = () => {
-        dispatch(openBottomSheet({type: BOTTOM_SHEET.DATE_PICKER, height: "50%"}))
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.DATE_PICKER, height: "65%"}))
     }
 
     const formattedDateRange = useMemo(() => {
