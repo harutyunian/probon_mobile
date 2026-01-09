@@ -12,7 +12,10 @@ const initialState: IRequestState = {
     disableReview: true,
     form: {
         category: {label: "", value: ""},
-        subCategory: {label: "", value: ""}
+        subCategory: {label: "", value: ""},
+        rating: {ratings: []},
+        propertyTypes: [],
+        facilities: [],
     }
 
 }

@@ -7,6 +7,7 @@ import TourismType from "./RequestForm/TourismType/TourismType";
 import {PricerRange} from "./RequestForm/PricerRange/PricerRange";
 import Rating from "./RequestForm/Rating/Rating";
 import PropertyType from "./RequestForm/PropertyType/PropertyType";
+import Facilities from "./RequestForm/Facilities/Facilities";
 import CategorySelector from "./RequestForm/CategorySelector/CategorySelector";
 
 
@@ -27,6 +28,8 @@ const BottomSheetContent = ({type, props}: any) => {
             return <Rating {...props} />;
         case BOTTOM_SHEET.PROPERTY_TYPE:
             return <PropertyType {...props} />;
+        case BOTTOM_SHEET.FACILITIES:
+            return <Facilities {...props} />;
         case BOTTOM_SHEET.CATEGORY_SELECT:
             return <CategorySelector {...props} isSubcategory={false} />;
         case BOTTOM_SHEET.SUBCATEGORY_SELECT:

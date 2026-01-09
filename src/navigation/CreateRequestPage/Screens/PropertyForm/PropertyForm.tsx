@@ -1,16 +1,45 @@
 import {Pressable, ScrollView, StyleSheet, View} from "react-native";
 import {TextInput} from "react-native-paper";
-import {useAppDispatch} from "../../../../hooks/redux";
+import {useAppDispatch, useAppSelector} from "../../../../hooks/redux";
 import {openBottomSheet} from "../../../../store/bottomSheetSlice/bottomSheetSlice";
 import {BOTTOM_SHEET} from "../../../../store/bottomSheetSlice/types";
+import {useMemo} from "react";
 
 
 export default function PropertyForm() {
     const dispatch = useAppDispatch();
+    const propertyTypes = useAppSelector(state => state.createRequestForm.form.propertyTypes);
+    const rating = useAppSelector(state => state.createRequestForm.form.rating);
+    const facilities = useAppSelector(state => state.createRequestForm.form.facilities);
+
+    const propertyTypesLabel = useMemo(() => {
+        if (!propertyTypes || propertyTypes.length === 0) {
+            return "";
+        }
+        return propertyTypes.map(p => p.label).join(", ");
+    }, [propertyTypes]);
+
+    const ratingLabel = useMemo(() => {
+        const stars = rating?.ratings;
+        if (!stars || stars.length === 0) {
+            return "";
+        }
+        return stars.map(s => `${s}★`).join(", ");
+    }, [rating]);
+
+    const facilitiesLabel = useMemo(() => {
+        if (!facilities || facilities.length === 0) {
+            return "";
+        }
+        return facilities.map(f => f.label).join(", ");
+    }, [facilities]);
 
 
     const handlePressRating = () => {
         dispatch(openBottomSheet({type: BOTTOM_SHEET.RATING}))
+    }
+    const handlePressFacilities = () => {
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.FACILITIES}))
     }
     const handlePressProperty = () => {
         dispatch(openBottomSheet({type: BOTTOM_SHEET.PROPERTY_TYPE}))
@@ -31,6 +60,7 @@ export default function PropertyForm() {
                     label="Property Type"
                     editable={false}
                     pointerEvents="none"
+                    value={propertyTypesLabel}
                     left={<TextInput.Icon icon="domain"/>}
                 />
             </Pressable>
@@ -43,16 +73,23 @@ export default function PropertyForm() {
                     label="Rating"
                     editable={false}
                     pointerEvents="none"
+                    value={ratingLabel}
                     left={<TextInput.Icon icon="star-outline"/>}
                 />
             </Pressable>
-            <TextInput
-                style={styles.textInput}
-                outlineStyle={styles.inputRadius}
-                mode="outlined"
-                placeholder="Facilities"
-                label="Facilities"
-            />
+            <Pressable onPress={handlePressFacilities} style={styles.textInput}>
+                <TextInput
+                    style={styles.textInput}
+                    outlineStyle={styles.inputRadius}
+                    mode="outlined"
+                    placeholder="Facilities"
+                    label="Facilities"
+                    editable={false}
+                    pointerEvents="none"
+                    value={facilitiesLabel}
+                    left={<TextInput.Icon icon="checkbox-multiple-marked-outline"/>}
+                />
+            </Pressable>
             <TextInput
                 style={styles.textInput}
                 outlineStyle={styles.inputRadius}

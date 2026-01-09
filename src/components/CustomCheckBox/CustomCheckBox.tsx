@@ -2,7 +2,7 @@ import {View, Text, StyleSheet, TouchableOpacity, TextStyle} from "react-native"
 import type {ViewStyle} from "react-native";
 import Icon, {type IconType} from "../Icon/Icon";
 import {useTheme} from "react-native-paper";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 interface IData {
     label: any;
@@ -13,6 +13,7 @@ interface IProps {
     data: Array<IData>,
     multiSelect?: boolean,
     onChange: (value: Array<IData>) => void,
+    value?: Array<IData>,
     containerStyle?: ViewStyle,
     checkboxContainerStyle?: ViewStyle,
     textStyle?: TextStyle,
@@ -53,8 +54,15 @@ const CheckBoxItem = (props: IItemProps) => {
 
 
 export default function CustomCheckBox(props: IProps) {
-    const {data, multiSelect = false, onChange, ...rest} = props;
-    const [selectedItems, setSelectedItems] = useState<Array<IData>>([]);
+    const {data, multiSelect = false, onChange, value, ...rest} = props;
+    const [selectedItems, setSelectedItems] = useState<Array<IData>>(value ?? []);
+
+    // keep internal state in sync with external value (e.g., saved selections)
+    useEffect(() => {
+        if (value) {
+            setSelectedItems(value);
+        }
+    }, [value]);
 
     const handleToggle = (item: IData) => {
         let newSelectedItems: Array<IData>;

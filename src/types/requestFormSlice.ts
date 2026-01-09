@@ -26,6 +26,16 @@ export interface IPriceRange {
     max: number;
 }
 
+export interface IPropertyTypeOption {
+    label: string;
+    value: string;
+}
+
+export interface IFacilityOption {
+    label: string;
+    value: string;
+}
+
 export interface IRating {
     ratings: number[]; // Array of selected star ratings (e.g., [5, 4, 3])
 }
@@ -46,5 +56,7 @@ export  interface IRequestState {
         isGroupTour?: boolean;
         priceRange?: IPriceRange;
         rating?: IRating;
+        propertyTypes?: IPropertyTypeOption[];
+        facilities?: IFacilityOption[];
     }
 }
