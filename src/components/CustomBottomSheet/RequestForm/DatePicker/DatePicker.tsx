@@ -249,6 +249,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: WHITE_COLOR,
+        width: "100%",
+        alignSelf: "stretch", // stretch to full bottom sheet width
+        paddingHorizontal: 12, // light side padding for comfort
     },
     header: {
         flexDirection: "row",
@@ -296,6 +299,8 @@ const styles = StyleSheet.create({
         color: SECONDARY_TEXT_COLOR,
     },
     calendar: {
-        paddingHorizontal: 10,
+        alignSelf: "stretch",
+        width: "100%",
+        paddingHorizontal: 0,
     },
 });

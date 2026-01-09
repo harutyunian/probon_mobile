@@ -1,4 +1,4 @@
-import {Pressable, StyleSheet, Text, View} from "react-native";
+import {Keyboard, Pressable, StyleSheet, Text, View} from "react-native";
 import {useEffect, useMemo} from "react";
 import {Checkbox, TextInput, useTheme} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from "../../../../hooks/redux";
@@ -22,6 +22,7 @@ export default function RequestDetailsForm() {
         dispatch(openBottomSheet({type: BOTTOM_SHEET.SELECT_PASSENGER}))
     }
     const handlePressCalendar = () => {
+        Keyboard.dismiss(); // prevent keyboard showing behind calendar sheet
         dispatch(openBottomSheet({type: BOTTOM_SHEET.DATE_PICKER, height: "65%"}))
     }
 
