@@ -12,6 +12,9 @@ export default function RequestDetailsForm() {
     // Separate selectors to prevent re-renders when category/subcategory changes
     const dateRange = useAppSelector(state => state.createRequestForm.form.dateRange);
     const passengers = useAppSelector(state => state.createRequestForm.form.passengers);
+    const priceRange = useAppSelector(state => state.createRequestForm.form.priceRange);
+    const tourismType = useAppSelector(state => state.createRequestForm.form.tourismType);
+    const isGroupTour = useAppSelector(state => state.createRequestForm.form.isGroupTour);
 
     const handlePressPeople = () => {
         dispatch(openBottomSheet({type: BOTTOM_SHEET.SELECT_PASSENGER}))
@@ -70,12 +73,53 @@ export default function RequestDetailsForm() {
         return parts.join(', ');
     }, [passengers]);
 
+    const formattedPriceRange = useMemo(() => {
+        if (!priceRange) {
+            return "";
+        }
+
+        const hasMin = typeof priceRange.min === "number";
+        const hasMax = typeof priceRange.max === "number";
+
+        if (hasMin && hasMax) {
+            return `$${priceRange.min} - $${priceRange.max}`;
+        }
+        if (hasMin) {
+            return `From $${priceRange.min}`;
+        }
+        if (hasMax) {
+            return `Up to $${priceRange.max}`;
+        }
+        return "";
+    }, [priceRange]);
+
+    const formattedTourismType = useMemo(() => {
+        if (!tourismType) {
+            return "";
+        }
+
+        const suffix = isGroupTour === undefined
+            ? ""
+            : isGroupTour
+                ? " • Group tour"
+                : " • Private tour";
+
+        return `${tourismType.type}${suffix}`;
+    }, [tourismType, isGroupTour]);
+
+    const tourAndEventValue = useMemo(() => {
+        if (isGroupTour === undefined) {
+            return "";
+        }
+        return isGroupTour ? "Group tour" : "Private tour";
+    }, [isGroupTour]);
+
 
     const handlePressTourismType = () => {
         dispatch(openBottomSheet({type: BOTTOM_SHEET.TOURISM_TYPE, height: "60%"}))
     }
     const handlePressPriceRange = () => {
-        dispatch(openBottomSheet({type: BOTTOM_SHEET.PRICE_RANGE, height: "40%"}))
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.PRICE_RANGE}))
     }
 
     return <View style={styles.container}>
@@ -123,6 +167,7 @@ export default function RequestDetailsForm() {
                 label="Tourism Type*"
                 editable={false}
                 pointerEvents="none"
+                value={formattedTourismType}
                 left={<TextInput.Icon icon="flag-variant-outline"/>}
             />
         </Pressable>
@@ -132,6 +177,9 @@ export default function RequestDetailsForm() {
             mode="outlined"
             placeholder="Tour & event"
             label="Tour & event"
+            editable={false}
+            pointerEvents="none"
+            value={tourAndEventValue}
             left={<TextInput.Icon icon="search-web"/>}
         />
         <Pressable onPress={handlePressPriceRange} style={styles.textInput}>
@@ -143,6 +191,7 @@ export default function RequestDetailsForm() {
                 label="Price range"
                 editable={false}
                 pointerEvents="none"
+                value={formattedPriceRange}
                 left={<TextInput.Icon icon="currency-usd"/>}
             />
         </Pressable>
