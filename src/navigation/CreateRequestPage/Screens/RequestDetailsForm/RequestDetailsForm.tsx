@@ -1,9 +1,10 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
-import {useMemo} from "react";
+import {useEffect, useMemo} from "react";
 import {Checkbox, TextInput, useTheme} from 'react-native-paper';
 import {useAppDispatch, useAppSelector} from "../../../../hooks/redux";
 import {openBottomSheet} from "../../../../store/bottomSheetSlice/bottomSheetSlice";
 import {BOTTOM_SHEET} from "../../../../store/bottomSheetSlice/types";
+import {setCreateRequestForm} from "../../../../store/createRequestFormSlice/createRequestFormSlice";
 
 export default function RequestDetailsForm() {
     const theme = useTheme();
@@ -15,6 +16,7 @@ export default function RequestDetailsForm() {
     const priceRange = useAppSelector(state => state.createRequestForm.form.priceRange);
     const tourismType = useAppSelector(state => state.createRequestForm.form.tourismType);
     const isGroupTour = useAppSelector(state => state.createRequestForm.form.isGroupTour);
+    const page = useAppSelector(state => state.createRequestForm.page);
 
     const handlePressPeople = () => {
         dispatch(openBottomSheet({type: BOTTOM_SHEET.SELECT_PASSENGER}))
@@ -113,6 +115,27 @@ export default function RequestDetailsForm() {
         }
         return isGroupTour ? "Group tour" : "Private tour";
     }, [isGroupTour]);
+
+    // Enable Next when all required Request fields are filled; disable otherwise.
+    useEffect(() => {
+        if (page !== 1) {
+            return;
+        }
+
+        const hasPassengers = !!(passengers && (passengers.adults + passengers.children + passengers.infants) > 0);
+        // Accept at least a start date; end date optional for validation
+        const hasDates = !!dateRange?.startDate;
+        const hasTourismType = !!tourismType?.value;
+        const hasPriceRange = typeof priceRange?.min === "number" && typeof priceRange?.max === "number";
+        const hasGroupChoice = typeof isGroupTour === "boolean";
+
+        const isRequestValid = hasPassengers && hasDates && hasTourismType && hasPriceRange && hasGroupChoice;
+
+        dispatch(setCreateRequestForm({
+            nextButtonDisabled: !isRequestValid,
+            disableRequest: !isRequestValid, // Keep Property tab locked until Request is valid
+        }));
+    }, [page, passengers, dateRange, tourismType, priceRange, isGroupTour, dispatch]);
 
 
     const handlePressTourismType = () => {
