@@ -1,40 +1,57 @@
 import SearchResult from "../SearchResult/SearchResult";
-import {TextInput} from 'react-native-paper'
-import React, {useState} from "react";
-import {Dimensions, StyleSheet} from "react-native";
-
-
-const {width} = Dimensions.get('window');
-
+import React, { useState } from "react";
+import { StyleSheet, View, useWindowDimensions, TextInput } from "react-native";
+import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import Icon from "../../Icon/Icon";
 
 export default function Search() {
     const [searchQuery, setSearchQuery] = useState<string>('');
+    const { width } = useWindowDimensions();
 
-
-    // Input change
     const handleSearchQueryChange = (text: string) => {
         setSearchQuery(text);
     };
 
-
-    return <><TextInput
-        outlineStyle={{borderRadius: 16}}
-        style={[styles.search, {width: width * 0.92}]}
-        mode="outlined"
-        label="Search"
-        value={searchQuery}
-        onChangeText={handleSearchQueryChange}
-        left={<TextInput.Icon icon="magnify"/>}
-    /><SearchResult/>
-        <SearchResult/>
-        <SearchResult/>
-        <SearchResult/>
-    </>
+    return (
+        <View style={styles.container}>
+            <View style={[styles.searchContainer, { width: width * 0.92 }]}>
+                <Icon name="search" size={20} color="#666" />
+                <BottomSheetTextInput
+                    style={styles.searchInput}
+                    placeholder="Search"
+                    placeholderTextColor="#999"
+                    value={searchQuery}
+                    onChangeText={handleSearchQueryChange}
+                />
+            </View>
+            <SearchResult />
+            <SearchResult />
+            <SearchResult />
+            <SearchResult />
+        </View>
+    );
 }
+
 const styles = StyleSheet.create({
-    search: {
-        backgroundColor: '#FFFFFF',
-        height: 56,
-        borderRadius: 160,
+    container: {
+        width: '100%',
+        alignItems: 'center',
     },
-})
+    searchContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#F5F5F5',
+        borderRadius: 16,
+        paddingHorizontal: 16,
+        height: 56,
+        marginBottom: 16,
+        borderWidth: 1,
+        borderColor: '#E0E0E0',
+    },
+    searchInput: {
+        flex: 1,
+        fontSize: 16,
+        marginLeft: 12,
+        color: '#333',
+    },
+});

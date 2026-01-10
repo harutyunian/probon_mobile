@@ -1,4 +1,6 @@
-// Import polyfill for useAnimatedGestureHandler before anything else
+// Required for react-native-gesture-handler (must be first import on Android)
+import 'react-native-gesture-handler';
+// Patch Reanimated with legacy gesture handler API for libs still calling useAnimatedGestureHandler
 import './src/utils/reanimatedPolyfill';
 
 import { registerRootComponent } from 'expo';
