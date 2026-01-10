@@ -1,5 +1,5 @@
 import {memo, useMemo} from "react";
-import {View, StyleSheet, Pressable} from "react-native";
+import {View, StyleSheet, Pressable, useWindowDimensions} from "react-native";
 import {Button, Text, useTheme} from 'react-native-paper';
 import {useNavigation} from "@react-navigation/native";
 import Icon from "../Icon/Icon";
@@ -11,9 +11,11 @@ import {getUniqueRandomThreeImages, IMAGES_LIST} from "../../mock/mock";
 function Card() {
     const theme = useTheme();
     // const {images} = mockPackageDetailsPackP;
+
+    const {width} = useWindowDimensions()
+
     const images = useMemo(() => {
         // Use seed based on id for deterministic randomness
-
         return getUniqueRandomThreeImages(IMAGES_LIST);
     }, []);
     const navigation = useNavigation();
@@ -22,10 +24,15 @@ function Card() {
         //@ts-ignore
         navigation.navigate(MAIN_ROUTES.PUBLIC.DETAILS.NAME);
     }
+
+    const cartWidth = useMemo(()=>{
+        // based on design card width is 44% of screen size.
+        return width * 0.44
+    },[width])
     return (
         <Pressable
             // todo margin lefte poxel a petq
-            style={[{width: 182, marginBottom: 20, margin: 10}]}
+            style={[{width: cartWidth, marginBottom: 20}]}
             onPress={handlePress}
         >
             <View>
@@ -56,7 +63,7 @@ function Card() {
                         contentStyle={styles.buttonContent}
                         labelStyle={styles.buttonLabel}
                     >
-                        Buy
+                        See offer
                     </Button>
                 </View>
             </View>

@@ -29,12 +29,15 @@ export function Home(): React.JSX.Element {
     useScrollToTop(ref);
 
     const {scrollY} = useContext(ScrollContext);
-    if (!scrollY) throw new Error('Home component must be inside ScrollContext.Provider');
 
+      const GAP = useMemo(()=>{
+          //0.039% it's a padding based on design screen width
+          return width * 0.039;
+      },[width]);
     // --- SCROLL HANDLER ---
     // Use plain function to avoid any Animated.event interop quirks within FlashList
     const handleOnScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
-        scrollY.setValue(event.nativeEvent.contentOffset.y);
+        scrollY && scrollY.setValue(event.nativeEvent.contentOffset.y);
     }, [scrollY]);
 
     // --- NUMBER OF COLUMNS ---
@@ -43,6 +46,7 @@ export function Home(): React.JSX.Element {
     // --- RENDER ITEM ---
     const renderItem = ({item}: ListRenderItemInfo<number>) => <MemoizedMainCard/>;
 
+    if (!scrollY) throw new Error('Home component must be inside ScrollContext.Provider');
     return (
         <View style={styles.container}>
             <View style={{height: HEADER_HEIGHT}}/>
@@ -57,8 +61,8 @@ export function Home(): React.JSX.Element {
                 removeClippedSubviews={true}
                 onScroll={handleOnScroll}
                 scrollEventThrottle={16}
-                contentContainerStyle={{paddingHorizontal: 10, paddingVertical: 65}}
-                scrollIndicatorInsets={{right: 1}}
+                contentContainerStyle={[styles.contentContainerStyle,{paddingLeft: GAP}]}
+                // scrollIndicatorInsets={{right: 1}}
                 showsVerticalScrollIndicator={false}
                 bounces={false}
                 decelerationRate="fast"
@@ -70,6 +74,12 @@ export function Home(): React.JSX.Element {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Platform.OS === 'ios' ? '#f0f0f0' : '#FFFFFF',
+        // backgroundColor: Platform.OS === 'ios' ? '#f0f0f0' : '#FFFFFF',
+        display: 'flex',
+        justifyContent: 'center',
+        width: '100%',
     },
+    contentContainerStyle: {
+        paddingVertical: 65
+    }
 });
