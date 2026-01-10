@@ -1,10 +1,10 @@
-import {BOTTOM_SHEET} from "../../store/bottomSheetSlice/types";
-import React from "react";
-import Search from "./Search/Search"
+import { BOTTOM_SHEET } from "../../store/bottomSheetSlice/types";
+import React, { memo } from "react";
+import Search from "./Search/Search";
 import Passenger from "./RequestForm/Passenger/Passenger";
 import DatePicker from "./RequestForm/DatePicker/DatePicker";
 import TourismType from "./RequestForm/TourismType/TourismType";
-import {PricerRange} from "./RequestForm/PricerRange/PricerRange";
+import { PricerRange } from "./RequestForm/PricerRange/PricerRange";
 import Rating from "./RequestForm/Rating/Rating";
 import PropertyType from "./RequestForm/PropertyType/PropertyType";
 import Facilities from "./RequestForm/Facilities/Facilities";
@@ -12,37 +12,39 @@ import Room from "./RequestForm/Room/Room";
 import Meals from "./RequestForm/Meals/Meals";
 import CategorySelector from "./RequestForm/CategorySelector/CategorySelector";
 
+interface BottomSheetContentProps {
+    type: BOTTOM_SHEET;
+}
 
-// rendering bottom sheet content deps on type
-const BottomSheetContent = ({type, props}: any) => {
+const BottomSheetContent = ({ type }: BottomSheetContentProps) => {
     switch (type) {
         case BOTTOM_SHEET.SEARCH:
-            return <Search {...props}  />;
+            return <Search />;
         case BOTTOM_SHEET.SELECT_PASSENGER:
-            return <Passenger {...props}/>
+            return <Passenger />;
         case BOTTOM_SHEET.DATE_PICKER:
-            return <DatePicker {...props} />;
+            return <DatePicker />;
         case BOTTOM_SHEET.TOURISM_TYPE:
-            return <TourismType {...props}/>;
+            return <TourismType />;
         case BOTTOM_SHEET.PRICE_RANGE:
-            return <PricerRange {...props} />;
+            return <PricerRange />;
         case BOTTOM_SHEET.RATING:
-            return <Rating {...props} />;
+            return <Rating />;
         case BOTTOM_SHEET.PROPERTY_TYPE:
-            return <PropertyType {...props} />;
+            return <PropertyType />;
         case BOTTOM_SHEET.FACILITIES:
-            return <Facilities {...props} />;
+            return <Facilities />;
         case BOTTOM_SHEET.ROOM:
-            return <Room {...props} />;
+            return <Room />;
         case BOTTOM_SHEET.MEALS:
-            return <Meals {...props} />;
+            return <Meals />;
         case BOTTOM_SHEET.CATEGORY_SELECT:
-            return <CategorySelector {...props} isSubcategory={false} />;
+            return <CategorySelector isSubcategory={false} />;
         case BOTTOM_SHEET.SUBCATEGORY_SELECT:
-            return <CategorySelector {...props} isSubcategory={true} />;
+            return <CategorySelector isSubcategory={true} />;
         default:
-            return <Search {...props} />;
+            return <Search />;
     }
 };
 
-export default BottomSheetContent;
+export default memo(BottomSheetContent);

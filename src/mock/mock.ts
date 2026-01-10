@@ -14,8 +14,7 @@ export const IMAGES_LIST = [
     "https://getcaddle.com/media/2018/11/France-Image-2.jpg",
     "https://www.travelandleisure.com/thmb/y9S6jErf5uFuvXdmyuLQdGa11CM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/TAL-vienna-lead-image-VIENNATG1123-20cc4869275043b1b9c370d0c7f69d51.jpg",
     "https://cdn.kimkim.com/files/a/content_articles/featured_photos/0e3794a0b646d638627afb626bf9ee46f472feb1/big-0bb2a2bea537c680f141d40cb484d888.jpg",
-    "https://aliatravelegypt.com/wp-content/uploads/2024/01/alia-travelegypt-cairo-7-800x450.webp",
-
+    "https://aliatravelegypt.com/wp-content/uploads/2024/01/alia-travelegypt-cairo-7-800x450.webp"
 ];
 export function getUniqueRandomThreeImages(images: string[]): { id: string; url: string }[] {
     const uniqueUrls = Array.from(new Set(images));

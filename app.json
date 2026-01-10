@@ -28,8 +28,9 @@
         "backgroundColor": "#5E4DED"
       },
       "jsEngine": "hermes",
-      "edgeToEdgeEnabled": true,
-      "allowBackup": false
+      "edgeToEdgeEnabled": false,
+      "allowBackup": false,
+      "softwareKeyboardLayoutMode": "resize"
     },
     "web": {
       "favicon": "./assets/favicon.png"
