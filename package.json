@@ -9,7 +9,8 @@
     "web": "expo start --web",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "build:androd:local": "eas build --platform android --local --profile production"
+    "build:androd:local": "eas build --platform android --local --profile production",
+    "build:android:prod": "eas build --platform android --profile production"
   },
   "dependencies": {
     "@birdwingo/react-native-instagram-stories": "^1.3.18",

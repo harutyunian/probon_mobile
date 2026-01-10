@@ -1,4 +1,4 @@
-import {memo} from "react";
+import {memo, useMemo} from "react";
 import {View, StyleSheet, Pressable} from "react-native";
 import {Button, Text, useTheme} from 'react-native-paper';
 import {useNavigation} from "@react-navigation/native";
@@ -11,7 +11,11 @@ import {getUniqueRandomThreeImages, IMAGES_LIST} from "../../mock/mock";
 function Card() {
     const theme = useTheme();
     // const {images} = mockPackageDetailsPackP;
-    const images = getUniqueRandomThreeImages(IMAGES_LIST)
+    const images = useMemo(() => {
+        // Use seed based on id for deterministic randomness
+
+        return getUniqueRandomThreeImages(IMAGES_LIST);
+    }, []);
     const navigation = useNavigation();
 
     const handlePress = () => {

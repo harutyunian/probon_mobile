@@ -1,9 +1,13 @@
 import React, {useCallback, useEffect, useRef, memo, useMemo} from 'react';
 import {
     StyleSheet,
-    Keyboard, useWindowDimensions
+    Keyboard,
+    useWindowDimensions,
+    Platform,
 } from 'react-native';
-import BottomSheet, {
+import {
+    BottomSheetModal,
+    BottomSheetModalProvider,
     BottomSheetBackdrop,
     BottomSheetView,
 } from '@gorhom/bottom-sheet';
@@ -12,42 +16,42 @@ import {useAppDispatch, useAppSelector} from '../../hooks/redux';
 import BottomSheetContent from "./BottomSheetContent";
 import {closeBottomSheet} from "../../store/bottomSheetSlice/bottomSheetSlice";
 
-function CustomBottomSheet() {
-    const bottomSheetRef = useRef<BottomSheet>(null);
-    const {type, isOpen, height: bottomSheetHeightParam} = useAppSelector((state) => state.bottomSheet);
+function CustomBottomSheetInner() {
+    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+    
+    // Use separate selectors for better performance
+    const type = useAppSelector((state) => state.bottomSheet.type);
+    const isOpen = useAppSelector((state) => state.bottomSheet.isOpen);
+    const bottomSheetHeightParam = useAppSelector((state) => state.bottomSheet.height);
+    
     const dispatch = useAppDispatch();
-    const {height: screenHeight} = useWindowDimensions()
+    const {height: screenHeight} = useWindowDimensions();
 
-    // ✅ OPTIMIZATION #6: Memoize bottom sheet height calculation
-    const minBottomSheetHeight = useMemo(() => screenHeight * 0.30, [screenHeight]);
-
-    // ✅ OPTIMIZATION #6: Memoize snap points to prevent recalculation
-    // Convert percentage string to number for snapPoints (required by @gorhom/bottom-sheet)
-    // If no height provided, snapPoints will be used with enableDynamicSizing
     const snapPoints = useMemo(() => {
-        if (!bottomSheetHeightParam) {
-            // No height provided - will use dynamic sizing based on content
-            return [minBottomSheetHeight];
-        }
+        const minHeight = screenHeight * 0.30;
         
-        const heightPercent = typeof bottomSheetHeightParam === 'string' 
-            ? parseFloat(bottomSheetHeightParam.replace('%', '')) 
+        if (!bottomSheetHeightParam) {
+            return [minHeight, screenHeight * 0.5];
+        }
+
+        const heightPercent = typeof bottomSheetHeightParam === 'string'
+            ? parseFloat(bottomSheetHeightParam.replace('%', ''))
             : bottomSheetHeightParam;
         const heightValue = (heightPercent / 100) * screenHeight;
-        return [minBottomSheetHeight, heightValue];
-    }, [minBottomSheetHeight, bottomSheetHeightParam, screenHeight]);
+        
+        return [minHeight, heightValue];
+    }, [bottomSheetHeightParam, screenHeight]);
 
-    // Control Bottom Sheet open/close based on Redux state
+    // Control open/close based on Redux state
     useEffect(() => {
-        Keyboard.dismiss();
         if (isOpen) {
-            bottomSheetRef.current?.expand();
+            Keyboard.dismiss();
+            bottomSheetModalRef.current?.present();
         } else {
-            bottomSheetRef.current?.close();
+            bottomSheetModalRef.current?.dismiss();
         }
     }, [isOpen]);
 
-    // ✅ OPTIMIZATION #6: Memoize backdrop render function to prevent re-renders
     const renderBackdrop = useCallback(
         (props: any) => (
             <BottomSheetBackdrop
@@ -61,36 +65,38 @@ function CustomBottomSheet() {
         []
     );
 
-    // ✅ OPTIMIZATION #6: Memoize close handlers to prevent child re-renders
-    const handleClose = useCallback(() => {
-        bottomSheetRef.current?.close(); // Only close, dispatch handled below
-    }, []);
-
-    const handleSheetClosed = useCallback(() => {
-        dispatch(closeBottomSheet()); // Update Redux after sheet is fully closed
-        bottomSheetRef.current?.close();
+    const handleDismiss = useCallback(() => {
+        dispatch(closeBottomSheet());
         Keyboard.dismiss();
     }, [dispatch]);
 
-    // ✅ OPTIMIZATION #6: Memoize keyboard dismiss to prevent recreation
-    const handleKeyboardDismiss = useCallback(() => {
-        Keyboard.dismiss();
-    }, []);
-
     return (
-        <BottomSheet
-            enablePanDownToClose={true}
-            enableDynamicSizing={!bottomSheetHeightParam}
-            ref={bottomSheetRef}
-            index={-1} // Initially closed
+        <BottomSheetModal
+            ref={bottomSheetModalRef}
+            index={1}
             snapPoints={snapPoints}
+            enablePanDownToClose={true}
+            enableDynamicSizing={false}
             backdropComponent={renderBackdrop}
-            onClose={handleSheetClosed} // Called after close animation
+            onDismiss={handleDismiss}
+            handleIndicatorStyle={styles.handleIndicator}
+            backgroundStyle={styles.background}
+            keyboardBehavior={Platform.OS === 'ios' ? 'interactive' : 'fillParent'}
+            keyboardBlurBehavior="restore"
+            android_keyboardInputMode="adjustResize"
         >
             <BottomSheetView style={styles.bottomSheetContainer}>
-                <BottomSheetContent type={type}/>
+                <BottomSheetContent type={type} />
             </BottomSheetView>
-        </BottomSheet>
+        </BottomSheetModal>
+    );
+}
+
+function CustomBottomSheet() {
+    return (
+        <BottomSheetModalProvider>
+            <CustomBottomSheetInner />
+        </BottomSheetModalProvider>
     );
 }
 
@@ -100,8 +106,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 16,
         paddingBottom: 120
+    },
+    handleIndicator: {
+        backgroundColor: '#DDDDDD',
+        width: 40,
+    },
+    background: {
+        backgroundColor: 'white',
     }
 });
 
-// ✅ OPTIMIZATION #6: Memoize the entire component to prevent parent re-renders
 export default memo(CustomBottomSheet);

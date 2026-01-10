@@ -1,4 +1,4 @@
-// Import polyfill for useAnimatedGestureHandler before anything else
+// Patch Reanimated with legacy gesture handler API for libs still calling useAnimatedGestureHandler
 import './src/utils/reanimatedPolyfill';
 
 import { registerRootComponent } from 'expo';
