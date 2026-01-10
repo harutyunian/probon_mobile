@@ -11,7 +11,7 @@ export default function SearchInput() {
     const dispatch = useAppDispatch()
 
     const handlePress = () => {
-        dispatch(openBottomSheet({type: BOTTOM_SHEET.SEARCH}))
+        dispatch(openBottomSheet({type: BOTTOM_SHEET.SEARCH, height: "90%"}))
     }
 
 

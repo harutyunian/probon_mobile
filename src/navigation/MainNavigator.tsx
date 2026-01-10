@@ -13,6 +13,7 @@ import UserRequestsPage from "../pages/UserRequest/UserRequest";
 import {useCallback} from "react";
 import type {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
 import type {RouteProp} from '@react-navigation/native';
+import {CreateRequestPage} from "./CreateRequestPage/CreateRequestPage";
 
 const Tab = createBottomTabNavigator();
 
@@ -70,9 +71,12 @@ export default function MainNavigator() {
                 <Tab.Screen
                     key={"Add"}
                     name={" "}
-                    component={PackageDetails}
+                    component={CreateRequestPage}
                     options={{
-                        tabBarShowLabel: false,
+                        title:"Create request",
+                        headerShown: true,
+                        tabBarShowLabel: true,
+                        tabBarLabel: () => null,
                         tabBarIcon: () => {
                             return <AddButton/>
                         }

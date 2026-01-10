@@ -14,15 +14,28 @@ import {closeBottomSheet} from "../../store/bottomSheetSlice/bottomSheetSlice";
 
 function CustomBottomSheet() {
     const bottomSheetRef = useRef<BottomSheet>(null);
-    const {type, isOpen} = useAppSelector((state) => state.bottomSheet);
+    const {type, isOpen, height: bottomSheetHeightParam} = useAppSelector((state) => state.bottomSheet);
     const dispatch = useAppDispatch();
-    const {height} = useWindowDimensions()
-    
+    const {height: screenHeight} = useWindowDimensions()
+
     // ✅ OPTIMIZATION #6: Memoize bottom sheet height calculation
-    const bottomSheetHeight = useMemo(() => height * 0.65, [height]);
+    const minBottomSheetHeight = useMemo(() => screenHeight * 0.30, [screenHeight]);
 
     // ✅ OPTIMIZATION #6: Memoize snap points to prevent recalculation
-    const snapPoints = useMemo(() => [bottomSheetHeight, '90%'], [bottomSheetHeight]);
+    // Convert percentage string to number for snapPoints (required by @gorhom/bottom-sheet)
+    // If no height provided, snapPoints will be used with enableDynamicSizing
+    const snapPoints = useMemo(() => {
+        if (!bottomSheetHeightParam) {
+            // No height provided - will use dynamic sizing based on content
+            return [minBottomSheetHeight];
+        }
+        
+        const heightPercent = typeof bottomSheetHeightParam === 'string' 
+            ? parseFloat(bottomSheetHeightParam.replace('%', '')) 
+            : bottomSheetHeightParam;
+        const heightValue = (heightPercent / 100) * screenHeight;
+        return [minBottomSheetHeight, heightValue];
+    }, [minBottomSheetHeight, bottomSheetHeightParam, screenHeight]);
 
     // Control Bottom Sheet open/close based on Redux state
     useEffect(() => {
@@ -67,13 +80,14 @@ function CustomBottomSheet() {
     return (
         <BottomSheet
             enablePanDownToClose={true}
+            enableDynamicSizing={!bottomSheetHeightParam}
             ref={bottomSheetRef}
             index={-1} // Initially closed
             snapPoints={snapPoints}
             backdropComponent={renderBackdrop}
             onClose={handleSheetClosed} // Called after close animation
         >
-            <BottomSheetView style={[styles.bottomSheetContainer, {height: bottomSheetHeight}]}>
+            <BottomSheetView style={styles.bottomSheetContainer}>
                 <BottomSheetContent type={type}/>
             </BottomSheetView>
         </BottomSheet>
@@ -85,6 +99,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         paddingVertical: 16,
+        paddingBottom: 120
     }
 });
 

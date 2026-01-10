@@ -1,3 +1,6 @@
+// Import polyfill for useAnimatedGestureHandler before anything else
+import './src/utils/reanimatedPolyfill';
+
 import { registerRootComponent } from 'expo';
 
 import App from './App';

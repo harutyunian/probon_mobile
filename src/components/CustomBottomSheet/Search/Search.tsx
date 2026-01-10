@@ -1,5 +1,5 @@
-import {TextInput} from "react-native-paper";
 import SearchResult from "../SearchResult/SearchResult";
+import {TextInput} from 'react-native-paper'
 import React, {useState} from "react";
 import {Dimensions, StyleSheet} from "react-native";
 
@@ -14,11 +14,10 @@ export default function Search() {
     // Input change
     const handleSearchQueryChange = (text: string) => {
         setSearchQuery(text);
-        console.log(text);
     };
 
 
-    return <> <TextInput
+    return <><TextInput
         outlineStyle={{borderRadius: 16}}
         style={[styles.search, {width: width * 0.92}]}
         mode="outlined"

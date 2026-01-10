@@ -34,6 +34,12 @@ import manage_search from '../../../assets/icons/manage_search.svg';
 import post_add from '../../../assets/icons/post_add.svg';
 import quiz from '../../../assets/icons/quiz.svg';
 import support_agent from '../../../assets/icons/support_agent.svg';
+import landScape from '../../../assets/icons/landscape.svg';
+import close from '../../../assets/icons/close.svg';
+import alertCircleOutline from '../../../assets/icons/alert-circle-outline.svg';
+import checkmarkIcon from '../../../assets/icons/checkMark.svg';
+
+
 
 // ✅ OPTIMIZED: Icon map with direct imports
 const iconMap = {
@@ -46,6 +52,7 @@ const iconMap = {
     quiz,
     home,
     tree,
+    close,
     clock,
     heart,
     phone,
@@ -60,14 +67,17 @@ const iconMap = {
     post_add,
     language,
     snowflake,
+    landScape,
     leftArrow,
     starFilled,
     credit_card,
     locationIcon,
     manage_search,
     support_agent,
+    checkmarkIcon,
     closedUmbrella,
     profileApproved,
+    alertCircleOutline,
     infinity: infinityIcon
 };
 
