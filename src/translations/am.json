@@ -1,0 +1,44 @@
+{
+  "welcome": "Բարի գալուստ հավելված!",
+  "greeting": "Բարև, աշխարհ!",
+  "changeLanguage": "Փոխել լեզուն",
+  "routes": {
+    "public": {
+      "home": "Գլխավոր",
+      "profile": "Պրոֆիլ",
+      "details": "Մանրամասներ",
+      "wishlist": "Ցանկություններ",
+      "requests": "Հարցումներ"
+    },
+    "private": {}
+  },
+  "pages": {
+    "packageDescription": {
+      "availability": "Առկայություն",
+      "duration": "Տևողություն",
+      "tourism_type": "Տուրիզմի տեսակ",
+      "age": "Տարիք",
+      "hotel": "Հյուրանոց"
+    }
+  },
+  "components": {
+    "badge": {
+      "buyNowGetSale": "Գնել հիմա, ստանալ զեղչ",
+      "bigSale": "Մեծ զեղչ",
+      "seasonDeal": "Երաժշտական առաջարկ",
+      "newYearDeal": "Նոր տարվա առաջարկ",
+      "forNewlyweds": "Նորապսակների համար",
+      "unforgettableMoments": "Հիշարժան պահեր",
+      "summerSale": "Ամառային զեղչ",
+      "autumnSale": "Աշնանային զեղչ",
+      "winterSale": "Ձմեռային զեղչ",
+      "springSale": "Գարնանային զեղչ",
+      "blackFriday": "Սև ուրբաթ",
+      "hotSale": "Թեժ զեղչ",
+      "finalSale": "Վերջնական զեղչ",
+      "hitOfSales": "Վաճառքի հիթ",
+      "uniqueOffer": "Անհատական առաջարկ",
+      "specialOffer": "Մասնավոր առաջարկ"
+    }
+  }
+}

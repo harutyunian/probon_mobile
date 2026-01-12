@@ -1,14 +1,44 @@
 {
   "welcome": "¡Bienvenido a la App!",
-  "greeting": "¡Hola, Mundo!",
-  "changeLanguage": "Cambiar Idioma",
+  "greeting": "¡Hola, mundo!",
+  "changeLanguage": "Cambiar idioma",
   "routes": {
     "public": {
-      "home": "Home",
-      "profile": "Profile",
-      "details": "Details",
-      "wishlist": "Wishlist",
-      "requests": "Requests"
+      "home": "Inicio",
+      "profile": "Perfil",
+      "details": "Detalles",
+      "wishlist": "Lista de deseos",
+      "requests": "Solicitudes"
+    },
+    "private": {}
+  },
+  "pages": {
+    "packageDescription": {
+      "availability": "Disponibilidad",
+      "duration": "Duración",
+      "tourism_type": "Tipo de turismo",
+      "age": "Edad",
+      "hotel": "Hotel"
+    }
+  },
+  "components": {
+    "badge": {
+      "buyNowGetSale": "Compra ahora y obtén descuento",
+      "bigSale": "Gran oferta",
+      "seasonDeal": "Oferta de temporada",
+      "newYearDeal": "Oferta de Año Nuevo",
+      "forNewlyweds": "Para recién casados",
+      "unforgettableMoments": "Momentos inolvidables",
+      "summerSale": "Oferta de verano",
+      "autumnSale": "Oferta de otoño",
+      "winterSale": "Oferta de invierno",
+      "springSale": "Oferta de primavera",
+      "blackFriday": "Black Friday",
+      "hotSale": "Oferta caliente",
+      "finalSale": "Oferta final",
+      "hitOfSales": "Éxito de ventas",
+      "uniqueOffer": "Oferta única",
+      "specialOffer": "Oferta especial"
     }
   }
 }

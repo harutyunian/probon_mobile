@@ -1,0 +1,44 @@
+{
+  "welcome": "Добро пожаловать в приложение!",
+  "greeting": "Привет, мир!",
+  "changeLanguage": "Сменить язык",
+  "routes": {
+    "public": {
+      "home": "Главная",
+      "profile": "Профиль",
+      "details": "Детали",
+      "wishlist": "Список желаемого",
+      "requests": "Запросы"
+    },
+    "private": {}
+  },
+  "pages": {
+    "packageDescription": {
+      "availability": "Доступность",
+      "duration": "Продолжительность",
+      "tourism_type": "Тип туризма",
+      "age": "Возраст",
+      "hotel": "Отель"
+    }
+  },
+  "components": {
+    "badge": {
+      "buyNowGetSale": "Купите сейчас и получите скидку",
+      "bigSale": "Большая распродажа",
+      "seasonDeal": "Сезонное предложение",
+      "newYearDeal": "Новогоднее предложение",
+      "forNewlyweds": "Для новобрачных",
+      "unforgettableMoments": "Незабываемые моменты",
+      "summerSale": "Летняя распродажа",
+      "autumnSale": "Осенняя распродажа",
+      "winterSale": "Зимняя распродажа",
+      "springSale": "Весенняя распродажа",
+      "blackFriday": "Черная пятница",
+      "hotSale": "Горячая распродажа",
+      "finalSale": "Финальная распродажа",
+      "hitOfSales": "Хит продаж",
+      "uniqueOffer": "Уникальное предложение",
+      "specialOffer": "Специальное предложение"
+    }
+  }
+}

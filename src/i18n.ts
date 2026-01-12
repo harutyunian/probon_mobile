@@ -3,6 +3,8 @@ import { I18n, Scope } from 'i18n-js';
 
 import en from './translations/en.json';
 import es from './translations/es.json';
+import ru from './translations/ru.json';
+import am from './translations/am.json';
 
 // --- Recursive TypeScript Utility for Deep Keys ---
 // This utility type will take a nested object and create a union of all possible
@@ -21,6 +23,8 @@ const i18n = new I18n();
 i18n.translations = {
     en,
     es,
+    ru,
+    am
 };
 
 i18n.locale = Localization.getLocales()[0].languageCode || 'en';
