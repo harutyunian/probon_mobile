@@ -82,8 +82,8 @@ export const useStoryState = ({users, onComplete}: UseStoryStateProps): StorySta
     }
 
     if (currentUserIndex < users.length - 1) {
-      setCurrentUserIndex(currentUserIndex + 1);
       setCurrentStoryIndex(0);
+      setCurrentUserIndex(currentUserIndex + 1);
       return;
     }
 
@@ -117,16 +117,16 @@ export const useStoryState = ({users, onComplete}: UseStoryStateProps): StorySta
     setIsPlaying(prev => !prev);
   }, []);
 
-  // Kick off progress animation whenever the active story changes and playback is active
   useEffect(() => {
+    // Reset immediately on story change so the top progress bar restarts from 0
+    cancelAnimation();
     progressRef.current = 0;
     setProgress(0);
     lastFrameRef.current = 0;
-  }, [currentStory?.id]);
+  }, [cancelAnimation, currentStory?.id]);
 
+  // Kick off progress animation whenever the active story changes and playback is active
   useEffect(() => {
-    cancelAnimation();
-
     if (!isVisible || !isPlaying || !currentStory) {
       return;
     }

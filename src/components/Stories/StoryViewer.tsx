@@ -8,15 +8,21 @@ import {
   Text,
   StatusBar,
   useWindowDimensions,
+  Animated,
+  Easing,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  ScrollView,
+  PanResponder,
+  GestureResponderEvent,
+  PanResponderGestureState,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import PagerView from 'react-native-pager-view';
-import Feather from 'react-native-vector-icons/Feather';
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Image} from 'expo-image';
 import {LinearGradient} from 'expo-linear-gradient';
-import {useTheme} from 'react-native-paper';
+import {useTheme, IconButton} from 'react-native-paper';
 
 import {StoryMedia, StoryUser} from '../../types/story';
 import {StoryStateController} from '../../hooks/useStoryState';
@@ -98,6 +104,7 @@ const StoryHud = ({
   onClose,
   onTogglePlay,
   topInset,
+  isClosing,
 }: {
   user: StoryUser;
   stories: StoryMedia[];
@@ -107,6 +114,7 @@ const StoryHud = ({
   onClose: () => void;
   onTogglePlay: () => void;
   topInset: number;
+  isClosing: boolean;
 }) => {
   const {colors} = useTheme();
   const accent = colors.primary;
@@ -136,12 +144,30 @@ const StoryHud = ({
             {formatTimeAgo(stories[currentStoryIndex]?.postedAt)}
           </Text>
         </View>
-        <Pressable onPress={onTogglePlay} hitSlop={8} style={styles.iconButton}>
-          <Feather name={isPlaying ? 'pause' : 'play'} size={18} color="#fff" />
-        </Pressable>
-        <Pressable onPress={onClose} hitSlop={8} style={styles.iconButton}>
-          <Feather name="x" size={18} color="#fff" />
-        </Pressable>
+        <IconButton
+          icon={({size, color}) =>
+            isPlaying ? (
+              <MaterialCommunityIcons name="pause" size={size} color={color} />
+            ) : (
+              <Entypo name="controller-play" size={size} color={color} />
+            )
+          }
+          size={18}
+          iconColor="#fff"
+          onPress={onTogglePlay}
+          style={styles.iconButton}
+          disabled={isClosing}
+        />
+        <IconButton
+          icon={({size, color}) => (
+            <MaterialCommunityIcons name="close" size={size} color={color} />
+          )}
+          size={18}
+          iconColor="#fff"
+          onPress={onClose}
+          style={styles.iconButton}
+          disabled={isClosing}
+        />
       </View>
     </View>
   );
@@ -150,8 +176,12 @@ const StoryHud = ({
 export default function StoryViewer({users, controller, onStoryViewed}: Props) {
   const {width, height} = useWindowDimensions();
   const insets = useSafeAreaInsets();
-  const pagerRef = useRef<PagerView>(null);
-  const storyListRefs = useRef<Record<string, FlatList<StoryMedia> | null>>({});
+  const pagerRef = useRef<FlatList<StoryUser> | null>(null);
+  const storyListRefs = useRef<Record<string, ScrollView | null>>({});
+  const animatedValue = useRef(new Animated.Value(0)).current;
+  const isClosingRef = useRef(false);
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const dragY = useRef(new Animated.Value(0)).current;
 
   const {
     isVisible,
@@ -169,14 +199,84 @@ export default function StoryViewer({users, controller, onStoryViewed}: Props) {
     currentStory,
   } = controller;
 
-  // Keep pager in sync when progressing automatically
+  // Animate in when the viewer becomes visible
   useEffect(() => {
-    if (!isVisible) {
+    if (isVisible) {
+      isClosingRef.current = false;
+      animatedValue.setValue(0);
+      dragY.setValue(0);
+      Animated.timing(animatedValue, {
+        toValue: 1,
+        duration: 220,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    } else {
+      animatedValue.setValue(0);
+      dragY.setValue(0);
+    }
+  }, [animatedValue, dragY, isVisible]);
+
+  const handleAnimatedClose = useCallback(() => {
+    if (isClosingRef.current || !isVisible) {
       return;
     }
+    isClosingRef.current = true;
+    Animated.timing(animatedValue, {
+      toValue: 0,
+      duration: 200,
+      easing: Easing.in(Easing.ease),
+      useNativeDriver: true,
+    }).start(({finished}) => {
+      if (finished) {
+        closeStory();
+      } else {
+        isClosingRef.current = false;
+      }
+    });
+  }, [animatedValue, closeStory, isVisible]);
 
-    pagerRef.current?.setPage(currentUserIndex);
-  }, [currentUserIndex, isVisible]);
+  const handleRelease = useCallback(
+    (dy: number) => {
+      if (dy > 120) {
+        isClosingRef.current = true;
+        Animated.parallel([
+          Animated.timing(dragY, {
+            toValue: height,
+            duration: 180,
+            easing: Easing.out(Easing.ease),
+            useNativeDriver: true,
+          }),
+          Animated.timing(animatedValue, {
+            toValue: 0,
+            duration: 180,
+            easing: Easing.out(Easing.ease),
+            useNativeDriver: true,
+          }),
+        ]).start(() => closeStory());
+      } else {
+        Animated.spring(dragY, {
+          toValue: 0,
+          useNativeDriver: true,
+          bounciness: 8,
+        }).start();
+      }
+    },
+    [animatedValue, closeStory, dragY, height],
+  );
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: (_evt: GestureResponderEvent, gestureState: PanResponderGestureState) => {
+        return Math.abs(gestureState.dy) > Math.abs(gestureState.dx) && Math.abs(gestureState.dy) > 10;
+      },
+      onPanResponderMove: (_evt, gestureState) => {
+        dragY.setValue(gestureState.dy);
+      },
+      onPanResponderRelease: (_evt, gestureState) => handleRelease(gestureState.dy),
+      onPanResponderTerminate: (_evt, gestureState) => handleRelease(gestureState.dy),
+    }),
+  ).current;
 
   // Scroll stories to the active index when state changes programmatically
   useEffect(() => {
@@ -186,13 +286,9 @@ export default function StoryViewer({users, controller, onStoryViewed}: Props) {
 
     const ref = storyListRefs.current[currentUser.id];
     if (ref) {
-      try {
-        ref.scrollToIndex({index: currentStoryIndex, animated: false});
-      } catch {
-        // ignore scroll failures for short lists
-      }
+      ref.scrollTo({x: width * currentStoryIndex, animated: false});
     }
-  }, [currentStoryIndex, currentUser, isVisible]);
+  }, [currentStoryIndex, currentUser, isVisible, width]);
 
   // Notify parent when a story becomes active
   useEffect(() => {
@@ -201,14 +297,27 @@ export default function StoryViewer({users, controller, onStoryViewed}: Props) {
     }
   }, [currentStory, currentUser, isVisible, onStoryViewed]);
 
-  const handlePageSelected = useCallback(
-    (event: NativeSyntheticEvent<{position: number}>) => {
-      const nextIndex = event.nativeEvent.position;
-      setCurrentUserIndex(nextIndex);
-      setCurrentStoryIndex(0);
+  const handleUserMomentumEnd = useCallback(
+    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const nextIndex = Math.round(event.nativeEvent.contentOffset.x / width);
+      if (Number.isFinite(nextIndex)) {
+        setCurrentUserIndex(nextIndex);
+        setCurrentStoryIndex(0);
+      }
     },
-    [setCurrentStoryIndex, setCurrentUserIndex],
+    [setCurrentStoryIndex, setCurrentUserIndex, width],
   );
+
+  // Keep outer pager aligned when state changes programmatically (auto-advance)
+  useEffect(() => {
+    if (!isVisible) {
+      return;
+    }
+    pagerRef.current?.scrollToOffset({
+      offset: width * currentUserIndex,
+      animated: true,
+    });
+  }, [currentUserIndex, isVisible, width]);
 
   const handleStoryMomentumEnd = useCallback(
     (userIndex: number, event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -231,49 +340,102 @@ export default function StoryViewer({users, controller, onStoryViewed}: Props) {
     <Modal
       visible={isVisible}
       animationType="fade"
-      onRequestClose={closeStory}
+      onRequestClose={handleAnimatedClose}
+      transparent
+      presentationStyle="overFullScreen"
       statusBarTranslucent
     >
       <StatusBar barStyle="light-content" hidden />
-      <View style={styles.backdrop}>
-        <PagerView
+      <Animated.View
+        {...panResponder.panHandlers}
+        style={[
+          styles.backdrop,
+          {
+            opacity: animatedValue.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0.15, 1],
+            }),
+            transform: [
+              {
+                scale: animatedValue.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.9, 1],
+                }),
+              },
+              {translateY: dragY},
+            ],
+          },
+        ]}
+      >
+        <Animated.FlatList
           ref={pagerRef}
-          style={styles.pager}
-          initialPage={currentUserIndex}
-          onPageSelected={handlePageSelected}
-        >
-          {users.map((user, userIndex) => (
-            <View key={user.id} style={styles.page}>
-              <FlatList
-                ref={ref => {
-                  storyListRefs.current[user.id] = ref;
-                }}
-                data={user.stories}
-                keyExtractor={item => item.id}
-                renderItem={({item}) => (
-                  <StorySlide
-                    story={item}
-                    width={width}
-                    height={height}
-                    onNext={nextStory}
-                    onPrevious={previousStory}
-                    bottomInset={insets.bottom}
-                  />
-                )}
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                onMomentumScrollEnd={event => handleStoryMomentumEnd(userIndex, event)}
-                scrollEnabled={userIndex === currentUserIndex}
-                getItemLayout={(_, index) => ({
-                  length: width,
-                  offset: width * index,
-                  index,
-                })}
-              />
-            </View>
-          ))}
-        </PagerView>
+          data={users}
+          keyExtractor={item => item.id}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          onMomentumScrollEnd={handleUserMomentumEnd}
+          scrollEventThrottle={16}
+          onScroll={Animated.event(
+            [{nativeEvent: {contentOffset: {x: scrollX}}}],
+            {useNativeDriver: true},
+          )}
+          initialScrollIndex={currentUserIndex}
+          getItemLayout={(_, index) => ({
+            length: width,
+            offset: width * index,
+            index,
+          })}
+          renderItem={({item, index: userIndex}) => {
+            const inputRange = [(userIndex - 1) * width, userIndex * width, (userIndex + 1) * width];
+            const rotateY = scrollX.interpolate({
+              inputRange,
+              outputRange: ['15deg', '0deg', '-15deg'],
+              extrapolate: 'clamp',
+            });
+            const scale = scrollX.interpolate({
+              inputRange,
+              outputRange: [0.9, 1, 0.9],
+              extrapolate: 'clamp',
+            });
+
+            return (
+              <Animated.View
+                style={[
+                  styles.page,
+                  {
+                    width,
+                    transform: [{perspective: 900}, {rotateY}, {scale}],
+                  },
+                ]}
+              >
+                <ScrollView
+                  ref={ref => {
+                    storyListRefs.current[item.id] = ref;
+                  }}
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  scrollEnabled={userIndex === currentUserIndex}
+                  onMomentumScrollEnd={event => handleStoryMomentumEnd(userIndex, event)}
+                  contentContainerStyle={{width: width * item.stories.length}}
+                >
+                  {item.stories.map(story => (
+                    <StorySlide
+                      key={story.id}
+                      story={story}
+                      width={width}
+                      height={height}
+                      onNext={nextStory}
+                      onPrevious={previousStory}
+                      bottomInset={insets.bottom}
+                    />
+                  ))}
+                </ScrollView>
+              </Animated.View>
+            );
+          }}
+        />
 
         <StoryHud
           user={currentUser}
@@ -281,11 +443,12 @@ export default function StoryViewer({users, controller, onStoryViewed}: Props) {
           progress={progress}
           currentStoryIndex={currentStoryIndex}
           isPlaying={isPlaying}
-          onClose={closeStory}
+          onClose={handleAnimatedClose}
           onTogglePlay={togglePlay}
           topInset={insets.top}
+          isClosing={isClosingRef.current}
         />
-      </View>
+      </Animated.View>
     </Modal>
   );
 }
