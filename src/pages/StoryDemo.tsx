@@ -1,10 +1,24 @@
-import React from 'react';
-import { View, StyleSheet, SafeAreaView, Text } from 'react-native';
-import { Text as PaperText } from 'react-native-paper';
-import { StoryContainer } from '../components/Story';
-import { mockUsers } from '../mock/storyMock';
+import React, {useMemo} from 'react';
+import {View, StyleSheet, SafeAreaView} from 'react-native';
+import {Text as PaperText} from 'react-native-paper';
+
+import Stories from '../components/Stories/Stories';
+import {mockUsers} from '../mock/storyMock';
+import EventCardInfo from './Home/ListHeader/EventCardInfo/EventCardInfo';
 
 export default function StoryDemo() {
+  const demoStories = useMemo(
+    () =>
+      mockUsers.map(user => ({
+        ...user,
+        stories: user.stories.map(story => ({
+          ...story,
+          overlay: <EventCardInfo />,
+        })),
+      })),
+    [],
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -15,9 +29,9 @@ export default function StoryDemo() {
           Tap on any story to view it
         </PaperText>
       </View>
-      
-      <StoryContainer users={mockUsers} />
-      
+
+      <Stories users={demoStories} />
+
       <View style={styles.info}>
         <PaperText variant="bodyMedium" style={styles.infoText}>
           Features:
@@ -26,16 +40,13 @@ export default function StoryDemo() {
           • Tap left/right to navigate between stories
         </PaperText>
         <PaperText variant="bodySmall" style={styles.featureText}>
-          • Use play/pause button to control story progression
+          • Play/pause controls in the header
         </PaperText>
         <PaperText variant="bodySmall" style={styles.featureText}>
-          • Mute/unmute sound with volume button
+          • Progress bars for every story
         </PaperText>
         <PaperText variant="bodySmall" style={styles.featureText}>
-          • Progress bars show story completion
-        </PaperText>
-        <PaperText variant="bodySmall" style={styles.featureText}>
-          • Stories automatically progress to next user
+          • Automatic advance across users
         </PaperText>
       </View>
     </SafeAreaView>
@@ -67,7 +78,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     elevation: 2,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
@@ -81,4 +92,4 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     lineHeight: 20,
   },
-}); 
+});

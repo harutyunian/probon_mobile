@@ -1,135 +1,187 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { User, Story } from '../types/story';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {StoryMedia, StoryUser} from '../types/story';
 
 interface UseStoryStateProps {
-  users: User[];
+  users: StoryUser[];
   onComplete?: () => void;
 }
 
-export const useStoryState = ({ users, onComplete }: UseStoryStateProps) => {
+export type StoryStateController = {
+  currentUserIndex: number;
+  currentStoryIndex: number;
+  isPlaying: boolean;
+  progress: number;
+  isVisible: boolean;
+  currentUser?: StoryUser;
+  currentStory?: StoryMedia;
+  viewedStoryIds: Set<string>;
+  openStory: (userIndex: number, storyIndex?: number) => void;
+  closeStory: () => void;
+  nextStory: () => void;
+  previousStory: () => void;
+  togglePlay: () => void;
+  setCurrentUserIndex: (index: number) => void;
+  setCurrentStoryIndex: (index: number) => void;
+  markStoryViewed: (storyId?: string) => void;
+};
+
+export const useStoryState = ({users, onComplete}: UseStoryStateProps): StoryStateController => {
   const [currentUserIndex, setCurrentUserIndex] = useState(0);
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [viewedStoryIds, setViewedStoryIds] = useState<Set<string>>(new Set());
 
-  const progressInterval = useRef<NodeJS.Timeout | null>(null);
-  const currentUser = users[currentUserIndex];
-  const currentStory = currentUser?.stories[currentStoryIndex];
+  const rafRef = useRef<number | null>(null);
+  const lastFrameRef = useRef(0);
+  const progressRef = useRef(0);
 
-  // Progress timer
-  useEffect(() => {
-    if (!isPlaying || !currentStory || !isVisible) return;
+  const currentUser = useMemo(() => users[currentUserIndex], [users, currentUserIndex]);
+  const currentStory = useMemo(
+    () => currentUser?.stories?.[currentStoryIndex],
+    [currentUser, currentStoryIndex],
+  );
 
-    const startTime = Date.now();
-    const duration = currentStory.duration;
-
-    progressInterval.current = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const newProgress = Math.min(elapsed / duration, 1);
-      
-      setProgress(newProgress);
-
-      if (newProgress >= 1) {
-        nextStory();
-      }
-    }, 50);
-
-    return () => {
-      if (progressInterval.current) {
-        clearInterval(progressInterval.current);
-      }
-    };
-  }, [currentUserIndex, currentStoryIndex, isPlaying, currentStory, isVisible]);
-
-  // Reset progress when story changes
-  useEffect(() => {
-    setProgress(0);
-  }, [currentUserIndex, currentStoryIndex]);
-
-  const nextStory = useCallback(() => {
-    if (currentStoryIndex < currentUser.stories.length - 1) {
-      // Next story of same user
-      setCurrentStoryIndex(currentStoryIndex + 1);
-    } else if (currentUserIndex < users.length - 1) {
-      // Next user, first story
-      setCurrentUserIndex(currentUserIndex + 1);
-      setCurrentStoryIndex(0);
-    } else {
-      // End of all stories
-      closeStory();
-      onComplete?.();
+  const cancelAnimation = useCallback(() => {
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
     }
-  }, [currentStoryIndex, currentUser.stories.length, currentUserIndex, users.length, onComplete]);
+  }, []);
 
-  const previousStory = useCallback(() => {
-    if (currentStoryIndex > 0) {
-      // Previous story of same user
-      setCurrentStoryIndex(currentStoryIndex - 1);
-    } else if (currentUserIndex > 0) {
-      // Previous user, last story
-      setCurrentUserIndex(currentUserIndex - 1);
-      setCurrentStoryIndex(users[currentUserIndex - 1].stories.length - 1);
+  const markStoryViewed = useCallback((storyId?: string) => {
+    if (!storyId) {
+      return;
     }
-  }, [currentStoryIndex, currentUserIndex, users]);
 
-  const openStory = useCallback((userIndex: number, storyIndex: number) => {
-    setCurrentUserIndex(userIndex);
-    setCurrentStoryIndex(storyIndex);
-    setIsVisible(true);
-    setIsPlaying(true);
-    setProgress(0);
+    setViewedStoryIds(prev => {
+      if (prev.has(storyId)) {
+        return prev;
+      }
+      const next = new Set(prev);
+      next.add(storyId);
+      return next;
+    });
   }, []);
 
   const closeStory = useCallback(() => {
     setIsVisible(false);
     setIsPlaying(false);
-    if (progressInterval.current) {
-      clearInterval(progressInterval.current);
+    setProgress(0);
+    progressRef.current = 0;
+    cancelAnimation();
+  }, [cancelAnimation]);
+
+  const nextStory = useCallback(() => {
+    const userStories = users[currentUserIndex]?.stories ?? [];
+
+    if (currentStoryIndex < userStories.length - 1) {
+      setCurrentStoryIndex(currentStoryIndex + 1);
+      return;
     }
+
+    if (currentUserIndex < users.length - 1) {
+      setCurrentUserIndex(currentUserIndex + 1);
+      setCurrentStoryIndex(0);
+      return;
+    }
+
+    closeStory();
+    onComplete?.();
+  }, [closeStory, currentStoryIndex, currentUserIndex, onComplete, users]);
+
+  const previousStory = useCallback(() => {
+    if (currentStoryIndex > 0) {
+      setCurrentStoryIndex(currentStoryIndex - 1);
+      return;
+    }
+
+    if (currentUserIndex > 0) {
+      const prevUserStories = users[currentUserIndex - 1]?.stories ?? [];
+      setCurrentUserIndex(currentUserIndex - 1);
+      setCurrentStoryIndex(Math.max(prevUserStories.length - 1, 0));
+    }
+  }, [currentStoryIndex, currentUserIndex, users]);
+
+  const openStory = useCallback((userIndex: number, storyIndex = 0) => {
+    setCurrentUserIndex(userIndex);
+    setCurrentStoryIndex(storyIndex);
+    setIsVisible(true);
+    setIsPlaying(true);
+    setProgress(0);
+    progressRef.current = 0;
   }, []);
 
   const togglePlay = useCallback(() => {
-    setIsPlaying(!isPlaying);
-  }, [isPlaying]);
+    setIsPlaying(prev => !prev);
+  }, []);
 
-  const toggleMute = useCallback(() => {
-    setIsMuted(!isMuted);
-  }, [isMuted]);
-
-  const markStoryAsViewed = useCallback(() => {
-    if (currentStory) {
-      currentStory.viewed = true;
-    }
-  }, [currentStory]);
-
-  // Mark story as viewed when it starts
+  // Kick off progress animation whenever the active story changes and playback is active
   useEffect(() => {
-    if (isVisible && currentStory) {
-      markStoryAsViewed();
+    progressRef.current = 0;
+    setProgress(0);
+    lastFrameRef.current = 0;
+  }, [currentStory?.id]);
+
+  useEffect(() => {
+    cancelAnimation();
+
+    if (!isVisible || !isPlaying || !currentStory) {
+      return;
     }
-  }, [currentStoryIndex, markStoryAsViewed, isVisible, currentStory]);
+
+    lastFrameRef.current = 0;
+
+    const step = (timestamp: number) => {
+      if (!lastFrameRef.current) {
+        lastFrameRef.current = timestamp;
+      }
+
+      const elapsed = timestamp - lastFrameRef.current;
+      lastFrameRef.current = timestamp;
+
+      const duration = currentStory.durationMs ?? 6500;
+      const nextProgress = Math.min(progressRef.current + elapsed / duration, 1);
+      progressRef.current = nextProgress;
+      setProgress(nextProgress);
+
+      if (nextProgress >= 1) {
+        nextStory();
+        return;
+      }
+
+      rafRef.current = requestAnimationFrame(step);
+    };
+
+    rafRef.current = requestAnimationFrame(step);
+
+    return cancelAnimation;
+  }, [cancelAnimation, currentStory, isPlaying, isVisible, nextStory]);
+
+  // Mark as viewed when the user actually lands on a story while the viewer is open
+  useEffect(() => {
+    if (isVisible && currentStory?.id) {
+      markStoryViewed(currentStory.id);
+    }
+  }, [currentStory?.id, isVisible, markStoryViewed]);
 
   return {
-    // State
     currentUserIndex,
     currentStoryIndex,
     isPlaying,
-    isMuted,
     progress,
     isVisible,
     currentUser,
     currentStory,
-    
-    // Actions
+    viewedStoryIds,
     openStory,
     closeStory,
     nextStory,
     previousStory,
     togglePlay,
-    toggleMute,
     setCurrentUserIndex,
     setCurrentStoryIndex,
+    markStoryViewed,
   };
-}; 
+};

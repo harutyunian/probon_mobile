@@ -1,22 +1,25 @@
-export interface Story {
-  id: string;
-  imageUrl: string;
-  title: string;
-  duration: number; // milliseconds
-  viewed: boolean;
-  timestamp: Date;
-}
+import {ReactNode} from 'react';
 
-export interface User {
+export type StoryMedia = {
+  id: string;
+  uri: string;
+  durationMs?: number;
+  title?: string;
+  description?: string;
+  postedAt?: string | Date;
+  overlay?: ReactNode | (() => ReactNode);
+};
+
+export type StoryUser = {
   id: string;
   name: string;
-  avatar: string;
-  stories: Story[];
-}
+  avatarUri: string;
+  stories: StoryMedia[];
+};
 
 export interface StoryViewerProps {
-  users: User[];
+  users: StoryUser[];
   initialUserIndex?: number;
   initialStoryIndex?: number;
   onClose: () => void;
-} 
+}
