@@ -172,21 +172,44 @@ eas build --platform ios
 ---
 
 
+## 🏗️ Architecture & Tech Stack
+
+| Layer | Technology | Version |
+|---|---|---|
+| **Core Runtime** | Expo SDK / React Native / React | `53.0.20` / `0.79.5` / `19.0.0` |
+| **Language** | TypeScript | `~5.8.3` |
+| **State Management** | Redux Toolkit (`@reduxjs/toolkit`) & React-Redux | `^2.8.2` / `^9.2.0` |
+| **Navigation** | React Navigation v7 (Native Stack, Bottom Tabs, Drawer) | `^7.x` |
+| **Lists & Animations** | `@shopify/flash-list`, `react-native-reanimated`, `@gorhom/bottom-sheet` | `1.7.6` / `~3.17.4` / `^5.1.6` |
+| **Localization** | `expo-localization` + `i18n-js` | `~16.1.6` / `^4.5.1` |
+
+### 📂 Directory Structure (`src/`)
+
+- `src/components/` — Reusable UI components, cards, modals, and layout primitives
+- `src/navigation/` — Stack, Bottom Tab, and Drawer navigators
+- `src/pages/` — Feature screens and route views
+- `src/store/` — Redux Toolkit slices, selectors, and store configuration
+- `src/translations/` & `src/i18n.ts` — Multi-language dictionaries and localization setup
+- `src/hooks/` & `src/utils/` — Custom React hooks and helper utilities
+
+---
+
 ## 🔧 Available Scripts
 
 | Command            | Description                          |
 |--------------------| ------------------------------------ |
-| `npm run  start`   | Start Expo dev server                |
+| `npm run start`    | Start Expo dev server                |
 | `npm run android`  | Launch Android emulator              |
-| `npm run  ios`     | Launch iOS simulator (Mac only)      |
-| `npm run  lint`    | Run ESLint (if configured)           |
-| `npm run lint:fix` | Run tests (if configured)            |
+| `npm run ios`      | Launch iOS simulator (Mac only)      |
+| `npm run web`      | Start Expo Web build                 |
+| `npm run lint`     | Run ESLint across `.ts` / `.tsx`     |
+| `npm run lint:fix` | Auto-fix ESLint issues               |
 
 ---
 
 ## 📄 License
 
-MIT License © 2025 
+MIT License © 2026
 
 ---
 
